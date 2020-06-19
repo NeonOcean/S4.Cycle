@@ -1,0 +1,4 @@
+Running Build-Python.py only build the python files and send them to the S4 mod folder.
+
+In order to build the entire mod you need go through the automation setup located elsewhere.
+https://github.com/NeonOcean/Environment

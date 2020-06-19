@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<STBLXMLFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<FallbackLanguage>0</FallbackLanguage>
+	<STBLGroup>1064960004</STBLGroup>
+	<STBLInstance>16884400337212785596</STBLInstance>
+	<STBLName>NeonOcean_S4_Cycle_STBL_System_{0:Underscored}</STBLName>
+	<BuildIdentifiers>true</BuildIdentifiers>
+	<IdentifiersGroup>1064960004</IdentifiersGroup>
+	<IdentifiersInstance>4638321775774122044</IdentifiersInstance>
+	<IdentifiersName>NeonOcean_S4_Cycle_Snippets_STBL_System_Identifiers</IdentifiersName>
+	<Entries>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interaction_Categories.Cycle</Identifier>
+			<Key>211463727</Key>
+			<English>Cycle</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Settings.Mod_Settings.Display_Name</Identifier>
+			<Key>3580680833</Key>
+			<English>Mod Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Standard.About_Mod.Display_Name</Identifier>
+			<Key>2363395158</Key>
+			<English>About</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Standard.Documentation.Display_Name</Identifier>
+			<Key>73227558</Key>
+			<English>Documentation</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Standard.Reset.Display_Name</Identifier>
+			<Key>2327634298</Key>
+			<English>Reset</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Standard.Visit_Mod_Page.Display_Name</Identifier>
+			<Key>2363302476</Key>
+			<English>Visit mod page</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root.Description</Identifier>
+			<Key>2064056544</Key>
+			<English>Settings for the mod Cycle.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Description</Identifier>
+			<Key>1429461409</Key>
+			<English>Settings to change how birth control is works and is purchased.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Title</Identifier>
+			<Key>2463021129</Key>
+			<English>Contraceptive Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Reproduction.Description</Identifier>
+			<Key>2319457592</Key>
+			<English>Settings to change how reproductive systems and woohoo works.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Reproduction.Title</Identifier>
+			<Key>3010060957</Key>
+			<English>Reproduction Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time.Description</Identifier>
+			<Key>3706138337</Key>
+			<English>Settings to change how long it takes for things to happen.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time.Title</Identifier>
+			<Key>2158181097</Key>
+			<English>Time Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time_Life_Span.Description</Identifier>
+			<Key>298388305</Key>
+			<English>Settings to change how long a sim lives for beyond just three settings.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time_Life_Span.Name</Identifier>
+			<Key>3313241074</Key>
+			<English>Sim Life Span Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Title</Identifier>
+			<Key>406503699</Key>
+			<English>Mod Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Debug_Mode.Description</Identifier>
+			<Key>144620727</Key>
+			<English>Enable or disable this mod's debug interactions. These were not designed to be used by anyone other than mod creators.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Debug_Mode.Name</Identifier>
+			<Key>2629335617</Key>
+			<English>Debug Mode</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Easy_Fertilization.Description</Identifier>
+			<Key>225104768</Key>
+			<English>Enabling this setting will prevent egg cells and sperm from being randomly non-viable. This will cause trying for babies to be about as easy as in the unmodded game, except you have to time your woohoos with a sim's ovulation. This setting is best used when trying to play with sims who don't live long. This won't affect egg cells and sperm that already exist.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Easy_Fertilization.Name</Identifier>
+			<Key>615327443</Key>
+			<English>Easy Fertilization</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Enable_Woohoo_Changes.Description</Identifier>
+			<Key>2957042643</Key>
+			<English>Woohoo changes must be enabled in order for a sim's fertility to be considered. The changes should typically only be disabled when another mod is taking care of it for us.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Enable_Woohoo_Changes.Name</Identifier>
+			<Key>2479992789</Key>
+			<English>Enable Woohoo Changes</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Handle_Pregnancy_Speed.Description</Identifier>
+			<Key>2409039761</Key>
+			<English>Whether or not this mod should handle the speed at which pregnancy progresses. This likely override changes made by other mods. For example, any mod that would allow you to pause a sim's pregnancy may well not function.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Handle_Pregnancy_Speed.Name</Identifier>
+			<Key>4167893720</Key>
+			<English>Handle Pregnancy Speed</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Immediate_Contraceptive_Arrival.Description</Identifier>
+			<Key>1884394690</Key>
+			<English>If yes, all purchased contraceptives will immediately appear in the sim's inventory. Otherwise they will be delivered by mail as soon as possible.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Immediate_Contraceptive_Arrival.Name</Identifier>
+			<Key>1725606319</Key>
+			<English>Immediate Contraceptive Arrival</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Life_Span_Long_Multiplier.Name</Identifier>
+			<Key>818425003</Key>
+			<English>Long Lifespan Multiplier</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Life_Span_Normal_Multiplier.Name</Identifier>
+			<Key>3726788937</Key>
+			<English>Normal Lifespan Multiplier</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Life_Span_Short_Multiplier.Name</Identifier>
+			<Key>3394323266</Key>
+			<English>Short Lifespan Multiplier
+</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Speed.Description</Identifier>
+			<Key>3820664465</Key>
+			<English>Controls the amount of game time it takes for a pregnancy to complete. The setting's value will be multiplied by how long pregnancy takes in real life to get how long it should take in game. For example, a real pregnancy cycle may take 270 days, at half speed (0.5) it would take 135 in-game days to complete (270 x 0.5 = 135).
+
+Minimum: 0.0035, Maximum: 2</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Speed.Name</Identifier>
+			<Key>1716452744</Key>
+			<English>Pregnancy Speed</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Quick_Mode.Description</Identifier>
+			<Key>1679354719</Key>
+			<English>When quick mode is enabled, adjustments will be made to the reproductive simulation to try to support very short cycles.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Quick_Mode.Name</Identifier>
+			<Key>1478050169</Key>
+			<English>Quick Mode</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Reproductive_Speed.Description</Identifier>
+			<Key>2700529802</Key>
+			<English>Controls the amount of game time it takes for a cycle to complete, sperm to decay, etc. The setting's value will be multiplied by how long something takes in real life to get how long it should take in game.  For example, a real menstrual cycle may take 28 days, at half speed (0.5) it would take 14 in-game days to complete (28 x 0.5 = 14).
+
+This mod works best with long menstrual cycles, I don't recommend playing with any less than 3 days.
+
+Minimum: 0.035, Maximum: 2</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Reproductive_Speed.Name</Identifier>
+			<Key>543930003</Key>
+			<English>Reproductive Speed</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Show_Purchase_Contraceptives_Interactions.Description</Identifier>
+			<Key>887405183</Key>
+			<English>If no, the interactions normally used to purchase contraceptives will not appear.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Show_Purchase_Contraceptives_Interactions.Name</Identifier>
+			<Key>4024012966</Key>
+			<English>Show Purchase Contraceptives Interactions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Woohoo_Is_Always_Safe.Description</Identifier>
+			<Key>3272784472</Key>
+			<English>If yes, regular woohoo will be perfectly safe, just like in the unmodded game. Sims will still automatically woohoo protection, like condoms, even if this is enabled.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Woohoo_Is_Always_Safe.Name</Identifier>
+			<Key>1865223985</Key>
+			<English>Woohoo Is Always Safe</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.Enabled_Disabled.False</Identifier>
+			<Key>2488958822</Key>
+			<English>Disabled</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.Enabled_Disabled.True</Identifier>
+			<Key>1897861858</Key>
+			<English>Enabled</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.False</Identifier>
+			<Key>1569344061</Key>
+			<English>False</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.True</Identifier>
+			<Key>2674045063</Key>
+			<English>True</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.Yes_No.False</Identifier>
+			<Key>417989993</Key>
+			<English>No</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.Yes_No.True</Identifier>
+			<Key>112714956</Key>
+			<English>Yes</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Human_Days</Identifier>
+			<Key>3692884349</Key>
+			<English>Human lifetime: {0.String} Days ({1.String} / {2.String})</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span</Identifier>
+			<Key>3844360817</Key>
+			<English>{0.String} lifetime: {1.String} Days ({2.String} / {3.String})</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span.Cat</Identifier>
+			<Key>2299959212</Key>
+			<English>Cat</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span.Dog</Identifier>
+			<Key>2878822980</Key>
+			<English>Dog</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span.Human</Identifier>
+			<Key>4092730708</Key>
+			<English>Human</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Preset_Dialog.Default_Button</Identifier>
+			<Key>1865643734</Key>
+			<English>Default</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Preset_Dialog.Real_Time_Button</Identifier>
+			<Key>2947927802</Key>
+			<English>Real Time (365 d/y)</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Preset_Dialog.Year_Length_112_Button</Identifier>
+			<Key>22275292</Key>
+			<English>112 Days a Year</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Pregnancy_Speed.Value</Identifier>
+			<Key>362512151</Key>
+			<English>{0.Number}{0.String} ({1:Number}{1.String} day pregnancy.)</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Reproductive_Speed.Value</Identifier>
+			<Key>861739185</Key>
+			<English>{0.Number}{0.String} ({1:Number}{1.String} day cycle)</English>
+		</STBLXMLEntry>
+	</Entries>
+</STBLXMLFile>

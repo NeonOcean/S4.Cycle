@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<STBLXMLFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<FallbackLanguage>0</FallbackLanguage>
+	<STBLGroup>1064960004</STBLGroup>
+	<STBLInstance>11957314255440861844</STBLInstance>
+	<STBLName>NeonOcean_S4_Cycle_STBL_Gameplay_{0:Underscored}</STBLName>
+	<BuildIdentifiers>true</BuildIdentifiers>
+	<IdentifiersGroup>1064960004</IdentifiersGroup>
+	<IdentifiersInstance>4392605453318397925</IdentifiersInstance>
+	<IdentifiersName>NeonOcean_S4_Cycle_Snippets_STBL_Gameplay_Identifiers</IdentifiersName>
+	<Entries>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Description</Identifier>
+			<Key>1059234707</Key>
+			<English>{0.SimFirstName} is experiencing cramping in their lower abdomen.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Name</Identifier>
+			<Key>2441854718</Key>
+			<English>Abdominal Cramping</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Heavy_Vaginal_Bleeding.Description</Identifier>
+			<Key>162206171</Key>
+			<English>{0.SimFirstName} is experiencing heavy vaginal bleeding.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Heavy_Vaginal_Bleeding.Name</Identifier>
+			<Key>2678545089</Key>
+			<English>Heavy Vaginal Bleeding</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Intense_Abdominal_Cramping.Description</Identifier>
+			<Key>1566324602</Key>
+			<English>{0.SimFirstName} is experiencing intense cramping in their lower abdomen.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Intense_Abdominal_Cramping.Name</Identifier>
+			<Key>3543514897</Key>
+			<English>Intense Abdominal Cramping</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Light_Vaginal_Bleeding.Description</Identifier>
+			<Key>1779989014</Key>
+			<English>{0.SimFirstName} is experiencing light vaginal bleeding.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Light_Vaginal_Bleeding.Name</Identifier>
+			<Key>4192881132</Key>
+			<English>Light Vaginal Bleeding</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Mild_Abdominal_Cramping.Description</Identifier>
+			<Key>3557734401</Key>
+			<English>{0.SimFirstName} is experiencing mild cramping in their lower abdomen.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Mild_Abdominal_Cramping.Name</Identifier>
+			<Key>3795451181</Key>
+			<English>Mild Abdominal Cramping</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Painful_Abdominal_Cramping.Description</Identifier>
+			<Key>3854428980</Key>
+			<English>{0.SimFirstName} is experiencing painful cramping in their lower abdomen.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Painful_Abdominal_Cramping.Name</Identifier>
+			<Key>63985913</Key>
+			<English>Painful Abdominal Cramping</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Severe_Vaginal_Bleeding.Description</Identifier>
+			<Key>1684222161</Key>
+			<English>{0.SimFirstName} is experiencing severe vaginal bleeding.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Severe_Vaginal_Bleeding.Name</Identifier>
+			<Key>2779881638</Key>
+			<English>Severe Vaginal Bleeding</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Vaginal_Bleeding.Description</Identifier>
+			<Key>976515727</Key>
+			<English>{0.SimFirstName} is experiencing vaginal bleeding.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Vaginal_Bleeding.Name</Identifier>
+			<Key>315694888</Key>
+			<English>Vaginal Bleeding</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Error_Notification.Text</Identifier>
+			<Key>1740049257</Key>
+			<English>&lt;b&gt;&lt;i&gt;Whoops&lt;/i&gt;&lt;/b&gt;
+
+Looks like a bunch of llamas from our regular farm broke into our server farm and destroyed all the data we had about you.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Error_Notification.Title</Identifier>
+			<Key>2487373507</Key>
+			<English>Dot Period &amp; Ovulation Tracker</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Follicular</Identifier>
+			<Key>76533627</Key>
+			<English>You are currently in the first of the two major phases of a menstrual cycle, the follicular phase.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Luteal</Identifier>
+			<Key>1812910454</Key>
+			<English>You are currently in the latter half of the menstrual cycle, the luteal phase.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Menstruation.Ending</Identifier>
+			<Key>4196154801</Key>
+			<English>The sun is setting for this menstrual cycle. Your have now entered your menstrual period. This will soon end and so too will this cycle come to a close.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Menstruation.Starting</Identifier>
+			<Key>2279447662</Key>
+			<English>You will be soon entering your menstrual period. The effects associated with this phase may begin during, (or for some, before), this time.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Ovulation.Ending</Identifier>
+			<Key>2463870338</Key>
+			<English>Your have now entered your ovulatory period. You may well be fertile during this time, be cautious if you are not seeking pregnancy.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Ovulation.Starting</Identifier>
+			<Key>2387569457</Key>
+			<English>About half way through your cycle you will begin to ovulate. You will be at your most fertile around this time.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Time_Period.Ending.In_Days</Identifier>
+			<Key>266603903</Key>
+			<English>&lt;i&gt;- This phase should end in about {0.Number} day(s).&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Time_Period.Ending.Today</Identifier>
+			<Key>1525946272</Key>
+			<English>&lt;i&gt;- This phase should end some time today.&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Time_Period.Ending.Tomorrow</Identifier>
+			<Key>4000345334</Key>
+			<English>&lt;i&gt;-  This phase should end some time tomorrow.&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Time_Period.Starting.In_Days</Identifier>
+			<Key>1239490394</Key>
+			<English>&lt;i&gt;- This phase should start in about {0.Number} day(s).&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Time_Period.Starting.Today</Identifier>
+			<Key>7390378</Key>
+			<English>&lt;i&gt;-  This phase should start some time today.&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Time_Period.Starting.Tomorrow</Identifier>
+			<Key>3751341147</Key>
+			<English>&lt;i&gt;-  This phase should to start some time tomorrow.&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Status_Notification.Title</Identifier>
+			<Key>936170884</Key>
+			<English>Dot Period &amp; Ovulation Tracker</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interaction_Categories.Dot_App</Identifier>
+			<Key>2123064516</Key>
+			<English>Dot Period &amp; Ovulation Tracker</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Start_Using.Display_Name</Identifier>
+			<Key>3932764483</Key>
+			<English>Start Using</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Start_Using.Tooltip</Identifier>
+			<Key>4112737461</Key>
+			<English>The active sim will start using condoms during woohoo. (When not trying for a baby)</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Stop_Using.Display_Name</Identifier>
+			<Key>888894814</Key>
+			<English>Stop Using</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Stop_Using.Tooltip</Identifier>
+			<Key>149208833</Key>
+			<English>The active sim will stop using condoms during woohoo.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Check_Status.Display_Name</Identifier>
+			<Key>285493694</Key>
+			<English>Check Status Of Cycle</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Delete.Display_Name</Identifier>
+			<Key>3502316159</Key>
+			<English>Delete Dot App</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Download.Display_Name</Identifier>
+			<Key>1380079055</Key>
+			<English>Download Dot Period &amp; Ovulation Tracker</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Download.Tooltip</Identifier>
+			<Key>3732136531</Key>
+			<English>Download Dot, an app for keeping track of your menstrual cycle.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Inventory_Delivery.Text</Identifier>
+			<Key>1122117568</Key>
+			<English>Thank you for choosing ProtectTech® for your contraceptive needs! The purchased items can now be found in {0.SimFirstName}'s inventory.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Mail_Delivery.Text</Identifier>
+			<Key>3004621417</Key>
+			<English>Thank you for choosing ProtectTech® for your contraceptive needs! The purchased items will arrive by mail as soon as possible.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_With_Computer.Display_Name</Identifier>
+			<Key>243817945</Key>
+			<English>Purchase Contraceptives</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_With_Mailbox.Display_Name</Identifier>
+			<Key>1421966004</Key>
+			<English>Order Contraceptives</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Condom_Box.Description</Identifier>
+			<Key>3870386582</Key>
+			<English>A box of condoms. Use these to guard against STIs and accidental pregnancy.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Condom_Box.Name</Identifier>
+			<Key>2426980460</Key>
+			<English>Wild Cat Latex Condoms</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Condom_Box.Tooltip.Subtext</Identifier>
+			<Key>4031720320</Key>
+			<English>Condoms remaining: {0.Number}</English>
+		</STBLXMLEntry>
+	</Entries>
+</STBLXMLFile>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Object_States_Condom_Box_Fullness_Full" s="9947670351058683276" i="object_state" m="objects.components.state" c="CommodityBasedObjectStateValue">
+	<U n="new_client_state">
+		<V n="change_value" t="enabled">
+			<U n="enabled">
+				<V n="value_change_type" t="decrease_value">
+					<U n="decrease_value">
+						<T n="covered_by_insurance">False</T>
+					</U>
+					<T n="change_percentage">100</T>
+				</V>
+			</U>
+		</V>
+	</U>
+	<U n="range">
+		<T n="lower_bound">0.5</T>
+		<T n="upper_bound">100000</T>
+	</U>
+</I>

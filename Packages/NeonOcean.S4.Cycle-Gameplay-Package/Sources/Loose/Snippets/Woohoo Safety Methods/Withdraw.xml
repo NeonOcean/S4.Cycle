@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Woohoo_Safety_Methods_Withdraw" s="13838596247621976478" i="snippet" m="snippets" c="NeonoceanS4CycleWoohooSafetyMethod">
+	<U n="value">
+		<L n="PerformanceTypes">
+			<U>
+				<T n="key">Ideal</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="fixed">
+						<T n="fixed">0</T>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">LateWithdraw</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="normalDistribution">
+						<U n="normalDistribution">
+							<T n="mean">0.75</T>
+							<T n="standardDeviation">0.1</T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">VeryLateWithdraw</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="normalDistribution">
+						<U n="normalDistribution">
+							<T n="mean">0.25</T>
+							<T n="standardDeviation">0.1</T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">NoWithdraw</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="normalDistribution">
+						<U n="normalDistribution">
+							<T n="mean">1</T>
+							<T n="standardDeviation">0.05</T>
+						</U>
+					</V>
+				</U>
+			</U>
+		</L>
+		<U n="PerformanceTypeChances">
+			<L n="options">
+				<U>
+					<T n="identifier">Ideal</T>
+					<T n="weight">30</T>
+				</U>
+				<U>
+					<T n="identifier">LateWithdraw</T>
+					<T n="weight">30</T>
+				</U>
+				<U>
+					<T n="identifier">VeryLateWithdraw</T>
+					<T n="weight">25</T>
+				</U>
+				<U>
+					<T n="identifier">NoWithdraw</T>
+					<T n="weight">15</T>
+				</U>
+			</L>
+		</U>
+		
+		<T n="CompoundingMethod">False</T>
+	</U>
+</I>

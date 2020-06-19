@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Standard_Documentation" s="15156325766960731835" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Standard" c="DocumentationInteraction">
+	<T n="display_name">73227558</T>
+	<T n="category">5431105310299271089<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Cycle--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<T n="command">neonocean.s4.cycle.standard.documentation</T>
+			</U>
+		</V>
+	</L>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>

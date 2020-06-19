@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Sperm" s="12086335935179914334" i="snippet" m="snippets" c="NeonoceanS4CycleHumanSpermGuide">
+	<U n="value">
+		<U n="LifetimeDistributionMean">
+			<T n="mean">5760</T>
+			<T n="standardDeviation">720</T>
+		</U>
+		<U n="LifetimeDistributionSD">
+			<T n="mean">960</T>
+			<T n="standardDeviation">240</T>
+		</U>
+		<U n="SpermCount">
+			<T n="mean">400000000</T>
+			<T n="standardDeviation">75000000</T>
+		</U>
+		<U n="MotilePercentage">
+			<T n="mean">0.8</T>
+			<T n="standardDeviation">0.05</T>
+		</U>
+		<U n="ViablePercentage">
+			<T n="mean">0.8</T>
+			<T n="standardDeviation">0.05</T>
+		</U>
+	</U>
+</I>

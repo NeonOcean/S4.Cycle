@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Condom_Box_Stop_Using" s="848848603558739422" i="interaction" m="NeonOcean.S4.Cycle.Interactions.CondomBox" c="StopUsingInteraction">
+	<T n="display_name">888894814</T>
+	<V n="display_tooltip" t="enabled">
+		<T n="enabled">149208833</T>
+	</V>
+	<V n="_saveable" t="disabled" />
+	<V n="pie_menu_icon" t="enabled">
+		<V n="enabled" t="resource_key">
+			<U n="resource_key">
+				<T n="key" p="InGame\UI\Icons\PieMenu\Interactions\icon_pieMenu_immediateInteraction.png">2f7d0004:00000000:25eea5cdba6a6fd6</T>
+			</U>
+		</V>
+	</V>
+	<T n="allow_from_sim_inventory">True</T>
+	<T n="WoohooSafetyMethod">14044826903803863935</T>
+</I>

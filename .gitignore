@@ -1,0 +1,12 @@
+**/__pycache__
+
+**/.idea/**/misc.xml
+**/.idea/**/workspace.xml
+**/.idea/**/dictionaries
+
+/Build
+/Information/Build
+/Misc
+/Packages/*/Build
+/Publishing/Distribution
+/Python/Build

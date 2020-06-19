@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_STBL_System_Identifiers" s="4638321775774122044" i="snippet" m="snippets" c="NeonoceanS4GlobalLanguageIdentifiers">
+	<L n="value">
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interaction_Categories.Cycle</T>
+			<T n="value">211463727</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Settings.Mod_Settings.Display_Name</T>
+			<T n="value">3580680833</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Standard.About_Mod.Display_Name</T>
+			<T n="value">2363395158</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Standard.Documentation.Display_Name</T>
+			<T n="value">73227558</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Standard.Reset.Display_Name</T>
+			<T n="value">2327634298</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Standard.Visit_Mod_Page.Display_Name</T>
+			<T n="value">2363302476</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root.Description</T>
+			<T n="value">2064056544</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Description</T>
+			<T n="value">1429461409</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Title</T>
+			<T n="value">2463021129</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Reproduction.Description</T>
+			<T n="value">2319457592</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Reproduction.Title</T>
+			<T n="value">3010060957</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time.Description</T>
+			<T n="value">3706138337</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time.Title</T>
+			<T n="value">2158181097</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time_Life_Span.Description</T>
+			<T n="value">298388305</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Time_Life_Span.Name</T>
+			<T n="value">3313241074</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Title</T>
+			<T n="value">406503699</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Debug_Mode.Description</T>
+			<T n="value">144620727</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Debug_Mode.Name</T>
+			<T n="value">2629335617</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Easy_Fertilization.Description</T>
+			<T n="value">225104768</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Easy_Fertilization.Name</T>
+			<T n="value">615327443</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Enable_Woohoo_Changes.Description</T>
+			<T n="value">2957042643</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Enable_Woohoo_Changes.Name</T>
+			<T n="value">2479992789</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Handle_Pregnancy_Speed.Description</T>
+			<T n="value">2409039761</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Handle_Pregnancy_Speed.Name</T>
+			<T n="value">4167893720</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Immediate_Contraceptive_Arrival.Description</T>
+			<T n="value">1884394690</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Immediate_Contraceptive_Arrival.Name</T>
+			<T n="value">1725606319</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Life_Span_Long_Multiplier.Name</T>
+			<T n="value">818425003</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Life_Span_Normal_Multiplier.Name</T>
+			<T n="value">3726788937</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Life_Span_Short_Multiplier.Name</T>
+			<T n="value">3394323266</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Speed.Description</T>
+			<T n="value">3820664465</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Speed.Name</T>
+			<T n="value">1716452744</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Quick_Mode.Description</T>
+			<T n="value">1679354719</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Quick_Mode.Name</T>
+			<T n="value">1478050169</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Reproductive_Speed.Description</T>
+			<T n="value">2700529802</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Reproductive_Speed.Name</T>
+			<T n="value">543930003</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Show_Purchase_Contraceptives_Interactions.Description</T>
+			<T n="value">887405183</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Show_Purchase_Contraceptives_Interactions.Name</T>
+			<T n="value">4024012966</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Woohoo_Is_Always_Safe.Description</T>
+			<T n="value">3272784472</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Woohoo_Is_Always_Safe.Name</T>
+			<T n="value">1865223985</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Boolean.Enabled_Disabled.False</T>
+			<T n="value">2488958822</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Boolean.Enabled_Disabled.True</T>
+			<T n="value">1897861858</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Boolean.False</T>
+			<T n="value">1569344061</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Boolean.True</T>
+			<T n="value">2674045063</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Boolean.Yes_No.False</T>
+			<T n="value">417989993</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Boolean.Yes_No.True</T>
+			<T n="value">112714956</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Human_Days</T>
+			<T n="value">3692884349</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span</T>
+			<T n="value">3844360817</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span.Cat</T>
+			<T n="value">2299959212</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span.Dog</T>
+			<T n="value">2878822980</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Description_Parts.Life_Span.Human</T>
+			<T n="value">4092730708</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Preset_Dialog.Default_Button</T>
+			<T n="value">1865643734</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Preset_Dialog.Real_Time_Button</T>
+			<T n="value">2947927802</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Life_Span_Multiplier.Preset_Dialog.Year_Length_112_Button</T>
+			<T n="value">22275292</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Pregnancy_Speed.Value</T>
+			<T n="value">362512151</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Reproductive_Speed.Value</T>
+			<T n="value">861739185</T>
+		</U>
+	</L>
+</I>

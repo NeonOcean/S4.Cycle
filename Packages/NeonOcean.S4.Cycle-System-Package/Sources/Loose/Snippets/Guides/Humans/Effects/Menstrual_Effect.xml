@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Menstrual_Effect" s="1672145959132169949" i="snippet" m="snippets" c="NeonoceanS4CycleHumanMenstrualEffectGuide">
+	<U n="value">
+		<U n="BuffRarity">
+			<L n="options">
+				<U>
+					<T n="identifier">Abstain</T>
+					<T n="weight">25</T>
+				</U>
+				<U>
+					<T n="identifier">Common</T>
+					<T n="weight">35</T>
+				</U>
+				<U>
+					<T n="identifier">Uncommon</T>
+					<T n="weight">25</T>
+				</U>
+				<U>
+					<T n="identifier">Rare</T>
+					<T n="weight">10</T>
+				</U>
+				<U>
+					<T n="identifier">VeryRare</T>
+					<T n="weight">5</T>
+				</U>
+			</L>
+		</U>
+		<L n="BuffRarityOffsets">
+			<U>
+				<E n="key">Common</E>
+				<L n="value">
+					<U>
+						<T n="key">Common</T>
+						<U n="value">
+							<T n="offsetChange">-15</T>
+						</U>
+					</U>
+				</L>
+			</U>
+			<U>
+				<E n="key">Uncommon</E>
+				<L n="value">
+					<U>
+						<T n="key">Uncommon</T>
+						<U n="value">
+							<T n="offsetChange">-15</T>
+						</U>
+					</U>
+				</L>
+			</U>
+			<U>
+				<E n="key">Rare</E>
+				<L n="value">
+					<U>
+						<T n="key">Rare</T>
+						<U n="value">
+							<T n="offsetChange">-5</T>
+						</U>
+					</U>
+					<U>
+						<T n="key">VeryRare</T>
+						<U n="value">
+							<T n="offsetChange">-5</T>
+						</U>
+					</U>
+				</L>
+			</U>
+			<U>
+				<E n="key">VeryRare</E>
+				<L n="value">
+					<U>
+						<T n="key">Rare</T>
+						<U n="value">
+							<T n="offsetChange">10</T>
+						</U>
+					</U>
+					<U>
+						<T n="key">VeryRare</T>
+						<U n="value">
+							<T n="offsetChange">5</T>
+						</U>
+					</U>
+				</L>
+			</U>
+		</L>
+		<L n="AbstainedBuffRarityOffset">
+			<U>
+				<T n="key">Abstain</T>
+				<U n="value">
+					<T n="offsetChange">15</T>
+				</U>
+			</U>
+		</L>
+		<L n="BuffRarityResetRates">
+			<U>
+				<T n="key">Abstain</T>
+				<T n="value">0.05</T>
+			</U>
+			<U>
+				<T n="key">Common</T>
+				<T n="value">0.0625</T>
+			</U>
+			<U>
+				<T n="key">Uncommon</T>
+				<T n="value">0.2</T>
+			</U>
+			<U>
+				<T n="key">Rare</T>
+				<T n="value">0.0125</T>
+			</U>
+			<U>
+				<T n="key">VeryRare</T>
+				<T n="value">0.01</T>
+			</U>
+		</L>
+		<L n="BuffCoolDown">
+			<U>
+				<E n="key">Common</E>
+				<U n="value">
+					<T n="mean">120</T>
+					<T n="standardDeviation">60</T>
+				</U>
+			</U>
+			<U>
+				<E n="key">Uncommon</E>
+				<U n="value">
+					<T n="mean">180</T>
+					<T n="standardDeviation">60</T>
+				</U>
+			</U>
+			<U>
+				<E n="key">Rare</E>
+				<U n="value">
+					<T n="mean">240</T>
+					<T n="standardDeviation">60</T>
+				</U>
+			</U>
+			<U>
+				<E n="key">VeryRare</E>
+				<U n="value">
+					<T n="mean">360</T>
+					<T n="standardDeviation">60</T>
+				</U>
+			</U>
+		</L>
+		<U n="AbstainedBuffCoolDown">
+			<T n="mean">120</T>
+			<T n="standardDeviation">15</T>
+		</U>
+	</U>
+</I>

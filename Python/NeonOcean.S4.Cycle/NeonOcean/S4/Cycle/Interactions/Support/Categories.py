@@ -1,0 +1,2 @@
+ModID = 5431105310299271089  # type: int
+DebugID = 5721909071116079353  # type: int

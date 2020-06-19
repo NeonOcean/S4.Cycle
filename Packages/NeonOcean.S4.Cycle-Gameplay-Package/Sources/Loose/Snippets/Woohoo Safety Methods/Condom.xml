@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Woohoo_Safety_Methods_Condom" s="14044826903803863935" i="snippet" m="snippets" c="NeonoceanS4CycleLimitedUseWoohooSafetyMethod">
+	<U n="value">
+		<L n="Requirements">
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">14480569499002809959</T>
+						<L n="RequiredObjectTests">
+							<L>
+								<V t="statistic">
+									<U n="statistic">
+										<T n="stat">6354205262159876328<!--Commodity: NeonOcean_S4_Cycle_Statistics_Condom_Box_Count--></T>
+										<V n="threshold" t="value_threshold">
+											<U n="value_threshold">
+												<E n="comparison">GREATER</E>
+												<T n="value">0</T>
+											</U>
+										</V>
+										<E n="who">Object</E>
+									</U>
+								</V>
+							</L>
+						</L>
+					</U>
+				</V>
+			</L>
+		</L>
+		<L n="PerformanceTypes">
+			<U>
+				<T n="key">Ideal</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="fixed">
+						<T n="fixed">0</T>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">Slipped</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="normalDistribution">
+						<U n="normalDistribution">
+							<T n="mean">0.4</T>
+							<T n="standardDeviation">0.1</T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">Broke</T>
+				<U n="value">
+					<V n="ArrivingPercentage" t="normalDistribution">
+						<U n="normalDistribution">
+							<T n="mean">1</T>
+							<T n="standardDeviation">0.05</T>
+						</U>
+					</V>
+				</U>
+			</U>
+		</L>
+		<U n="PerformanceTypeChances">
+			<L n="options">
+				<U>
+					<T n="identifier">Ideal</T>
+					<T n="weight">70</T>
+				</U>
+				<U>
+					<T n="identifier">Slipped</T>
+					<T n="weight">20</T>
+				</U>
+				<U>
+					<T n="identifier">Broke</T>
+					<T n="weight">10</T>
+				</U>
+			</L>
+		</U>
+		<V n="UseReduction" t="inventoryStatistic">
+			<U n="inventoryStatistic">
+				<T n="TargetObject">14480569499002809959</T>
+				<T n="TargetStatistic">6354205262159876328<!--Commodity: NeonOcean_S4_Cycle_Statistics_Condom_Box_Count--></T>
+			</U>
+		</V>
+		<T n="PreferInseminatedUses">False</T>
+	</U>
+</I>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Cycle_Menstrual" s="1421534347299163611" i="snippet" m="snippets" c="NeonoceanS4CycleHumanCycleMenstrualGuide">
+	<U n="value">
+		<U n="OvumReleaseAmount">
+			<L n="options">
+				<U>
+					<T n="identifier">0</T>
+					<T n="weight">10</T>
+				</U>
+				<U>
+					<T n="identifier">1</T>
+					<T n="weight">60</T>
+				</U>
+				<U>
+					<T n="identifier">2</T>
+					<T n="weight">20</T>
+				</U>
+				<U>
+					<T n="identifier">3</T>
+					<T n="weight">5</T>
+				</U>
+				<U>
+					<T n="identifier">4</T>
+					<T n="weight">3</T>
+				</U>
+				<U>
+					<T n="identifier">5</T>
+					<T n="weight">1.5</T>
+				</U>
+				<U>
+					<T n="identifier">6</T>
+					<T n="weight">0.5</T>
+				</U>
+			</L>
+		</U>
+		<U n="FollicularLength">
+			<T n="mean">20160</T>
+			<T n="standardDeviation">1440</T>
+		</U>
+		<U n="OvulationLength">
+			<T n="mean">1800</T>
+			<T n="standardDeviation">480</T>
+		</U>
+		<U n="LutealLength">
+			<T n="mean">20160</T>
+			<T n="standardDeviation">1440</T>
+		</U>
+		<U n="MenstruationLength">
+			<T n="mean">5760</T>
+			<T n="standardDeviation">720</T>
+		</U>
+	</U>
+</I>

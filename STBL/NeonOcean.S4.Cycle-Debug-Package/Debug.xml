@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<STBLXMLFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<FallbackLanguage>0</FallbackLanguage>
+	<STBLGroup>1064960004</STBLGroup>
+	<STBLInstance>9135460370978948969</STBLInstance>
+	<STBLName>NeonOcean_S4_Cycle_STBL_Debug_{0:Underscored}</STBLName>
+	<BuildIdentifiers>true</BuildIdentifiers>
+	<IdentifiersGroup>1064960004</IdentifiersGroup>
+	<IdentifiersInstance>10419534746662600956</IdentifiersInstance>
+	<IdentifiersName>NeonOcean_S4_Cycle_Snippets_STBL_Debug_Identifiers</IdentifiersName>
+	<Entries>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interaction_Categories.Debug</Identifier>
+			<Key>2588491598</Key>
+			<English>Debug</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Add_Ovum.Display_Name</Identifier>
+			<Key>1010450959</Key>
+			<English>Add Ovum</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Add_Sperm_Picker.Display_Name</Identifier>
+			<Key>886048416</Key>
+			<English>Add Sperm From</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Clear_Ova.Display_Name</Identifier>
+			<Key>4073066700</Key>
+			<English>Clear Ova</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Clear_Sperm.Display_Name</Identifier>
+			<Key>2073903961</Key>
+			<English>Clear Sperm</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Show_Reproductive_Info.Display_Name</Identifier>
+			<Key>1179148787</Key>
+			<English>Show Reproductive Info</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Cancel_Button</Identifier>
+			<Key>2000954426</Key>
+			<English>Cancel</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Ok_Button</Identifier>
+			<Key>4162700952</Key>
+			<English>Ok</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Text</Identifier>
+			<Key>621857480</Key>
+			<English />
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Title</Identifier>
+			<Key>1906675665</Key>
+			<English>Set Cycle Progress</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Set_Cycle_Progress_Dialog.Display_Name</Identifier>
+			<Key>3200036637</Key>
+			<English>Set Cycle Progress</English>
+		</STBLXMLEntry>
+	</Entries>
+</STBLXMLFile>

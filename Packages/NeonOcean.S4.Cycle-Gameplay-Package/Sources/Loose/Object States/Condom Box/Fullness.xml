@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Object_States_Condom_Box_Fullness" s="2878130138874604320" i="object_state" m="objects.components.state" c="CommodityBasedObjectState">
+	<L n="_values">
+		<T>2370998572656986595<!--CommodityBasedObjectStateValue: NeonOcean_S4_Cycle_Object_States_Condom_Box_Fullness_Full--></T>
+		<T>9947670351058683276<!--CommodityBasedObjectStateValue: NeonOcean_S4_Cycle_Object_States_Condom_Box_Fullness_Empty--></T>
+	</L>
+	<T n="linked_stat">6354205262159876328<!--Statistic: NeonOcean_S4_Cycle_Statistics_Condom_Box_Count--></T>
+</I>

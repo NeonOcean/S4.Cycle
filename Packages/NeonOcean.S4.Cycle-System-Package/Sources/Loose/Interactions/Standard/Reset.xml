@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Standard_Reset" s="18045684625828400168" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Standard" c="ResetInteraction">
+	<T n="display_name">2327634298</T>
+	<T n="category">5431105310299271089<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Cycle--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<T n="command">neonocean.s4.cycle.standard.reset</T>
+			</U>
+		</V>
+	</L>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>

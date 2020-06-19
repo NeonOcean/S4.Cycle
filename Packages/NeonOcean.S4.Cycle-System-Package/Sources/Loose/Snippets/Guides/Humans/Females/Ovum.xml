@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Ovum" s="13072960729156598747" i="snippet" m="snippets" c="NeonoceanS4CycleHumanOvumGuide">
+	<U n="value">
+		<U n="NormalLifetime">
+			<T n="mean">1080</T>
+			<T n="standardDeviation">120</T>
+		</U>
+		<U n="ImplantationTime">
+			<T n="mean">11520</T>
+			<T n="standardDeviation">864</T>
+		</U>
+		<T n="ViabilityChance">0.8</T>
+	</U>
+</I>

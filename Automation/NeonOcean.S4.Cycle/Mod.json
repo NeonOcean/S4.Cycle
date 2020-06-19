@@ -1,0 +1,33 @@
+{
+	"Namespace": "NeonOcean.S4.Cycle",
+	"Name": "Cycle",
+	"Information": "NeonOcean.S4.Cycle/NeonOcean.S4.Cycle-NeonOcean-Mod.json",
+	"Packages": [
+		{
+			"FileName": "NeonOcean.S4.Cycle-System-Package.package",
+			"MergeRoot": "NeonOcean.S4.Cycle"
+		},
+		{
+			"FileName": "NeonOcean.S4.Cycle-Debug-Package.package",
+			"MergeRoot": "NeonOcean.S4.Cycle"
+		},
+		{
+			"FileName": "NeonOcean.S4.Cycle-Gameplay-Package.package",
+			"MergeRoot": "NeonOcean.S4.Cycle"
+		}
+	],
+	"Publishing": {
+		"InstallerFileName": "NeonOcean.S4.Cycle-Installer-v{0}.exe",
+		"FilesFileName": "NeonOcean.S4.Cycle-Files-v{0}.zip",
+		"SourcesFileName": "NeonOcean.S4.Cycle-Sources-v{0}.zip"
+	},
+	"Python": {
+		"ArchiveFileName": "NeonOcean.S4.Cycle.archive",
+		"SourceRoot": "",
+		"SourceTarget": "NeonOcean",
+		"SourceExcluded": [],
+		"MergeRoot": "NeonOcean.S4.Cycle"
+	},
+	"Uninstall": "NeonOcean.S4.Cycle/Uninstall.exe",
+	"UninstallFiles": "NeonOcean.S4.Cycle/Files.txt"
+}

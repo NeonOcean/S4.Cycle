@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Dot_Delete" s="9542310436719670841" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Dot" c="DeleteInteraction">
+	<T n="display_name">3502316159</T>
+	<T n="category">5578830624020538538<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Phone_Dot_App--></T>
+	<T n="pie_menu_priority">2</T>
+	<V n="_saveable" t="disabled" />
+	<L n="test_globals">
+		<V t="sim_info">
+			<U n="sim_info">
+				<V n="ages" t="specified">
+					<L n="specified">
+						<E>TEEN</E>
+						<E>YOUNGADULT</E>
+						<E>ADULT</E>
+					</L>
+				</V>
+				<E n="who">Actor</E>
+			</U>
+		</V>
+	</L>
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<L n="arguments">
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">Actor</E>
+						</U>
+					</V>
+				</L>
+				<T n="command">neonocean.s4.cycle.dot.disable</T>
+			</U>
+		</V>
+	</L>
+	<V n="RequiredDotAppState" t="enabled">
+		<E t="enabled">Enabled</E>
+	</V>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+				<T n="InteractionListAttribute">_phone_affordances</T>
+			</U>
+		</V>
+	</L>
+</I>

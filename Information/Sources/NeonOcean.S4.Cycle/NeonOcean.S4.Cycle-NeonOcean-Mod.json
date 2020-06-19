@@ -1,0 +1,31 @@
+{
+	"Namespace": "NeonOcean.S4.Cycle",
+	"Name": "Cycle",
+	"Author": "NeonOcean",
+	"Version": "1.0.0",
+	"Rating": "Normal",
+	"LoadController": "NeonOcean.S4.Main",
+	"Distribution": {
+		"UpdatesController": "NeonOcean",
+		"UpdatesFileURL": "http://dist.mods.neonoceancreations.com/mods/latest.json",
+		"DownloadURL": "https://www.neonoceancreations.com/mods/s4/cycle",
+		"PreviewDownloadURL": "https://www.patreon.com/NeonOcean/posts?tag=Cycle%20Preview"
+	},
+	"ScriptPaths": [
+		{
+			"Root": "Current",
+			"Path": "NeonOcean.S4.Cycle.archive"
+		}
+	],
+	"RequiredMods": [
+		"NeonOcean.S4.Main"
+	],
+	"LoadAfter": [
+		"NeonOcean.S4.Main"
+	],
+	"Compatibility": {
+		"NeonOcean.S4.Main": {
+			"LowestVersion":  "2.0.0"
+		}
+	}
+}
