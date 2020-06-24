@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Debug_Make_Pregnant" s="6943662162204257089" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Debug" c="MakePregnantInteraction">
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<L n="arguments">
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">TargetSim</E>
+						</U>
+					</V>
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">PickedSim</E>
+						</U>
+					</V>
+				</L>
+				<T n="command">neonocean.s4.cycle.debug.make_pregnant</T>
+			</U>
+		</V>
+	</L>
+</I>

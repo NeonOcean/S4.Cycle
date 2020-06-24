@@ -22,6 +22,18 @@
 			<T n="value">2073903961</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Debug.End_Pregnancy.Display_Name</T>
+			<T n="value">1985880094</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Debug.Make_Pregnant_Picker.Display_Name</T>
+			<T n="value">1977150230</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Debug.Set_Cycle_Progress_Dialog.Display_Name</T>
+			<T n="value">3200036637</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Cycle.Interactions.Debug.Show_Reproductive_Info.Display_Name</T>
 			<T n="value">1179148787</T>
 		</U>
@@ -40,10 +52,6 @@
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Title</T>
 			<T n="value">1906675665</T>
-		</U>
-		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Debug.Set_Cycle_Progress_Dialog.Display_Name</T>
-			<T n="value">3200036637</T>
 		</U>
 	</L>
 </I>

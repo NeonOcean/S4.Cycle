@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Pregnancy_Test_Take_Pregnancy_Test" s="3606505865952435223" i="interaction" m="NeonOcean.S4.Cycle.Interactions.PregnancyTest" c="TakePregnancyTestInteraction">
+	<T n="display_name">3192685275</T>
+	<V n="display_name_overrides" t="none" />
+	<U n="display_name_text_tokens">
+		<L n="tokens">
+			<V t="participant_type">
+				<U n="participant_type">
+					<V n="objects" t="from_participant">
+						<U n="from_participant">
+							<E n="participant">Actor</E>
+						</U>
+					</V>
+				</U>
+			</V>
+			<V t="participant_type">
+				<U n="participant_type">
+					<V n="objects" t="from_participant">
+						<U n="from_participant">
+							<E n="participant">Object</E>
+						</U>
+					</V>
+				</U>
+			</V>
+		</L>
+	</U>
+	<T n="allow_autonomous">False</T>
+	<V n="content_score" t="disabled" />
+	<V n="_icon" t="participant">
+		<U n="participant">
+			<L n="participant_type">
+				<E>Object</E>
+			</L>
+		</U>
+	</V>
+	<L n="interaction_category_tags">
+		<E>Interaction_UseToilet</E>
+		<E>Interaction_Super</E>
+		<E>Interaction_All</E>
+		<E>Interaction_WaitstaffIdle</E>
+		<E>Interaction_TalkLikeAPirateDay</E>
+	</L>
+	<T n="pie_menu_priority">0</T>
+	<V n="_saveable" t="enabled" />
+	<L n="_constraints">
+		<U>
+			<L n="constraints">
+				<U>
+					<V n="value" t="posture">
+						<U n="posture">
+							<E n="body_target_tuning">INTERACTION_TARGET</E>
+							<L n="posture_manifest_tuning">
+								<U>
+									<V n="posture_type" t="enabled">
+										<T n="enabled">15539<!--Posture: posture_ToiletSit--></T>
+									</V>
+								</U>
+							</L>
+						</U>
+					</V>
+				</U>
+			</L>
+		</U>
+	</L>
+	<V n="basic_content" t="flexible_length">
+		<U n="flexible_length">
+			<L n="conditional_actions">
+				<V t="literal">
+					<U n="literal">
+						<L n="conditions">
+							<V t="stat_based">
+								<U n="stat_based">
+									<T n="absolute">True</T>
+									<T n="stat">16652<!--Commodity: motive_Bladder--></T>
+									<U n="threshold">
+										<E n="comparison">GREATER_OR_EQUAL</E>
+										<T n="value">100</T>
+									</U>
+								</U>
+							</V>
+						</L>
+						<E n="interaction_action">EXIT_NATURALLY</E>
+					</U>
+				</V>
+				<V t="reference">
+					<T n="reference">153685<!--ExitCondition: exitCondition_Toilet_NoBladder--></T>
+				</V>
+				<V t="list_reference">
+					<T n="list_reference">39200<!--ExitConditionList: ExitConditionList_StateBrokenObject--></T>
+				</V>
+			</L>
+			<V n="content" t="staging_content">
+				<U n="staging_content">
+					<U n="content_set">
+						<L n="affordance_links">
+							<T>40413<!--MixerInteraction: Toilet_Use_Action--></T>
+						</L>
+					</U>
+				</U>
+			</V>
+			<V n="periodic_stat_change" t="enabled">
+				<U n="enabled">
+					<U n="operation_actions">
+						<L n="actions">
+							<T>29646<!--LootActions: loot_Buff_Plumbing_UseDirty--></T>
+							<T>104297<!--LootActions: loot_Commodity_Fireleaf_ElixirOfBurning--></T>
+						</L>
+					</U>
+					<L n="operations">
+						<V t="statistic_change">
+							<U n="statistic_change">
+								<T n="amount">10</T>
+								<T n="exclusive_to_owning_si">False</T>
+								<T n="stat">16652<!--Commodity: motive_Bladder--></T>
+							</U>
+						</V>
+						<V t="statistic_change">
+							<U n="statistic_change">
+								<T n="amount">10</T>
+								<T n="exclusive_to_owning_si">True</T>
+								<T n="stat">16652<!--Commodity: motive_Bladder--></T>
+							</U>
+						</V>
+						<V t="statistic_change">
+							<U n="statistic_change">
+								<T n="advertise">False</T>
+								<T n="amount">-1</T>
+								<T n="stat">16575<!--Commodity: commodity_dirtiness--></T>
+								<L n="subject">
+									<E>Object</E>
+								</L>
+							</U>
+						</V>
+						<V t="statistic_change">
+							<U n="statistic_change">
+								<T n="advertise">False</T>
+								<T n="amount">-5</T>
+								<T n="stat">16575<!--Commodity: commodity_dirtiness--></T>
+								<L n="subject">
+									<E>Object</E>
+								</L>
+								<L n="tests">
+									<L>
+										<V t="state">
+											<U n="state">
+												<T n="value">15131<!--ObjectStateValue: DirtyState_Dirty--></T>
+											</U>
+										</V>
+									</L>
+								</L>
+							</U>
+						</V>
+						<V t="statistic_change">
+							<U n="statistic_change">
+								<T n="amount">-0.15</T>
+								<T n="stat">235559<!--Commodity: commodity_EcoUpgrade_Fuel_Siphoner--></T>
+								<L n="subject">
+									<E>Object</E>
+								</L>
+							</U>
+						</V>
+						<V t="statistic_change">
+							<U n="statistic_change">
+								<T n="amount">-20</T>
+								<T n="stat">16616<!--Commodity: commodity_Motive_HygieneHands--></T>
+							</U>
+						</V>
+					</L>
+				</U>
+			</V>
+			<T n="start_autonomous_inertial">False</T>
+			<T n="start_user_directed_inertial">True</T>
+		</U>
+	</V>
+	
+	<L n="basic_extras">
+		<V t="state_change">
+			<U n="state_change">
+				<V n="new_value" t="single_value">
+					<U n="single_value">
+						<T n="new_value">15187<!--ObjectStateValue: Flushed_Unflushed--></T>
+					</U>
+				</V>
+				<V n="timing" t="at_end">
+					<U n="at_end">
+						<E n="criticality">OnCancel</E>
+					</U>
+				</V>
+			</U>
+		</V>
+		<V t="loot">
+			<U n="loot">
+				<L n="loot_list">
+					<T>203652<!--LootActions: loot_InfectedPlantAttacks_PostUse--></T>
+				</L>
+				<V n="timing" t="at_end" />
+			</U>
+		</V>
+		<V t="buff">
+			<U n="buff">
+				<U n="buff_type">
+					<T n="buff_type">100122<!--Buff: buff_Object_Toilet_NoTablet--></T>
+				</U>
+				<L n="tests">
+					<L>
+						<V t="trait">
+							<U n="trait">
+								<L n="whitelist_traits">
+									<T>16858<!--Trait: trait_Neat--></T>
+								</L>
+							</U>
+						</V>
+					</L>
+				</L>
+			</U>
+		</V>
+		<V t="loot">
+			<U n="loot">
+				<L n="loot_list">
+					<T>203651<!--LootActions: loot_InfectedPlantAttacks_PreUse--></T>
+				</L>
+				<V n="timing" t="at_beginning" />
+			</U>
+		</V>
+		<V t="vfx">
+			<U n="vfx">
+				<U n="success_chance">
+					<T n="base_chance">50</T>
+					<L n="multipliers">
+						<U>
+							<T n="multiplier">0</T>
+							<L n="tests">
+								<L>
+									<V t="state">
+										<U n="state">
+											<V n="fallback_behavior" t="always_fail" />
+											<E n="operator">NOTEQUAL</E>
+											<T n="value">235474<!--CommodityBasedObjectStateValue: upgrade_Completed_EcoUpgrades_CompostingContainer--></T>
+										</U>
+									</V>
+								</L>
+							</L>
+						</U>
+						<U>
+							<T n="multiplier">0</T>
+							<L n="tests">
+								<L>
+									<V t="object_criteria">
+										<U n="object_criteria">
+											<V n="identity_test" t="tags">
+												<U n="tags">
+													<L n="tag_set">
+														<E>Func_InsectFarm</E>
+													</L>
+													<E n="test_type">CONTAINS_ALL_TAGS_IN_SET</E>
+												</U>
+											</V>
+											<T n="on_active_lot">True</T>
+											<V n="subject_specific_tests" t="all_objects">
+												<U n="all_objects">
+													<U n="quantity">
+														<E n="comparison">GREATER_OR_EQUAL</E>
+														<T n="value">1</T>
+													</U>
+												</U>
+											</V>
+										</U>
+									</V>
+								</L>
+							</L>
+						</U>
+					</L>
+				</U>
+				<V n="timing" t="at_beginning" />
+				<U n="vfx">
+					<T n="effect_name">ep09_plumbing_toilet_fire</T>
+					<V n="joint_name" t="Current_Position" />
+					<T n="play_immediate">True</T>
+				</U>
+				<V n="vfx_lifetime" t="interaction" />
+			</U>
+		</V>
+		<V t="buff">
+			<U n="buff">
+				<U n="buff_type">
+					<T n="buff_type">197103<!--Buff: buff_Paparazzi_PhotoOpportunity--></T>
+				</U>
+				<L n="subject">
+					<E>Actor</E>
+				</L>
+			</U>
+		</V>
+	</L>
+	<T n="force_exit_on_inertia">False</T>
+	<L n="mood_list">
+		<T>14634<!--Mood: Mood_Confident--></T>
+		<T>14632<!--Mood: Mood_Angry--></T>
+	</L>
+	<V n="outcome" t="single">
+		<U n="single">
+			<U n="actions">
+				<L n="basic_extras">
+					<V t="notification">
+						<U n="notification">
+							<V n="dialog" t="tested">
+								<U n="tested">
+									<L n="records">
+										<U>
+											<V n="item" t="literal">
+												<U n="literal">
+													<V n="icon" t="enabled">
+														<V n="enabled" t="participant" />
+													</V>
+													<V n="text" t="variation">
+														<U n="variation">
+															<L n="variations">
+																<T>0xC64BE50C<!--String: "{0.SimFirstName} is not pregnant. Maybe next time!"--></T>
+															</L>
+														</U>
+													</V>
+												</U>
+											</V>
+											<L n="tests">
+												<L>
+													<V t="state">
+														<U n="state">
+															<T n="value">15299<!--CommodityBasedObjectStateValue: Pregnant_NotPregnant--></T>
+															<E n="who">Actor</E>
+														</U>
+													</V>
+												</L>
+											</L>
+										</U>
+									</L>
+								</U>
+							</V>
+						</U>
+					</V>
+					<V t="destroy_specified_objects_from_target_inventory">
+						<U n="destroy_specified_objects_from_target_inventory">
+							<V n="count" t="number" />
+							<E n="inventory_owner">Actor</E>
+							<L n="object_tests">
+								<L>
+									<V t="object_criteria">
+										<U n="object_criteria">
+											<V n="desired_state_threshold" t="enabled">
+												<U n="enabled">
+													<E n="comparison">EQUAL</E>
+													<T n="value">15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
+												</U>
+											</V>
+											<V n="subject_specific_tests" t="single_object" />
+										</U>
+									</V>
+								</L>
+							</L>
+						</U>
+					</V>
+				</L>
+				<T n="force_outcome_on_exit">True</T>
+				<L n="loot_list">
+					<T>10396<!--LootActions: loot_Commodity_Motive_Hygiene_UseToilet--></T>
+					<T>241070<!--RandomWeightedLoot: randomWeightedLoot_ToiletFire--></T>
+					<T>11087<!--LootActions: TakePregnancyTest_Loot--></T>
+
+				</L>
+			</U>
+		</U>
+	</V>
+	<U n="post_run_autonomy_commodities">
+		<L n="requests">
+			<U>
+				<T n="same_target_only">True</T>
+				<L n="static_commodities">
+					<T>16428<!--StaticCommodity: StaticCommodity_Flush--></T>
+				</L>
+			</U>
+		</L>
+	</U>
+	<U n="posture_preferences">
+		<T n="apply_penalties">False</T>
+	</U>
+	<V n="posture_target_preference" t="enabled">
+		<L n="enabled">
+			<U>
+				<E n="key">SEATING_TOILET</E>
+				<T n="value">0</T>
+			</U>
+		</L>
+	</V>
+	<L n="pre_add_autonomy_commodities">
+		<U>
+			<T n="same_target_only">True</T>
+			<L n="static_commodities">
+				<T>98165<!--StaticCommodity: StaticCommodity_PreFlush--></T>
+			</L>
+		</U>
+	</L>
+	<V n="privacy" t="enabled">
+		<U n="enabled">
+			<V n="privacy_snippet" t="reference">
+				<T n="reference">39309<!--Privacy: privacy_snippet_medium_distance--></T>
+			</V>
+		</U>
+	</V>
+	<V n="route_start_balloon" t="enabled">
+		<U n="enabled">
+			<U n="balloon">
+				<L n="balloon_choices">
+					<U>
+						<V n="item" t="balloon_icon">
+							<U n="balloon_icon">
+								<V n="icon" t="participant">
+									<U n="participant">
+										<L n="participant_type">
+											<E>Object</E>
+										</L>
+									</U>
+								</V>
+							</U>
+						</V>
+					</U>
+				</L>
+				<L n="balloon_target">
+					<E>Actor</E>
+				</L>
+			</U>
+		</U>
+	</V>
+	<E n="scoring_priority">NORMAL</E>
+	<T n="subaction_selection_weight">1</T>
+	<V n="super_affordance_compatibility" t="literal">
+		<U n="literal">
+			<V n="default_inclusion" t="include_all">
+				<U n="include_all">
+					<L n="exclude_affordances">
+						<T>13481<!--MixerInteraction: idle_Bladder--></T>
+					</L>
+					<L n="exclude_lists">
+						<T>30816<!--AffordanceList: affordanceList_FoodConsume--></T>
+						<T>16339<!--AffordanceList: Drink_Drink--></T>
+						<T>36156<!--AffordanceList: AffordanceList_Socialize--></T>
+					</L>
+				</U>
+			</V>
+		</U>
+	</V>
+	<E n="target_type">OBJECT</E>
+	<L n="test_globals">
+		<V t="inventory">
+			<U n="inventory">
+				<V n="contents_check" t="has_object_with_states">
+					<U n="has_object_with_states">
+						<L n="state_set">
+							<T>15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
+						</L>
+					</U>
+				</V>
+				<V n="tooltip" t="enabled">
+					<T n="enabled">0x1E3FC98A</T>
+				</V>
+			</U>
+		</V>
+		<V t="sim_info">
+			<U n="sim_info">
+				<V n="ages" t="specified">
+					<L n="specified">
+						<E>CHILD</E>
+						<E>TEEN</E>
+						<E>YOUNGADULT</E>
+						<E>ADULT</E>
+						<E>ELDER</E>
+					</L>
+				</V>
+				<V n="species" t="specified">
+					<U n="specified">
+						<L n="species">
+							<E />
+						</L>
+					</U>
+				</V>
+				<E n="who">Actor</E>
+			</U>
+		</V>
+		<V t="state">
+			<U n="state">
+				<V n="fallback_behavior" t="always_pass" />
+				<T n="value">203639<!--ObjectStateValue: InfectedPlantAttacks_NotClogged--></T>
+			</U>
+		</V>
+		<V t="trait">
+			<U n="trait">
+				<L n="blacklist_traits">
+					<T>218444<!--Trait: trait_Humanoid_Robots_MainTrait--></T>
+				</L>
+				<V n="tooltip" t="enabled">
+					<T n="enabled">0x69A3F133<!--String: "Not for Robots."--></T>
+				</V>
+			</U>
+		</V>
+		<V t="state">
+			<U n="state">
+				<V n="tooltip" t="enabled">
+					<T n="enabled">0x1DB3D754<!--String: "Cannot perform this interaction on a broken object. Repair it first."--></T>
+				</V>
+				<T n="value">15081<!--ObjectStateValue: BrokenState_Unbroken--></T>
+			</U>
+		</V>
+	</L>
+	<L n="tests">
+		<L>
+			<V t="trait">
+				<U n="trait">
+					<L n="whitelist_traits">
+						<T>136875<!--Trait: trait_GenderOptions_Pregnancy_CanBeImpregnated--></T>
+					</L>
+				</U>
+			</V>
+		</L>
+		<L>
+			<V t="trait">
+				<U n="trait">
+					<L n="whitelist_traits">
+						<T>136875<!--Trait: trait_GenderOptions_Pregnancy_CanBeImpregnated--></T>
+					</L>
+				</U>
+			</V>
+			<V t="statistic">
+				<U n="statistic">
+					<T n="stat">16652<!--Commodity: motive_Bladder--></T>
+					<V n="threshold" t="value_threshold">
+						<U n="value_threshold">
+							<E n="comparison">LESS</E>
+							<T n="value">0</T>
+						</U>
+					</V>
+					<E n="who">Actor</E>
+				</U>
+			</V>
+		</L>
+	</L>
+	<T n="time_overhead">10</T>
+	<E n="visual_type_override">SIMPLE</E>
+	
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Toilets</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Usage" s="9964642281033770516" i="object_state" m="objects.components.state" c="ObjectState">
+	<L n="_values">
+		<T>15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
+	</L>
+</I>

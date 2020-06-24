@@ -145,8 +145,8 @@ class SpermTracker(ReproductionShared.TrackerBase):
 			self._UnsetOvumTrackerCallbacks(tracker)
 
 	def _UnsetOvumTrackerCallbacks  (self, tracker) -> None:
-		tracker.OvumFertilizationTestingEvent += self._OvumFertilizationTestingCallback
-		tracker.OvumFertilizingEvent += self._OvumFertilizingCallback
+		tracker.OvumFertilizationTestingEvent -= self._OvumFertilizationTestingCallback
+		tracker.OvumFertilizingEvent -= self._OvumFertilizingCallback
 
 	def _SetSpermCallbacks (self, sperm: Sperm.Sperm) -> None:
 		self._UnsetSpermCallbacks(sperm)
@@ -156,14 +156,16 @@ class SpermTracker(ReproductionShared.TrackerBase):
 	def _UnsetSpermCallbacks (self, sperm: Sperm.Sperm) -> None:
 		sperm.DecayedCallback = None
 
-	def _OnAdding(self) -> None:
+	def _OnAdded(self) -> None:
 		self.TrackingSystem.TrackerAddedEvent += self._TrackerAddedCallback
+		self.TrackingSystem.TrackerRemovedEvent += self._TrackerRemovedCallback
 
 		for tracker in self.TrackingSystem.Trackers:  # type: ReproductionShared.TrackerBase
 			self._SetTrackerCallbacks(tracker)
 
 	def _OnRemoving(self) -> None:
-		self.TrackingSystem.TrackerRemovedEvent += self._TrackerRemovedCallback
+		self.TrackingSystem.TrackerAddedEvent -= self._TrackerAddedCallback
+		self.TrackingSystem.TrackerRemovedEvent -= self._TrackerRemovedCallback
 
 		for tracker in self.TrackingSystem.Trackers:  # type: ReproductionShared.TrackerBase
 			self._UnsetTrackerCallbacks(tracker)

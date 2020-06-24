@@ -4,7 +4,7 @@ import typing
 import game_services
 import services
 import time_service
-from NeonOcean.S4.Cycle import Guides as CycleGuides, ReproductionShared, This
+from NeonOcean.S4.Cycle import Guides as CycleGuides, ReproductionShared, This, Saving
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
 from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
 from NeonOcean.S4.Cycle.Tools import SimPointer
@@ -464,6 +464,8 @@ class DotInformation(Savable.SavableExtension):
 		self._targetSimPointer = SimPointer.SimPointer()
 		self._targetSimPointer.ChangePointer(targetSimInfoOrID)
 
+		self._simulating = False  # type: bool
+
 		self.Enabled = False
 		self.TrackingMode = TrackingMode.Cycle
 
@@ -564,6 +566,14 @@ class DotInformation(Savable.SavableExtension):
 		return max(timeService.sim_now.absolute_ticks() - self.LastSimulatedTick, 0)
 
 	@property
+	def Simulating (self) -> bool:
+		"""
+		Whether or not this reproductive system is currently in the process of simulating time.
+		"""
+
+		return self._simulating
+
+	@property
 	def Outdated (self) -> bool:
 		"""
 		Whether or not this dot information has been updated all the way to the latest tick. If the game's time service is not available this will return False.
@@ -577,12 +587,81 @@ class DotInformation(Savable.SavableExtension):
 		return self.LastSimulatedTick < timeService.sim_now.absolute_ticks()
 
 	@property
+	def ShouldUpdate (self) -> bool:
+		"""
+		Whether or not this reproductive system should be updated. This value will be True if this object is outdated and is not already simulating.
+		"""
+
+		return self.Outdated and not self.Simulating
+
+	@property
 	def ReproductiveTimeMultiplier (self) -> typing.Union[float, int]:
 		"""
 		Get the value that is divided with the game time to get the reproductive time and multiplied with the reproductive time to get the game time.
 		"""
 
 		return FemalesShared.GetCycleTrackerReproductiveTimeMultiplier()
+
+	def Load (self, simsSection: SectionBranched.SectionBranched) -> bool:
+		"""
+		Load the reproductive system's data from this saving section.
+		"""
+
+		if not isinstance(simsSection, SectionBranched.SectionBranched):
+			raise Exceptions.IncorrectTypeException(simsSection, "simsSection", (SectionBranched.SectionBranched,))
+
+		operationInformation = self.SavableOperationInformation  # type: str
+		operationSuccessful = True  # type: bool
+
+		try:
+			dotInformationData = simsSection.GetValue(str(self.TargetSimID), DotSavingKey, default = dict())
+
+			if not isinstance(dotInformationData, dict):
+				Debug.Log("Incorrect type in dot information data with the section key.\n" + operationInformation + "\n" + Exceptions.GetIncorrectTypeExceptionText(dotInformationData, "DotInformationData", (dict,)), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				dotInformationData = dict()
+				operationSuccessful = False
+
+			if simsSection.SavingObject.DataHostVersion is not None:
+				lastVersion = Version.Version(simsSection.SavingObject.DataHostVersion)  # type: typing.Optional[Version.Version]
+			else:
+				lastVersion = None  # type: typing.Optional[Version.Version]
+
+			loadSuccessful = self.LoadFromDictionary(dotInformationData, lastVersion = lastVersion)
+		except:
+			Debug.Log("Load operation in a dot information object aborted.\n" + operationInformation, self.HostNamespace, Debug.LogLevels.Exception, group = self.HostNamespace, owner = __name__)
+			self.Reset()
+			return False
+
+		if not loadSuccessful:
+			return False
+
+		return operationSuccessful
+
+	def Save (self, simsSection: SectionBranched.SectionBranched) -> bool:
+		"""
+		Save the reproductive system's data to this saving section.
+		"""
+
+		if not isinstance(simsSection, SectionBranched.SectionBranched):
+			raise Exceptions.IncorrectTypeException(simsSection, "simsSection", (SectionBranched.SectionBranched,))
+
+		if self.Outdated:
+			self.Update()
+
+		operationInformation = self.SavableOperationInformation  # type: str
+		operationSuccessful = True  # type: bool
+
+		try:
+			saveSuccessful, dotInformationData = self.SaveToDictionary()  # type: bool, dict
+			simsSection.Set(str(self.TargetSimID), DotSavingKey, dotInformationData)
+		except:
+			Debug.Log("Save operation in a dot information object aborted.\n" + operationInformation, self.HostNamespace, Debug.LogLevels.Exception, group = self.HostNamespace, owner = __name__)
+			return False
+
+		if not saveSuccessful:
+			return False
+
+		return operationSuccessful
 
 	def Update (self) -> None:
 		"""
@@ -613,7 +692,9 @@ class DotInformation(Savable.SavableExtension):
 		if not isinstance(ticks, int):
 			raise Exceptions.IncorrectTypeException(ticks, "ticks", (int,))
 
+		self._simulating = True
 		self._SimulateInternal(ticks)
+		self._simulating = False
 
 		timeService = services.time_service()  # type: time_service.TimeService
 		currentTick = timeService.sim_now.absolute_ticks()  # type: int
@@ -722,38 +803,15 @@ def ClearDotInformation (targetSimInfo: sim_info.SimInfo) -> None:
 
 	_allDotInformation.pop(targetSimInfo.id, None)
 
-def ClearAllDotInformation () -> None:
-	"""
-	Clear out every dot information object for every sim.
-	"""
-
-	global _allDotInformation
-	_allDotInformation = dict()
-
 def LoadAllDotInformation (simsSection: typing.Optional[SectionBranched.SectionBranched] = None) -> bool:
 	operationSuccessful = True  # type: bool
 
+	if simsSection is None:
+		simsSection = Saving.GetSimsSection()  # type: SectionBranched.SectionBranched
+
 	try:
-		if simsSection.SavingObject.DataHostVersion is not None:
-			try:
-				lastVersion = Version.Version(simsSection.SavingObject.DataHostVersion)  # type: typing.Optional[Version.Version]
-			except:
-				Debug.Log("Failed to parse the data host version value '%s' as a version number" % simsSection.SavingObject.DataHostVersion, This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__) #TODO fix
-				lastVersion = None
-		else:
-			lastVersion = None  # type: typing.Optional[Version.Version]
-
 		for dotInformation in _allDotInformation.values():  # type: DotInformation
-			targetSimID = dotInformation.TargetSimID  # type: int
-
-			savedDotInformationData = simsSection.GetValue(str(targetSimID), DotSavingKey)  # type: dict
-
-			if not isinstance(savedDotInformationData, dict):
-				Debug.Log("The value for the sim saving section branch '%s' is not a dictionary.\nSaving Key: %s" % (str(targetSimID), DotSavingKey), This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-				operationSuccessful = False
-				continue
-
-			dotInformation.LoadFromDictionary(savedDotInformationData, lastVersion = lastVersion)
+			dotInformation.Load(simsSection)
 	except:
 		Debug.Log("At least partially failed to load all dot information.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 		operationSuccessful = False
@@ -763,21 +821,12 @@ def LoadAllDotInformation (simsSection: typing.Optional[SectionBranched.SectionB
 def SaveAllDotInformation (simsSection: typing.Optional[SectionBranched.SectionBranched] = None) -> bool:
 	operationSuccessful = True  # type: bool
 
+	if simsSection is None:
+		simsSection = Saving.GetSimsSection()  # type: SectionBranched.SectionBranched
+
 	try:
-		for targetSimID, targetDotInformation in _allDotInformation.items():  # type: int, DotInformation
-			targetSimIDString = str(targetSimID)  # type: str
-
-			try:
-				saveSuccessful, targetDotInformationData = targetDotInformation.SaveToDictionary()  # type: dict
-
-				if not saveSuccessful:
-					operationSuccessful = False
-
-				simsSection.Set(str(targetSimID), DotSavingKey, targetDotInformationData)
-			except:
-				Debug.Log("Failed to save dot information to the sim saving section branch '%s'.\nSaving Key: %s" % (targetSimIDString, DotSavingKey), This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-				operationSuccessful = False
-				continue
+		for targetDotInformation in _allDotInformation.values():  # type: DotInformation
+			targetDotInformation.Save(simsSection)
 	except:
 		Debug.Log("At least partially failed to save all dot information.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 		operationSuccessful = False
@@ -789,7 +838,8 @@ def ResetAllDotInformation (simsSection: typing.Optional[SectionBranched.Section
 	operationSuccessful = True  # type: bool
 
 	try:
-		ClearAllDotInformation()
+		for targetDotInformation in _allDotInformation.values():  # type: DotInformation
+			targetDotInformation.Reset()
 	except:
 		operationSuccessful = False
 

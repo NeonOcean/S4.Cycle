@@ -14,6 +14,9 @@ AddSpermInteractions = list()  # type: typing.List[typing.Type[AddSpermInteracti
 ClearSpermInteractions = list()  # type: typing.List[typing.Type[ClearSpermInteraction]]
 AddOvumInteractions = list()  # type: typing.List[typing.Type[AddOvumInteraction]]
 ClearOvaInteractions = list()  # type: typing.List[typing.Type[ClearOvaInteraction]]
+MakePregnantPickerInteractions = list()  # type: typing.List[typing.Type[MakePregnantPickerInteraction]]
+MakePregnantInteractions = list()  # type: typing.List[typing.Type[MakePregnantInteraction]]
+EndPregnancyInteractions = list()  # type: typing.List[typing.Type[EndPregnancyInteraction]]
 
 class ShowReproductiveInfoInteraction(SupportDebug.DebugExtension, Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, immediate_interaction.ImmediateSuperInteraction):
 	DependentMod = This.Mod
@@ -83,6 +86,43 @@ class ClearOvaInteraction(SupportDebug.DebugExtension, Dependent.DependentExtens
 			super().__init_subclass__(*args, **kwargs)
 
 			ClearOvaInteractions.append(cls)
+		except Exception as e:
+			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			raise e
+
+# noinspection PyAbstractClass
+class MakePregnantPickerInteraction(SupportDebug.DebugExtension, Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, picker_interaction.SimPickerInteraction):
+	DependentMod = This.Mod
+
+	def __init_subclass__ (cls, *args, **kwargs):
+		try:
+			super().__init_subclass__(*args, **kwargs)
+
+			MakePregnantPickerInteractions.append(cls)
+		except Exception as e:
+			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			raise e
+
+class MakePregnantInteraction(SupportDebug.DebugExtension, Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, immediate_interaction.ImmediateSuperInteraction):
+	DependentMod = This.Mod
+
+	def __init_subclass__ (cls, *args, **kwargs):
+		try:
+			super().__init_subclass__(*args, **kwargs)
+
+			MakePregnantInteractions.append(cls)
+		except Exception as e:
+			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			raise e
+
+class EndPregnancyInteraction(SupportDebug.DebugExtension, Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, immediate_interaction.ImmediateSuperInteraction):
+	DependentMod = This.Mod
+
+	def __init_subclass__ (cls, *args, **kwargs):
+		try:
+			super().__init_subclass__(*args, **kwargs)
+
+			EndPregnancyInteractions.append(cls)
 		except Exception as e:
 			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 			raise e

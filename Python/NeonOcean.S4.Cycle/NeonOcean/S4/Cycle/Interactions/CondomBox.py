@@ -6,7 +6,7 @@ import interactions
 import services
 from NeonOcean.S4.Cycle import Safety, This
 from NeonOcean.S4.Main import Debug, This
-from NeonOcean.S4.Main.Interactions.Support import Events
+from NeonOcean.S4.Main.Interactions.Support import Events, Dependent, Events, Registration
 from event_testing import results, test_base
 from interactions.base import immediate_interaction
 from sims import sim_info, sim
@@ -17,7 +17,7 @@ import snippets
 StartUsingInteractions = list()  # type: typing.List[typing.Type[StartUsingInteraction]]
 StopUsingInteractions = list()  # type: typing.List[typing.Type[StopUsingInteraction]]
 
-class _ChangeUseStateInteraction(Events.EventsExtension, immediate_interaction.ImmediateSuperInteraction):
+class _ChangeUseStateInteraction(Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, immediate_interaction.ImmediateSuperInteraction):
 	class MethodUseTest(test_base.BaseTest):
 		# noinspection SpellCheckingInspection
 		def __call__ (self, affordance: typing.Type[_ChangeUseStateInteraction], actors: typing.Tuple[sim_info.SimInfo, ...]):

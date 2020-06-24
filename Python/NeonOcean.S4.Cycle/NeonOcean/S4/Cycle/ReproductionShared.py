@@ -551,6 +551,8 @@ class ReproductiveSystemMetaClass(type):
 class ReproductiveSystem(Savable.SavableExtension, metaclass = ReproductiveSystemMetaClass):  # #TODO Ghost sims probably shouldn't have a reproductive system / test if they do.
 	HostNamespace = This.Mod.Namespace  # type: str
 
+	_trackersSavingKey = "Trackers"
+
 	def __init__ (self, simInfo: sim_info.SimInfo, sectionKey: str = "ReproductiveSystem", *args, **kwargs):
 		"""
 		:param simInfo: The info of the sim this reproductive system is tied to.
@@ -598,16 +600,6 @@ class ReproductiveSystem(Savable.SavableExtension, metaclass = ReproductiveSyste
 		self._SetGuideGroup()
 
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("TicksSimulated", "TicksSimulated", self.TicksSimulated, requiredSuccess = False))
-		self.RegisterSavableAttribute(Savable.ListedSavableAttributeHandler(
-			"Trackers",
-			"_trackers",
-			lambda typeIdentifier: ReproductionTrackers.GetTrackerType(typeIdentifier)(self),
-			lambda: list(),
-			requiredSuccess = False,
-			requiredEntrySuccess = False,
-			multiType = True,
-			typeFetcher = lambda attributeValue: attributeValue.TypeIdentifier,
-		))
 
 	@property
 	def SavableOperationInformation (self) -> str:
@@ -1191,17 +1183,123 @@ class ReproductiveSystem(Savable.SavableExtension, metaclass = ReproductiveSyste
 				Debug.Log("Failed to run Verify method for a reproduction tracker at '" + Types.GetFullName(tracker) + "'.\n" + self.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
 
-	def _OnLoading (self) -> None:
-		self._RemoveAllTrackers()
-
 	def _OnLoaded (self) -> None:
 		self._Setup()
 
-	def _OnResetting (self) -> None:
-		self._RemoveAllTrackers()
-
 	def _OnResetted (self) -> None:
 		self._Setup()
+
+	def _LoadFromDictionaryInternal (self, data: dict, lastVersion: typing.Optional[Version.Version]) -> bool:
+		superOperationSuccessful = super()._LoadFromDictionaryInternal(data, lastVersion)  # type: bool
+
+		self._RemoveAllTrackers()
+
+		operationSuccessful = True  # type: bool
+		operationInformation = self.SavableOperationInformation  # type: str
+		attributeName = "_trackers"  # type: str
+
+		trackersSavingKey = self._trackersSavingKey  # type: str
+		trackersDataSavingKey = "Data"  # type: str
+		trackersTypeSavingKey = "Type"  # type: str
+
+		try:
+			trackersListData = data[self._trackersSavingKey]  # type: typing.Optional[list]
+		except KeyError:
+			return True
+
+		if not isinstance(trackersListData, list):
+			raise Exceptions.IncorrectTypeException(trackersListData, "data[%s]" % self._trackersSavingKey, (list,))
+
+		for trackerDataIndex in range(len(trackersListData)):  # type: int
+			try:
+				trackerContainerData = trackersListData[trackerDataIndex]  # type: dict
+
+				if not isinstance(trackerContainerData, dict):
+					raise Exceptions.IncorrectTypeException(trackerContainerData, "data[%s][%s]" % (trackersSavingKey, trackerDataIndex), (dict,))
+
+				trackerData = trackerContainerData[trackersDataSavingKey]  # type: typing.Optional[dict]
+
+				if not isinstance(trackerData, dict):
+					raise Exceptions.IncorrectTypeException(trackerData, "data[%s][%s][%s]" % (trackersSavingKey, trackerDataIndex, trackersDataSavingKey), (dict,))
+
+				trackerTypeIdentifier = trackerContainerData[trackersTypeSavingKey]  # type: str
+
+				if not isinstance(trackerTypeIdentifier, str):
+					raise Exceptions.IncorrectTypeException(trackerTypeIdentifier, "data[%s][%s][%s]" % (trackersSavingKey, trackerDataIndex, trackersTypeSavingKey), (str,))
+
+				addingTracker = ReproductionTrackers.GetTrackerType(trackerTypeIdentifier)(self)  # type: TrackerBase
+
+				if not addingTracker.LoadFromDictionary(trackerData, lastVersion = lastVersion):
+					operationSuccessful = False
+
+				self._AddTracker(addingTracker)
+			except:
+				Debug.Log("Load operation in a savable object failed to load entry %s of the savable list attribute '%s'.\n%s" % (trackerDataIndex, attributeName, operationInformation), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				operationSuccessful = False
+
+		if not operationSuccessful:
+			return False
+
+		return superOperationSuccessful
+
+	def _SaveToDictionaryInternal(self) -> typing.Tuple[bool, dict]:
+		superOperationSuccessful, data = super()._SaveToDictionaryInternal()  # type: bool, dict
+
+		operationSuccessful = True  # type: bool
+		operationInformation = self.SavableOperationInformation  # type: str
+		attributeName = "_trackers"  # type: str
+
+		trackersSavingKey = self._trackersSavingKey  # type: str
+		trackersDataSavingKey = "Data"  # type: str
+		trackersTypeSavingKey = "Type"  # type: str
+
+
+		trackersList = getattr(self, attributeName)  # type: typing.Optional[list]
+
+		if not isinstance(trackersList, list):
+			raise Exceptions.IncorrectTypeException(trackersList, "savingObject." + attributeName, (list,))
+
+		trackersListData = list()  # type: typing.List[typing.Optional[dict]]
+
+		for trackerIndex in range(len(trackersList)):  # type: int
+			try:
+				tracker = trackersList[trackerIndex]  # type: TrackerBase
+
+				if not isinstance(tracker, TrackerBase):
+					raise Exceptions.IncorrectTypeException(tracker, "savingObject.%s[%s]" % (attributeName, trackerIndex), (TrackerBase,))
+
+				trackerContainerData = dict()  # type: dict
+				entryOperationSuccessful, trackerData = tracker.SaveToDictionary()  # type: bool, dict
+
+				if not entryOperationSuccessful:
+					operationSuccessful = False
+
+				trackerTypeIdentifier = tracker.TypeIdentifier  # type: str
+
+				if not isinstance(trackerTypeIdentifier, str):
+					raise Exceptions.IncorrectReturnTypeException(trackerTypeIdentifier, "typeFetcher", (str,))
+
+				trackerContainerData[trackersTypeSavingKey] = trackerTypeIdentifier
+				trackerContainerData[trackersDataSavingKey] = trackerData
+
+				trackersListData.append(trackerContainerData)
+			except:
+				Debug.Log("Save operation in a savable object failed to save entry %s of the savable list attribute '%s'.\n%s" % (trackerIndex, attributeName, operationInformation), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				operationSuccessful = False
+
+			data[trackersSavingKey] = trackersListData
+
+		if not operationSuccessful:
+			return False, data
+
+		return superOperationSuccessful, data
+
+	def _ResetInternal(self) -> bool:
+		superOperationSuccessful = super()._ResetInternal()  # type: bool
+
+		self._RemoveAllTrackers()
+
+		return superOperationSuccessful
 
 	def _InvokeTrackerAddedEvent (self, tracker: TrackerBase) -> None:
 		eventArguments = CycleEvents.TrackerAddedArguments(tracker)  # type: CycleEvents.TrackerAddedArguments
@@ -1216,7 +1314,7 @@ class ReproductiveSystem(Savable.SavableExtension, metaclass = ReproductiveSyste
 	def _InvokeTrackerRemovedEvent (self, tracker: TrackerBase) -> None:
 		eventArguments = CycleEvents.TrackerRemovedArguments(tracker)  # type: CycleEvents.TrackerRemovedArguments
 
-		for trackerRemovedCallback in self.TrackerAddedEvent:
+		for trackerRemovedCallback in self.TrackerRemovedEvent:
 			try:
 				trackerRemovedCallback(self, eventArguments)
 			except:

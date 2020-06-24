@@ -3,11 +3,12 @@ from __future__ import annotations
 import typing
 
 import services
-from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, Settings, This
+from NeonOcean.S4.Cycle import Events as CycleEvents, References, ReproductionShared, This
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
 from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Types
-from sims import sim_info
+from protocolbuffers import PersistenceBlobs_pb2
+from sims import sim_info, sim_info_types
 from sims4 import resources
 from statistics import commodity, commodity_tracker
 
@@ -20,6 +21,9 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		self.FetusGeneratingEvent = Events.EventHandler()
 
 		self.MonitoringPregnancy = False
+
+		self._nonPregnantBellyModifier = 0 # type: float
+		self._pregnancyVisualsActive = False  # type: bool
 
 	# noinspection PyMethodParameters
 	@Classes.ClassProperty
@@ -69,10 +73,10 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		Whether or not this sim is pregnant, pregnancy begins as soon as the egg cell implants.
 		"""
 
-		if self.TrackingSystem.SimInfo.is_pregnant:
-			return True
+		if not self.TrackingSystem.SimInfo.is_pregnant:
+			return False
 
-		return False
+		return True
 
 	@classmethod
 	def ShouldHave (cls, targetSimInfo: sim_info.SimInfo, targetSystem: ReproductionShared.ReproductiveSystem) -> bool:
@@ -80,7 +84,7 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		Get whether or not the target should have this tracker.
 		"""
 
-		return FemalesShared.ShouldHaveFemaleTrackers(targetSimInfo)
+		return True
 
 	def NotifyPregnancyStarted (self) -> None:
 		"""
@@ -104,6 +108,8 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 				Debug.Log("Failed to call pregnancy started callback '" + Types.GetFullName(pregnancyStartedCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = pregnancyStartedCallback)
 
+		self.SetPregnancyVisualsIfAppropriate()
+
 	def NotifyPregnancyEnded (self) -> None:
 		"""
 		Notify this reproductive system that a pregnancy has ended. If we are not monitoring the pregnancy, or we detect the sim is still
@@ -125,6 +131,8 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 			except:
 				Debug.Log("Failed to call pregnancy ended callback '" + Types.GetFullName(pregnancyEndedCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = pregnancyEndedCallback)
+
+		self.ResetPregnancyVisualsIfAppropriate()
 
 	def StartPregnancy (self, firstParent: typing.Optional[sim_info.SimInfo], secondParent: typing.Optional[sim_info.SimInfo], overrideParents: bool = False, addOffspring: bool = True) -> None:
 		"""
@@ -164,8 +172,6 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		gamePregnancyTracker = self.TrackingSystem.SimInfo.pregnancy_tracker
 
 		if not self.IsPregnant:
-			self.FixPregnancySpeed()
-
 			gamePregnancyTracker.start_pregnancy(firstParent, secondParent)
 			gamePregnancyTracker.offspring_count_override = 1
 		else:
@@ -201,23 +207,21 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		if not self.IsPregnant:
 			return 0
 
-		trackingSimInfo = self.TrackingSystem.SimInfo  # type: sim_info.SimInfo
+		gamePregnancyTracker = self.TrackingSystem.SimInfo.pregnancy_tracker
 
-		gamePregnancyTracker = trackingSimInfo.pregnancy_tracker
-
-		pregnancyCommodityType = gamePregnancyTracker.PREGNANCY_COMMODITY_MAP.get(trackingSimInfo.species)
-		pregnancyCommodityTracker = trackingSimInfo.get_tracker(pregnancyCommodityType)  # type: commodity_tracker.CommodityTracker
+		pregnancyCommodityType = gamePregnancyTracker.PREGNANCY_COMMODITY_MAP.get(self.TrackingSystem.SimInfo.species)  # type: typing.Type[commodity.Commodity]
+		pregnancyCommodityTracker = self.TrackingSystem.SimInfo.get_tracker(pregnancyCommodityType)  # type: commodity_tracker.CommodityTracker
 		pregnancyCommodity = pregnancyCommodityTracker.get_statistic(pregnancyCommodityType)  # type: commodity.Commodity
 
-		progress = pregnancyCommodity.get_value() / pregnancyCommodity.max_value  # type: float
+		pregnancyProgress = pregnancyCommodity.get_value() / pregnancyCommodity.max_value  # type: float
 
-		if progress < 0 or progress > 1:
-			Debug.Log("Calculated the pregnancy progress (%s) as being less than 0 or greater than 1.\n%s" % (progress, self.DebugInformation),
+		if pregnancyProgress < 0 or pregnancyProgress > 1:
+			Debug.Log("Calculated the pregnancy progress (%s) as being less than 0 or greater than 1.\n%s" % (pregnancyProgress, self.DebugInformation),
 					  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
 
-			progress = min(max(progress, 0), 1)
+			pregnancyProgress = min(max(pregnancyProgress, 0), 1)
 
-		return progress
+		return pregnancyProgress
 
 	def GetPregnancyTrimester (self) -> typing.Optional[FemalesShared.PregnancyTrimester]:
 		"""
@@ -238,84 +242,176 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		else:
 			return FemalesShared.PregnancyTrimester.Third
 
-	def FixPregnancySpeed (self, ignoreSetting: bool = False) -> None:  # TODO support mods that adjust the pregnancy rate some how.
+	def GetPregnancyBellyModifierValue (self) -> float:
 		"""
-		Fix the pregnancy speed for the tracking sim, conform it to the tracker's reproductive time multiplier.
+		Get the belly modifier value the tracking sim should have due to their pregnancy. This will return a value from -1 to 1.
 		"""
 
-		if not isinstance(ignoreSetting, bool):
-			raise Exceptions.IncorrectTypeException(ignoreSetting, "ignoreSetting", (bool,))
+		pregnancyProgress = self.GetPregnancyProgress()  # type: float
+		nonPregnantBellyModifier = self._nonPregnantBellyModifier  # type: float
+		fullPregnancyDistance = 1 - self._nonPregnantBellyModifier  # type: float
+		bellyModifier = nonPregnantBellyModifier + fullPregnancyDistance * pregnancyProgress
 
-		if not Settings.HandlePregnancySpeed.Get() and not ignoreSetting:
+		return bellyModifier
+
+	def SetPregnancyVisuals (self) -> None:
+		"""
+		Set the tracking sim's pregnancy visuals. This method will assume the tracking sim should have pregnancy visuals.
+		"""
+
+		if not self._pregnancyVisualsActive:
+			self._nonPregnantBellyModifier = self._GetCurrentBellyModifierValue()
+
+		self._ApplyBellyModifierValue(self.GetPregnancyBellyModifierValue())  # type: float
+		self._pregnancyVisualsActive = True
+
+	def SetPregnancyVisualsIfAppropriate (self) -> None:
+		"""
+		Set the tracking sim's pregnancy visuals if it is appropriate for them to have.
+		"""
+
+		if not self.IsPregnant:
 			return
 
-		if self.IsPregnant:
-			trackingSimInfo = self.TrackingSystem.SimInfo  # type: sim_info.SimInfo
+		self.SetPregnancyVisuals()
 
-			pregnancyRate = self._GetPregnancyRate()  # type: float
+	def ResetPregnancyVisuals (self) -> None:
+		"""
+		Reset the sim's pregnancy visuals. This will change the tracking sim's belly modifiers back to what they where we the pregnancy started.
+		"""
 
-			gamePregnancyTracker = trackingSimInfo.pregnancy_tracker
-			gamePregnancyTracker.PREGNANCY_RATE = pregnancyRate
+		self._ApplyBellyModifierValue(self._nonPregnantBellyModifier)
+		self._pregnancyVisualsActive = False
 
-			pregnancyCommodityType = gamePregnancyTracker.PREGNANCY_COMMODITY_MAP.get(trackingSimInfo.species)
-			pregnancyCommodityTracker = trackingSimInfo.get_tracker(pregnancyCommodityType)  # type: commodity_tracker.CommodityTracker
-			pregnancyCommodity = pregnancyCommodityTracker.get_statistic(pregnancyCommodityType)  # type: typing.Optional[commodity.Commodity]
+	def ResetPregnancyVisualsIfAppropriate (self) -> None:
+		"""
+		Reset the sim's pregnancy visuals if they have been changed by this tracker.
+		"""
 
-			if pregnancyCommodity is None:
-				return
+		if not self._pregnancyVisualsActive:
+			return
 
-			# noinspection PyProtectedMember
-			pregnancyCommodityModifier = pregnancyCommodity._statistic_modifier  # type: float
-
-			if pregnancyCommodityModifier != pregnancyRate:
-				# noinspection PyProtectedMember
-				pregnancyCommodityModifiers = pregnancyCommodity._statistic_modifiers  # type: typing.Optional[list]
-
-				if pregnancyCommodityModifiers is not None:
-					pregnancyCommodityModifiers = list(pregnancyCommodityModifiers)  # type: list
-
-					for modifier in pregnancyCommodityModifiers:
-						pregnancyCommodity.remove_statistic_modifier(modifier)
-
-				pregnancyCommodity.add_statistic_modifier(pregnancyRate)
+		self.ResetPregnancyVisuals()
 
 	def GetDebugNotificationString (self) -> str:
 		return "Pregnant: %s" % str(self.IsPregnant)
 
-	def _GetPregnancyRate (self) -> float:
-		reproductiveTimeMultiplier = self.ReproductiveTimeMultiplier  # type: float
-		pregnancyTrackerGuide = CycleGuides.PregnancyTrackerGuide.GetGuide(self.TrackingSystem.GuideGroup)  # type: CycleGuides.PregnancyTrackerGuide
+	def Verify(self) -> None:
+		if self.IsPregnant and not self.MonitoringPregnancy:
+			self.NotifyPregnancyStarted()
+		elif not self.IsPregnant and self.MonitoringPregnancy:
+			self.NotifyPregnancyEnded()
 
-		pregnancyTime = pregnancyTrackerGuide.PregnancyTime  # type: float
-		pregnancyGameTime = ReproductionShared.ReproductiveMinutesToGameMinutes(pregnancyTime, reproductiveTimeMultiplier)  # type: float
+	def _GetCurrentBellyModifierValue (self) -> float:
+		hasFeminineFrameTrait = self._HasFeminineFrameTrait()  # type: bool
+		hasMasculineFrameTrait = self._HasMasculineFrameTrait()  # type: bool
 
-		if pregnancyGameTime != 0:
-			pregnancyRate = 100 / pregnancyGameTime  # type: float
+		if hasFeminineFrameTrait or (not hasFeminineFrameTrait and not hasMasculineFrameTrait and self.TrackingSystem.SimInfo.gender == sim_info_types.Gender.FEMALE):
+			appropriatePositiveModifierKey = References.FemaleBellyPositiveModifierKey  # type: int
+			appropriateNegativeModifierKey = References.FemaleBellyNegativeModifierKey  # type: int
+		elif hasMasculineFrameTrait or (not hasFeminineFrameTrait and not hasMasculineFrameTrait and self.TrackingSystem.SimInfo.gender == sim_info_types.Gender.MALE):
+			appropriatePositiveModifierKey = References.MaleBellyPositiveModifierKey  # type: int
+			appropriateNegativeModifierKey = References.MaleBellyNegativeModifierKey  # type: int
 		else:
-			Debug.Log("Calculated a pregnancy game time to be 0 minutes, this is probably not intentional.\n" + self.DebugInformation,
-					  This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 1)
+			Debug.Log("Could not determine the frame type or gender of a system's sim.\n" + self.DebugInformation,
+					  This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
 
-			pregnancyRate = 0
+			return 0
 
-		return pregnancyRate
+		simAttributes = PersistenceBlobs_pb2.BlobSimFacialCustomizationData()  # type: typing.Any
+		# noinspection PyPropertyAccess
+		simAttributes.ParseFromString(self.TrackingSystem.SimInfo.facial_attributes)
+
+		for bodyModifier in simAttributes.body_modifiers:
+			if bodyModifier.key == appropriatePositiveModifierKey:
+				return bodyModifier.amount
+			elif bodyModifier.key == appropriateNegativeModifierKey:
+				return bodyModifier.amount * -1
+
+		return 0
+
+	def _ApplyBellyModifierValue (self, applyingModifierValue: float) -> None:
+		hasFeminineFrameTrait = self._HasFeminineFrameTrait()  # type: bool
+		hasMasculineFrameTrait = self._HasMasculineFrameTrait()  # type: bool
+
+		if hasFeminineFrameTrait or (not hasFeminineFrameTrait and not hasMasculineFrameTrait and self.TrackingSystem.SimInfo.gender == sim_info_types.Gender.FEMALE):
+			appropriatePositiveModifierKey = References.FemaleBellyPositiveModifierKey  # type: int
+			appropriateNegativeModifierKey = References.FemaleBellyNegativeModifierKey  # type: int
+		elif hasMasculineFrameTrait or (not hasFeminineFrameTrait and not hasMasculineFrameTrait and self.TrackingSystem.SimInfo.gender == sim_info_types.Gender.MALE):
+			appropriatePositiveModifierKey = References.MaleBellyPositiveModifierKey  # type: int
+			appropriateNegativeModifierKey = References.MaleBellyNegativeModifierKey  # type: int
+		else:
+			Debug.Log("Could not determine the frame type or gender of a system's sim.\n" + self.DebugInformation,
+					  This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
+
+			return
+
+		simAttributes = PersistenceBlobs_pb2.BlobSimFacialCustomizationData()  # type: typing.Any
+		# noinspection PyPropertyAccess
+		simAttributes.ParseFromString(self.TrackingSystem.SimInfo.facial_attributes)
+
+		if applyingModifierValue > 0:
+			targetModifierKey = appropriatePositiveModifierKey  # type: int
+			inappropriateModifierKey = appropriateNegativeModifierKey  # type: int
+			targetModifierValue = applyingModifierValue  # type: float
+		else:
+			targetModifierKey = appropriateNegativeModifierKey
+			inappropriateModifierKey = appropriatePositiveModifierKey  # type: int
+			targetModifierValue = applyingModifierValue * -1  # type: float
+
+		for bodyModifier in simAttributes.body_modifiers:
+			if bodyModifier.key == targetModifierKey:
+				bodyModifier.amount = targetModifierValue
+
+		bodyModifierIndex = 0
+		while bodyModifierIndex < len(simAttributes.body_modifiers):
+			bodyModifier = simAttributes.body_modifiers[bodyModifierIndex]
+
+			if bodyModifier.key == inappropriateModifierKey:
+				del simAttributes.body_modifiers[bodyModifierIndex]
+				continue
+
+			bodyModifierIndex += 1
+
+		self.TrackingSystem.SimInfo.facial_attributes = simAttributes.SerializeToString()
 
 	def _HasVisiblePregnancyBuff (self) -> bool:
-		firstTrimesterBuffID = 12561  # type: int
-		secondTrimesterBuffID = 12562  # type: int
-		thirdTrimesterBuffID = 12563  # type: int
-
 		buffManager = services.get_instance_manager(resources.Types.BUFF)
-		firstTrimesterBuff = buffManager.get(firstTrimesterBuffID)
-		secondTrimesterBuff = buffManager.get(secondTrimesterBuffID)
-		thirdTrimesterBuff = buffManager.get(thirdTrimesterBuffID)
+		firstTrimesterBuff = buffManager.get(References.PregnancyFirstTrimesterBuffID)
+		secondTrimesterBuff = buffManager.get(References.PregnancySecondTrimesterBuffID)
+		thirdTrimesterBuff = buffManager.get(References.PregnancyThirdTrimesterBuffID)
+		inLaborBuff = buffManager.get(References.PregnancyInLaborBuffID)
 
 		if self.TrackingSystem.SimInfo.Buffs.has_buff(firstTrimesterBuff) or \
 				self.TrackingSystem.SimInfo.Buffs.has_buff(secondTrimesterBuff) or \
-				self.TrackingSystem.SimInfo.Buffs.has_buff(thirdTrimesterBuff):
+				self.TrackingSystem.SimInfo.Buffs.has_buff(thirdTrimesterBuff) or \
+				self.TrackingSystem.SimInfo.Buffs.has_buff(inLaborBuff):
 
 			return True
 
 		return False
+
+	def _HasFeminineFrameTrait (self) -> bool:
+		feminineFrameTrait = services.get_instance_manager(resources.Types.TRAIT).get(References.FeminineFrameTraitID)
+
+		if feminineFrameTrait is not None:
+			return self.TrackingSystem.SimInfo.has_trait(feminineFrameTrait)
+		else:
+			Debug.Log("Could not find the feminine frame trait.\nTrait ID: %s" % References.FeminineFrameTraitID,
+					  This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 1)
+
+			return False
+
+	def _HasMasculineFrameTrait (self) -> bool:
+		masculineFrameTrait = services.get_instance_manager(resources.Types.TRAIT).get(References.MasculineFrameTraitID)
+
+		if masculineFrameTrait is not None:
+			return self.TrackingSystem.SimInfo.has_trait(masculineFrameTrait)
+		else:
+			Debug.Log("Could not find the masculine frame trait.\nTrait ID: %s" % References.MasculineFrameTraitID,
+					  This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 1)
+
+			return False
 
 	def _SetTrackerCallbacks (self, tracker) -> None:
 		if tracker.TypeIdentifier == FemalesShared.CycleTrackerIdentifier:
@@ -333,23 +429,50 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		tracker.CycleStartTestingEvent -= self._CycleStartTestingCallback
 		tracker.CycleAbortTestingEvent -= self._CycleAbortTestingCallback
 
-	def _OnAdding(self) -> None:
+	def _Setup(self) -> None:
+		if self.IsPregnant:
+			self.NotifyPregnancyStarted()
+
+	def _OnAdded (self) -> None:
+		self.SetPregnancyVisualsIfAppropriate()
+
 		self.TrackingSystem.TrackerAddedEvent += self._TrackerAddedCallback
+		self.TrackingSystem.TrackerRemovedEvent += self._TrackerRemovedCallback
 
 		for tracker in self.TrackingSystem.Trackers:  # type: ReproductionShared.TrackerBase
 			self._SetTrackerCallbacks(tracker)
 
-	def _OnRemoving(self) -> None:
+	def _OnRemoving (self) -> None:
+		self.ResetPregnancyVisualsIfAppropriate()
+
 		self.TrackingSystem.TrackerAddedEvent -= self._TrackerAddedCallback
+		self.TrackingSystem.TrackerRemovedEvent -= self._TrackerRemovedCallback
 
 		for tracker in self.TrackingSystem.Trackers:  # type: ReproductionShared.TrackerBase
 			self._UnsetTrackerCallbacks(tracker)
 
+	def _OnLoaded(self) -> None:
+		self.SetPregnancyVisualsIfAppropriate()
+
+	def _OnResetting(self) -> None:
+		self.ResetPregnancyVisualsIfAppropriate()
+
+	# noinspection PyUnusedLocal
+	def _PregnancyTrackerSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:
+		if self.IsPregnant:
+			self.SetPregnancyVisualsIfAppropriate()
+		else:
+			self.ResetPregnancyVisualsIfAppropriate()
+
+	def _PrepareForSimulation (self, simulation: ReproductionShared.Simulation) -> None:
+		super()._PrepareForSimulation(simulation)
+
+		simulation.RegisterPhase(
+			ReproductionShared.SimulationPhase(0, self._PregnancyTrackerSimulationPhase)
+		)
+
 	def _GetNextReproductiveTimeMultiplier (self) -> float:
 		return FemalesShared.GetPregnancyTrackerReproductiveTimeMultiplier()
-
-	def _OnUpdatedReproductiveTimeMultiplier (self) -> None:
-		self.FixPregnancySpeed()
 
 	# noinspection PyUnusedLocal
 	def _TrackerAddedCallback (self, owner: ReproductionShared.ReproductiveSystem, eventArguments: CycleEvents.TrackerAddedArguments) -> None:

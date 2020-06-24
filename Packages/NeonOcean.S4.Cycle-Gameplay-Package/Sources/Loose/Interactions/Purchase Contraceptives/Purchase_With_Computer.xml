@@ -24,6 +24,13 @@
 						<E>ELDER</E>
 					</L>
 				</V>
+				<V n="species" t="specified">
+					<U n="specified">
+						<L n="species">
+							<E />
+						</L>
+					</U>
+				</V>
 				<E n="who">Actor</E>
 			</U>
 		</V>

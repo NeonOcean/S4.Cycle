@@ -9,15 +9,17 @@ from NeonOcean.S4.Main.Tools import Exceptions
 from sims4.tuning import tunable
 
 # noinspection PyTypeChecker
-DefaultPregnancyTrackerGuide = None  # type: PregnancyTrackerGuide
-PregnancyTrackerGuideIdentifier = "PregnancyTracker"  # type: str
+DefaultPregnancyGuide = None  # type: PregnancyGuide
+PregnancyGuideIdentifier = "Pregnancy"  # type: str
 
-class PregnancyTrackerGuide(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit, GuidesBase.GuideBase):
+class PregnancyGuide(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit, GuidesBase.GuideBase):
 	FACTORY_TUNABLES = {
-		"PregnancyTime": tunable.TunableRange(description = "The amount of time in reproductive minutes that a pregnancy should last for.", tunable_type = float, default = 388800, minimum = 1440)
+		"PregnancyTime": tunable.TunableRange(description = "The amount of time in reproductive minutes that a pregnancy should last for.", tunable_type = float, default = 388800, minimum = 1440),
+		"LatestDiscoveryTime": tunable.TunableRange(description = "The latest time a pregnancy can be discovered in reproductive minutes.", tunable_type = float, default = 129600, minimum = 10)
 	}
 
 	PregnancyTime: float
+	LatestDiscoveryTime: float
 
 	@classmethod
 	def GetIdentifier (cls):
@@ -25,7 +27,7 @@ class PregnancyTrackerGuide(tunable.HasTunableSingletonFactory, tunable.AutoFact
 		Get an identifier that can be used to pick out a specific guide from a group.
 		"""
 
-		return PregnancyTrackerGuideIdentifier
+		return PregnancyGuideIdentifier
 
 	@classmethod
 	def GetDefaultGuide (cls):
@@ -33,7 +35,7 @@ class PregnancyTrackerGuide(tunable.HasTunableSingletonFactory, tunable.AutoFact
 		Get a default instance of this guide.
 		"""
 
-		return DefaultPregnancyTrackerGuide
+		return DefaultPregnancyGuide
 
 	@classmethod
 	def GetGuide (cls, guideGroup):
@@ -49,29 +51,29 @@ class PregnancyTrackerGuide(tunable.HasTunableSingletonFactory, tunable.AutoFact
 		guideGroupGuide = guideGroup.GetGuide(cls.GetIdentifier())  # type: typing.Optional[GuidesBase.GuideBase]
 		return guideGroupGuide if guideGroupGuide is not None else cls.GetDefaultGuide()
 
-class HumanPregnancyTrackerGuide(GuidesBase.GuideTuningHandler):
-	_snippetName = This.Mod.Namespace.replace(".", "_") + "_Human_Pregnancy_Tracker_Guide"
+class HumanPregnancyGuide(GuidesBase.GuideTuningHandler):
+	_snippetName = This.Mod.Namespace.replace(".", "_") + "_Human_Pregnancy_Guide"
 
-	Guide = None  # type: PregnancyTrackerGuide
+	Guide = None  # type: PregnancyGuide
 
 	@classmethod
 	def _GetSnippetTemplate (cls) -> tunable.TunableBase:
-		return PregnancyTrackerGuide.TunableFactory()
+		return PregnancyGuide.TunableFactory()
 
 	@classmethod
 	def _SnippetTuningCallback (cls, guideSnippets: typing.List[snippets.SnippetInstanceMetaclass]) -> None:
 		from NeonOcean.S4.Cycle import GuideGroups
 
-		global DefaultPregnancyTrackerGuide
+		global DefaultPregnancyGuide
 
 		super()._SnippetTuningCallback(guideSnippets)
-		GuideGroups.HumanGuideGroup.Guides.append(HumanPregnancyTrackerGuide.Guide)
+		GuideGroups.HumanGuideGroup.Guides.append(HumanPregnancyGuide.Guide)
 
-		DefaultPregnancyTrackerGuide = cls.Guide
+		DefaultPregnancyGuide = cls.Guide
 
 def _Setup () -> None:
-	global DefaultPregnancyTrackerGuide
+	global DefaultPregnancyGuide
 
-	DefaultPregnancyTrackerGuide = PregnancyTrackerGuide.TunableFactory().default
+	DefaultPregnancyGuide = PregnancyGuide.TunableFactory().default
 
 _Setup()

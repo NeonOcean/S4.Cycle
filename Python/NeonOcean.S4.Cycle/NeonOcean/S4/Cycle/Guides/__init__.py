@@ -9,15 +9,15 @@ from NeonOcean.S4.Cycle.Guides.Females.Ovum import (
 	OvumGuide,
 	HumanOvumGuide
 )
-from NeonOcean.S4.Cycle.Guides.Females.PregnancyTracker import (
-	PregnancyTrackerGuide,
-	HumanPregnancyTrackerGuide
+from NeonOcean.S4.Cycle.Guides.Females.Pregnancy import (
+	PregnancyGuide,
+	HumanPregnancyGuide
 )
 from NeonOcean.S4.Cycle.Guides.Males.Sperm import (
 	SpermGuide,
 	HumanSpermGuide
 )
-from NeonOcean.S4.Cycle.Guides.Males.SpermTracker import (
+from NeonOcean.S4.Cycle.Guides.Females.SpermTracker import (
 	SpermTrackerGuide,
 	HumanSpermTrackerGuide
 )

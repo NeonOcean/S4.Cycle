@@ -32,41 +32,57 @@ class DotHandler(HandlersBase.HandlerBase):
 
 		return self.HandlingSystem.HasTracker(FemalesShared.CycleTrackerIdentifier)
 
-	def _OnAdded (self) -> None:
-		cycleTracker = self.HandlingSystem.GetTracker(FemalesShared.CycleTrackerIdentifier)  # type: typing.Optional[CycleTracker.CycleTracker]
-		pregnancyTracker = self.HandlingSystem.GetTracker(FemalesShared.PregnancyTrackerIdentifier)  # type: typing.Optional[PregnancyTracker.PregnancyTracker]
+	def _HandleTrackerAdded (self, tracker) -> None:
+		if tracker.TypeIdentifier == FemalesShared.CycleTrackerIdentifier:
+			self._HandleCycleTrackerAdded(tracker)
+		elif tracker.TypeIdentifier == FemalesShared.PregnancyTrackerIdentifier:
+			self._HandlePregnancyTrackerAdded(tracker)
 
-		if cycleTracker is None:
-			return
-
-		cycleTracker.CycleChangedEvent += self._CycleTrackerCycleChangedCallback
-		cycleTracker.CycleCompletedEvent += self._CycleTrackerCycleCompletedCallback
+	def _HandleCycleTrackerAdded (self, tracker) -> None:
+		tracker.CycleChangedEvent += self._CycleTrackerCycleChangedCallback
+		tracker.CycleCompletedEvent += self._CycleTrackerCycleCompletedCallback
 
 		dotInformation = Dot.GetDotInformation(self.HandlingSystem.SimInfo)  # type: typing.Optional[Dot.DotInformation]
 
 		if dotInformation is not None:
 			if dotInformation.TimeSinceCycleStart is None:
-				if cycleTracker.TimeSinceLastCycle is not None:
-					dotInformation.TimeSinceCycleStart = cycleTracker.TimeSinceLastCycle
+				if tracker.TimeSinceLastCycle is not None:
+					dotInformation.TimeSinceCycleStart = tracker.TimeSinceLastCycle
 				else:
-					if cycleTracker.CurrentCycle is not None:
-						dotInformation.TimeSinceCycleStart = cycleTracker.CurrentCycle.Age
+					if tracker.CurrentCycle is not None:
+						dotInformation.TimeSinceCycleStart = tracker.CurrentCycle.Age
 
-		if pregnancyTracker is not None:
-			pregnancyTracker.PregnancyStartedEvent += self._PregnancyTrackerPregnancyStartedCallback
-			pregnancyTracker.PregnancyEndedEvent += self._PregnancyTrackerPregnancyEndedCallback
+	def _HandlePregnancyTrackerAdded (self, tracker) -> None:
+		tracker.PregnancyStartedEvent += self._PregnancyTrackerPregnancyStartedCallback
+		tracker.PregnancyEndedEvent += self._PregnancyTrackerPregnancyEndedCallback
+
+	def _HandleTrackerRemoved (self, tracker) -> None:
+		if tracker.TypeIdentifier == FemalesShared.CycleTrackerIdentifier:
+			self._HandleCycleTrackerRemoved(tracker)
+		elif tracker.TypeIdentifier == FemalesShared.PregnancyTrackerIdentifier:
+			self._HandlePregnancyTrackerRemoved(tracker)
+
+	def _HandleCycleTrackerRemoved  (self, tracker) -> None:
+		tracker.CycleChangedEvent -= self._PregnancyTrackerPregnancyStartedCallback
+		tracker.CycleCompletedEvent -= self._PregnancyTrackerPregnancyEndedCallback
+
+	def _HandlePregnancyTrackerRemoved  (self, tracker) -> None:
+		tracker.PregnancyStartedEvent -= self._PregnancyTrackerPregnancyStartedCallback
+		tracker.PregnancyEndedEvent -= self._PregnancyTrackerPregnancyEndedCallback
+
+	def _OnAdded (self) -> None:
+		self.HandlingSystem.TrackerAddedEvent += self._TrackerAddedCallback
+		self.HandlingSystem.TrackerRemovedEvent += self._TrackerRemovedCallback
+
+		for tracker in self.HandlingSystem.Trackers:  # type: ReproductionShared.TrackerBase
+			self._HandleTrackerAdded(tracker)
 
 	def _OnRemoving(self) -> None:
-		cycleTracker = self.HandlingSystem.GetTracker(FemalesShared.CycleTrackerIdentifier)  # type: typing.Optional[CycleTracker.CycleTracker]
-		pregnancyTracker = self.HandlingSystem.GetTracker(FemalesShared.PregnancyTrackerIdentifier)  # type: typing.Optional[PregnancyTracker.PregnancyTracker]
+		self.HandlingSystem.TrackerAddedEvent -= self._TrackerAddedCallback
+		self.HandlingSystem.TrackerRemovedEvent -= self._TrackerRemovedCallback
 
-		if cycleTracker is not None:
-			cycleTracker.CycleChangedEvent -= self._CycleTrackerCycleChangedCallback
-			cycleTracker.CycleCompletedEvent -= self._CycleTrackerCycleCompletedCallback
-
-		if pregnancyTracker is not None:
-			pregnancyTracker.PregnancyStartedEvent -= self._PregnancyTrackerPregnancyStartedCallback
-			pregnancyTracker.PregnancyEndedEvent -= self._PregnancyTrackerPregnancyEndedCallback
+		for tracker in self.HandlingSystem.Trackers:  # type: ReproductionShared.TrackerBase
+			self._HandleTrackerRemoved(tracker)
 
 	def _SimulateInternal (self, simulation: ReproductionShared.Simulation, ticks: int, reproductiveTimeMultiplier: float) -> None:
 		if not simulation.LastTickStep:
@@ -76,7 +92,6 @@ class DotHandler(HandlersBase.HandlerBase):
 		pregnancyTracker = self.HandlingSystem.GetTracker(FemalesShared.PregnancyTrackerIdentifier)  # type: typing.Optional[PregnancyTracker.PregnancyTracker]
 
 		if cycleTracker is None:
-			Dot.ClearDotInformation(self.HandlingSystem.SimInfo)
 			return
 
 		dotInformation = Dot.GetDotInformation(self.HandlingSystem.SimInfo)  # type: typing.Optional[Dot.DotInformation]
@@ -88,6 +103,19 @@ class DotHandler(HandlersBase.HandlerBase):
 			if pregnancyTracker is not None:
 				if dotInformation.TrackingMode != Dot.TrackingMode.Pregnancy and pregnancyTracker.IsPregnant and pregnancyTracker.PregnancyIsKnown():
 					dotInformation.TrackingMode = Dot.TrackingMode.Pregnancy
+				elif dotInformation.TrackingMode != Dot.TrackingMode.Cycle and not pregnancyTracker.IsPregnant:
+					dotInformation.TrackingMode = Dot.TrackingMode.Cycle
+			else:
+				if dotInformation.TrackingMode != Dot.TrackingMode.Cycle:
+					dotInformation.TrackingMode = Dot.TrackingMode.Cycle
+
+	# noinspection PyUnusedLocal
+	def _TrackerAddedCallback (self, owner: ReproductionShared.ReproductiveSystem, eventArguments: CycleEvents.TrackerAddedArguments) -> None:
+		self._HandleTrackerAdded(eventArguments.Tracker)
+
+	# noinspection PyUnusedLocal
+	def _TrackerRemovedCallback (self, owner: ReproductionShared.ReproductiveSystem, eventArguments: CycleEvents.TrackerAddedArguments) -> None:
+		self._HandleTrackerRemoved(eventArguments.Tracker)
 
 	# noinspection PyUnusedLocal
 	def _CycleTrackerCycleChangedCallback (self, owner: CycleTracker.CycleTracker, eventArguments: CycleEvents.CycleChangedArguments) -> None:

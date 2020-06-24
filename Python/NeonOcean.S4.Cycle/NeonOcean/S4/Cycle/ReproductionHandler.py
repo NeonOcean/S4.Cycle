@@ -76,22 +76,32 @@ def _ResetZoneHandling () -> None:
 
 	if simInfoManager is not None:
 		# noinspection PyProtectedMember
-		registeredCallbacks = simInfoManager._registered_callbacks.get(indexed_manager.CallbackTypes.ON_OBJECT_REMOVE, None)
+		onObjectAddCallbacks = simInfoManager._registered_callbacks.get(indexed_manager.CallbackTypes.ON_OBJECT_ADD, None)
 
-		if registeredCallbacks is not None:
-			registeredCallbackIndex = 0
-			while registeredCallbackIndex < len(registeredCallbacks):
-				registeredCallback = registeredCallbacks[registeredCallbackIndex]
+		if onObjectAddCallbacks is not None:
+			onObjectAddCallbackIndex = 0
+			while onObjectAddCallbackIndex < len(onObjectAddCallbacks):
+				onObjectAddCallback = onObjectAddCallbacks[onObjectAddCallbackIndex]
 
-				if registeredCallback == _OnSimAddCallback:
-					simInfoManager.unregister_callback(indexed_manager.CallbackTypes.ON_OBJECT_REMOVE, _OnSimAddCallback)
+				if onObjectAddCallback == _OnSimAddCallback:
+					onObjectAddCallbacks.pop(onObjectAddCallbackIndex)
 					continue
 
-				if registeredCallback == _OnSimRemoveCallback:
-					simInfoManager.unregister_callback(indexed_manager.CallbackTypes.ON_OBJECT_REMOVE, _OnSimRemoveCallback)
+				onObjectAddCallbackIndex += 1
+
+		# noinspection PyProtectedMember
+		onObjectRemoveCallbacks = simInfoManager._registered_callbacks.get(indexed_manager.CallbackTypes.ON_OBJECT_REMOVE, None)
+
+		if onObjectRemoveCallbacks is not None:
+			onObjectRemoveCallbackIndex = 0
+			while onObjectRemoveCallbackIndex < len(onObjectRemoveCallbacks):
+				onObjectRemoveCallback = onObjectRemoveCallbacks[onObjectRemoveCallbackIndex]
+
+				if onObjectRemoveCallback == _OnSimAddCallback:
+					onObjectRemoveCallbacks.pop(onObjectRemoveCallbackIndex)
 					continue
 
-				registeredCallbackIndex += 1
+				onObjectRemoveCallbackIndex += 1
 
 	if _standardUpdateAlarm is not None:
 		_standardUpdateAlarm.cancel()
@@ -153,7 +163,11 @@ def _OnSimAddCallback (simInfo: sim_info.SimInfo) -> None:
 			Debug.Log("Went to create a reproductive system for a sim being added, but one already exists.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 			return
 
-		Reproduction.InitiateReproductiveSystem(simInfo)
+		simSystem = Reproduction.InitiateReproductiveSystem(simInfo)
+		simsSection = Saving.GetSimsSection()  # type: SectionBranched.SectionBranched
+
+		if Saving.GetSimsSection().SavingObject.Loaded:
+			simSystem.Load(simsSection)
 	except:
 		Debug.Log("Reproduction on sim add callback failed.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 

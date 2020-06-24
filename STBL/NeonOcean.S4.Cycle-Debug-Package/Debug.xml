@@ -35,6 +35,21 @@
 			<English>Clear Sperm</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.End_Pregnancy.Display_Name</Identifier>
+			<Key>1985880094</Key>
+			<English>End Pregnancy</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Make_Pregnant_Picker.Display_Name</Identifier>
+			<Key>1977150230</Key>
+			<English>Make Pregnant By</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Set_Cycle_Progress_Dialog.Display_Name</Identifier>
+			<Key>3200036637</Key>
+			<English>Set Cycle Progress</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Show_Reproductive_Info.Display_Name</Identifier>
 			<Key>1179148787</Key>
 			<English>Show Reproductive Info</English>
@@ -57,11 +72,6 @@
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Title</Identifier>
 			<Key>1906675665</Key>
-			<English>Set Cycle Progress</English>
-		</STBLXMLEntry>
-		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Set_Cycle_Progress_Dialog.Display_Name</Identifier>
-			<Key>3200036637</Key>
 			<English>Set Cycle Progress</English>
 		</STBLXMLEntry>
 	</Entries>

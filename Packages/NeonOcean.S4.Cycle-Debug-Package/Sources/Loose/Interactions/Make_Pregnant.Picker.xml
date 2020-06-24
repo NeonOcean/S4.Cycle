@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Debug_Make_Pregnant_Picker" s="7818707779064686842" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Debug" c="MakePregnantPickerInteraction">
+	<T n="display_name">1977150230</T>
+	<T n="category">5721909071116079353<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Debug--></T>
+	<V n="_saveable" t="disabled" />
+	
+	<L n="actor_continuation">
+		<U>
+			<T n="affordance">6943662162204257089<!--SuperInteraction: NeonOcean_S4_Cycle_Interactions_Debug_Make_Pregnant--></T>
+		</U>
+	</L>
+	
+	<V n="picker_dialog" t="sim_picker">
+		<U n="sim_picker">
+			<V n="max_selectable" t="static_count">
+				<U n="static_count">
+					<T n="number_selectable">1</T>
+				</U>
+			</V>
+		
+			<T n="min_selectable">1</T>
+			<T n="use_dropdown_filter">True</T>
+		</U>
+	</V>
+	
+	<T n="include_actor_sim">True</T>
+	<T n="include_target_sim">True</T>
+	
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+	
+	<L n="test_globals">
+	
+	</L>
+</I>

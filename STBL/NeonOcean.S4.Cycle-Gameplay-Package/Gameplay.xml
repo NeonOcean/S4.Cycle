@@ -212,6 +212,21 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<English>Download Dot, an app for keeping track of your menstrual cycle.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Display_Name</Identifier>
+			<Key>2089865575</Key>
+			<English>Take Pregnancy Test</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Toilet.Display_Name</Identifier>
+			<Key>3192685275</Key>
+			<English>Take Pregnancy Test</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Toilet.Missing_Test_Tooltip</Identifier>
+			<Key>507496842</Key>
+			<English>{0.SimFirstName} doesn't have a pregnancy test in their inventory.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Inventory_Delivery.Text</Identifier>
 			<Key>1122117568</Key>
 			<English>Thank you for choosing ProtectTech® for your contraceptive needs! The purchased items can now be found in {0.SimFirstName}'s inventory.</English>
@@ -245,6 +260,16 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<Identifier>NeonOcean.S4.Cycle.Objects.Condom_Box.Tooltip.Subtext</Identifier>
 			<Key>4031720320</Key>
 			<English>Condoms remaining: {0.Number}</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Pregnancy_Test.Description</Identifier>
+			<Key>1457303407</Key>
+			<English>Use this to find out if you have a bundle of joy coming your way.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Pregnancy_Test.Name</Identifier>
+			<Key>4135298290</Key>
+			<English>Pregnancy Test</English>
 		</STBLXMLEntry>
 	</Entries>
 </STBLXMLFile>
