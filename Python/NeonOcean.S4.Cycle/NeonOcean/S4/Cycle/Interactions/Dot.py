@@ -121,9 +121,27 @@ class _DotAppInteraction(Dependent.DependentExtension, Events.EventsExtension, R
 	def __init_subclass__ (cls, *args, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 
-		cls.add_additional_test(cls.DotAppStateTest())
-		cls.add_additional_test(cls.DotTrackerModeTest())
-		cls.add_additional_test(cls.HasCycleTrackerTest())
+		hasDotAppStateTest = False  # type: bool
+		hasDotTrackerModeTest = False  # type: bool
+		hasHasCycleTrackerTest = False  # type: bool
+
+		if cls._additional_tests is not None:
+			for additionalTest in reversed(cls._additional_tests):
+				if not hasDotAppStateTest and isinstance(additionalTest, cls.DotAppStateTest):
+					hasDotAppStateTest = True
+				elif not hasDotTrackerModeTest and isinstance(additionalTest, cls.DotTrackerModeTest):
+					hasDotTrackerModeTest = True
+				elif not hasHasCycleTrackerTest and isinstance(additionalTest, cls.HasCycleTrackerTest):
+					hasHasCycleTrackerTest = True
+
+		if not hasDotAppStateTest:
+			cls.add_additional_test(cls.DotAppStateTest())
+
+		if not hasDotTrackerModeTest:
+			cls.add_additional_test(cls.DotTrackerModeTest())
+
+		if not hasHasCycleTrackerTest:
+			cls.add_additional_test(cls.HasCycleTrackerTest())
 
 class DownloadInteraction(_DotAppInteraction):
 	def __init_subclass__ (cls, *args, **kwargs):

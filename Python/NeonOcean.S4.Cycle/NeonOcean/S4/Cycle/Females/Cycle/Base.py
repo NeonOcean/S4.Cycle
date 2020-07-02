@@ -11,6 +11,8 @@ from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable
 
 class CycleBase(abc.ABC, Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	class _Phase:
 		def __init__(self,
 					 activeGetter: typing.Callable[[], bool],

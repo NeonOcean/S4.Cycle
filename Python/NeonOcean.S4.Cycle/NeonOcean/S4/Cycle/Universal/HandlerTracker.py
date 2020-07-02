@@ -6,10 +6,12 @@ from NeonOcean.S4.Cycle import Events as CycleEvents, ReproductionShared, This
 from NeonOcean.S4.Cycle.Handlers import Base as HandlersBase, Types as HandlersTypes
 from NeonOcean.S4.Cycle.Universal import Shared as UniversalShared
 from NeonOcean.S4.Main import Debug
-from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Types
+from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Types, Version
 from sims import sim_info
 
 class HandlerTracker(ReproductionShared.TrackerBase):
+	_handlersSavingKey = "ActiveHandlers"
+
 	def __init__ (self, trackingSystem: ReproductionShared.ReproductiveSystem):
 		super().__init__(trackingSystem)
 
@@ -223,5 +225,118 @@ class HandlerTracker(ReproductionShared.TrackerBase):
 		super()._PrepareForSimulation(simulation)
 
 		simulation.RegisterPhase(
-			ReproductionShared.SimulationPhase(0, self._HandlerSimulationPhase)
+			ReproductionShared.SimulationPhase(-15, self._HandlerSimulationPhase)
 		)
+
+	def _LoadFromDictionaryInternal (self, data: dict, lastVersion: typing.Optional[Version.Version]) -> bool:
+		superOperationSuccessful = super()._LoadFromDictionaryInternal(data, lastVersion)  # type: bool
+
+		self._AddMissingHandlers()
+
+		operationSuccessful = True  # type: bool
+		operationInformation = self.SavableOperationInformation  # type: str
+
+		handlersSavingKey = self._handlersSavingKey  # type: str
+		handlersDataSavingKey = "Data"  # type: str
+		handlersTypeSavingKey = "Type"  # type: str
+
+		try:
+			handlersListData = data[handlersSavingKey]  # type: typing.Optional[list]
+		except KeyError:
+			return True
+
+		if not isinstance(handlersListData, list):
+			raise Exceptions.IncorrectTypeException(handlersListData, "data[%s]" % self._handlersSavingKey, (list,))
+
+		for activeHandler in self._activeHandlers:  # type: HandlersBase.HandlerBase
+			if not isinstance(activeHandler, HandlersBase.HandlerBase):
+				Debug.Log("Found an object in the handlers list that was not a handler.\n%s" % operationInformation, self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__, lockIdentifier = __name__ + ":HandlerSavingOperationNotHandlerType")
+				continue
+
+			try:
+				for handlerDataIndex in range(len(handlersListData)):  # type: int
+					handlerContainerData = handlersListData[handlerDataIndex]  # type: dict
+
+					handlerTypeIdentifier = handlerContainerData.get(handlersTypeSavingKey, None)  # type: typing.Optional[str]
+
+					if handlerTypeIdentifier is None or handlerTypeIdentifier != activeHandler.TypeIdentifier:
+						continue
+
+					if not isinstance(handlerContainerData, dict):
+						raise Exceptions.IncorrectTypeException(handlerContainerData, "data[%s][%s]" % (handlersSavingKey, handlerDataIndex), (dict,))
+
+					handlerData = handlerContainerData[handlersDataSavingKey]  # type: typing.Optional[dict]
+
+					if not isinstance(handlerData, dict):
+						raise Exceptions.IncorrectTypeException(handlerData, "data[%s][%s][%s]" % (handlersSavingKey, handlerDataIndex, handlersDataSavingKey), (dict,))
+
+					if not activeHandler.LoadFromDictionary(handlerData, lastVersion = lastVersion):
+						operationSuccessful = False
+
+					break
+			except:
+				Debug.Log("Load operation in a savable object failed to load the handler data of a handler with the identifier '%s'.\n%s" % (activeHandler.TypeIdentifier, operationInformation), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				operationSuccessful = False
+
+		if not operationSuccessful:
+			return False
+
+		return superOperationSuccessful
+
+	def _SaveToDictionaryInternal (self) -> typing.Tuple[bool, dict]:
+		superOperationSuccessful, data = super()._SaveToDictionaryInternal()  # type: bool, dict
+
+		operationSuccessful = True  # type: bool
+		operationInformation = self.SavableOperationInformation  # type: str
+
+		handlersSavingKey = self._handlersSavingKey  # type: str
+		handlersDataSavingKey = "Data"  # type: str
+		handlersTypeSavingKey = "Type"  # type: str
+
+		handlersListData = list()  # type: typing.List[typing.Optional[dict]]
+
+		for activeHandler in self._activeHandlers:  # type: HandlersBase.HandlerBase
+			if not isinstance(activeHandler, HandlersBase.HandlerBase):
+				Debug.Log("Found an object in the handlers list that was not a handler.\n%s" % operationInformation, self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__, lockIdentifier = __name__ + ":HandlerSavingOperationNotHandlerType")
+				continue
+
+			try:
+				handlerContainerData = dict()  # type: dict
+				entryOperationSuccessful, handlerData = activeHandler.SaveToDictionary()  # type: bool, dict
+
+				if not entryOperationSuccessful:
+					operationSuccessful = False
+
+				handlerTypeIdentifier = activeHandler.TypeIdentifier  # type: str
+
+				if not isinstance(handlerTypeIdentifier, str):
+					raise Exceptions.IncorrectReturnTypeException(handlerTypeIdentifier, "typeFetcher", (str,))
+
+				handlerContainerData[handlersTypeSavingKey] = handlerTypeIdentifier
+				handlerContainerData[handlersDataSavingKey] = handlerData
+
+				handlersListData.append(handlerContainerData)
+			except:
+				Debug.Log("Save operation in a savable object failed to save the handler data of a handler with the identifier '%s'.\n%s" % (activeHandler.TypeIdentifier, operationInformation), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				operationSuccessful = False
+
+			data[handlersSavingKey] = handlersListData
+
+		if not operationSuccessful:
+			return False, data
+
+		return superOperationSuccessful, data
+
+	def _ResetInternal (self) -> bool:
+		superOperationSuccessful = super()._ResetInternal()  # type: bool
+
+		operationInformation = self.SavableOperationInformation  # type: str
+
+		for activeHandler in self._activeHandlers:  # type: HandlersBase.HandlerBase
+			if not isinstance(activeHandler, HandlersBase.HandlerBase):
+				Debug.Log("Found an object in the handlers list that was not a handler.\n%s" % operationInformation, self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__, lockIdentifier = __name__ + ":TrackerSavingOperationNotTrackerType")
+				continue
+
+			activeHandler.Reset()
+
+		return superOperationSuccessful

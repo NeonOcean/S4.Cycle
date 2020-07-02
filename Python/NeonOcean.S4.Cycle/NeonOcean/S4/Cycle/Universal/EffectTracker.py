@@ -6,10 +6,12 @@ from NeonOcean.S4.Cycle import Events as CycleEvents, ReproductionShared, This
 from NeonOcean.S4.Cycle.Effects import Base as EffectsBase, Types as EffectsTypes
 from NeonOcean.S4.Cycle.Universal import Shared as UniversalShared
 from NeonOcean.S4.Main import Debug
-from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Types
+from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Types, Version
 from sims import sim_info
 
 class EffectTracker(ReproductionShared.TrackerBase):
+	_effectsSavingKey = "ActiveEffects"
+
 	def __init__ (self, trackingSystem: ReproductionShared.ReproductiveSystem):
 		super().__init__(trackingSystem)
 
@@ -17,23 +19,6 @@ class EffectTracker(ReproductionShared.TrackerBase):
 		self.EffectRemovedEvent = Events.EventHandler()
 
 		self._activeEffects = list()  # type: typing.List[EffectsBase.EffectBase]
-
-		def effectSaveSkipTest (testingEffect: EffectsBase.EffectBase) -> bool:
-			if not isinstance(testingEffect, EffectsBase.EffectBase):
-				return True
-
-			return testingEffect.ShouldSave
-
-		self.RegisterSavableAttribute(Savable.ListedSavableAttributeHandler(
-			"ActiveEffects",
-			"_activeEffects",
-			lambda typeIdentifier: EffectsTypes.GetEffectType(typeIdentifier)(self.TrackingSystem),
-			lambda: list(),
-			requiredSuccess = False,
-			skipEntrySaveTest = effectSaveSkipTest,
-			multiType = True,
-			typeFetcher = lambda attributeValue: attributeValue.TypeIdentifier,
-		))
 
 	# noinspection PyMethodParameters
 	@Classes.ClassProperty
@@ -180,7 +165,7 @@ class EffectTracker(ReproductionShared.TrackerBase):
 					addingEffect = addingEffectType(self.TrackingSystem)  # type: EffectsBase.EffectBase
 				except:
 					Debug.Log("Failed to create instance of the effect type '" + Types.GetFullName(addingEffectType) + "'.\n" + self.TrackingSystem.DebugInformation,
-							  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + " | Creating_Effect", lockReference = addingEffectType)
+							  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":CreatingEffect", lockReference = addingEffectType)
 
 					continue
 
@@ -220,8 +205,121 @@ class EffectTracker(ReproductionShared.TrackerBase):
 		super()._PrepareForSimulation(simulation)
 
 		simulation.RegisterPhase(
-			ReproductionShared.SimulationPhase(0, self._EffectSimulationPhase)
+			ReproductionShared.SimulationPhase(-15, self._EffectSimulationPhase)
 		)
 
 	def _GetNextReproductiveTimeMultiplier (self) -> float:
 		return UniversalShared.GetEffectTrackerReproductiveTimeMultiplier()
+
+	def _LoadFromDictionaryInternal (self, data: dict, lastVersion: typing.Optional[Version.Version]) -> bool:
+		superOperationSuccessful = super()._LoadFromDictionaryInternal(data, lastVersion)  # type: bool
+
+		self._AddMissingEffects()
+
+		operationSuccessful = True  # type: bool
+		operationInformation = self.SavableOperationInformation  # type: str
+
+		effectsSavingKey = self._effectsSavingKey  # type: str
+		effectsDataSavingKey = "Data"  # type: str
+		effectsTypeSavingKey = "Type"  # type: str
+
+		try:
+			effectsListData = data[effectsSavingKey]  # type: typing.Optional[list]
+		except KeyError:
+			return True
+
+		if not isinstance(effectsListData, list):
+			raise Exceptions.IncorrectTypeException(effectsListData, "data[%s]" % self._effectsSavingKey, (list,))
+
+		for activeEffect in self._activeEffects:  # type: EffectsBase.EffectBase
+			if not isinstance(activeEffect, EffectsBase.EffectBase):
+				Debug.Log("Found an object in the effects list that was not an effect.\n%s" % operationInformation, self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__, lockIdentifier = __name__ + ":EffectSavingOperationNotEffectType")
+				continue
+
+			try:
+				for effectDataIndex in range(len(effectsListData)):  # type: int
+					effectContainerData = effectsListData[effectDataIndex]  # type: dict
+
+					effectTypeIdentifier = effectContainerData.get(effectsTypeSavingKey, None)  # type: typing.Optional[str]
+
+					if effectTypeIdentifier is None or effectTypeIdentifier != activeEffect.TypeIdentifier:
+						continue
+
+					if not isinstance(effectContainerData, dict):
+						raise Exceptions.IncorrectTypeException(effectContainerData, "data[%s][%s]" % (effectsSavingKey, effectDataIndex), (dict,))
+
+					effectData = effectContainerData[effectsDataSavingKey]  # type: typing.Optional[dict]
+
+					if not isinstance(effectData, dict):
+						raise Exceptions.IncorrectTypeException(effectData, "data[%s][%s][%s]" % (effectsSavingKey, effectDataIndex, effectsDataSavingKey), (dict,))
+
+					if not activeEffect.LoadFromDictionary(effectData, lastVersion = lastVersion):
+						operationSuccessful = False
+
+					break
+			except:
+				Debug.Log("Load operation in a savable object failed to load the effect data of an effect with the identifier '%s'.\n%s" % (activeEffect.TypeIdentifier, operationInformation), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				operationSuccessful = False
+
+		if not operationSuccessful:
+			return False
+
+		return superOperationSuccessful
+
+	def _SaveToDictionaryInternal (self) -> typing.Tuple[bool, dict]:
+		superOperationSuccessful, data = super()._SaveToDictionaryInternal()  # type: bool, dict
+
+		operationSuccessful = True  # type: bool
+		operationInformation = self.SavableOperationInformation  # type: str
+
+		effectsSavingKey = self._effectsSavingKey  # type: str
+		effectsDataSavingKey = "Data"  # type: str
+		effectsTypeSavingKey = "Type"  # type: str
+
+		effectsListData = list()  # type: typing.List[typing.Optional[dict]]
+
+		for activeEffect in self._activeEffects:  # type: EffectsBase.EffectBase
+			if not isinstance(activeEffect, EffectsBase.EffectBase):
+				Debug.Log("Found an object in the effects list that was not an effect.\n%s" % operationInformation, self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__, lockIdentifier = __name__ + ":EffectSavingOperationNotEffectType")
+				continue
+
+			try:
+				effectContainerData = dict()  # type: dict
+				entryOperationSuccessful, effectData = activeEffect.SaveToDictionary()  # type: bool, dict
+
+				if not entryOperationSuccessful:
+					operationSuccessful = False
+
+				effectTypeIdentifier = activeEffect.TypeIdentifier  # type: str
+
+				if not isinstance(effectTypeIdentifier, str):
+					raise Exceptions.IncorrectReturnTypeException(effectTypeIdentifier, "typeFetcher", (str,))
+
+				effectContainerData[effectsTypeSavingKey] = effectTypeIdentifier
+				effectContainerData[effectsDataSavingKey] = effectData
+
+				effectsListData.append(effectContainerData)
+			except:
+				Debug.Log("Save operation in a savable object failed to save the effect data of an effect with the identifier '%s'.\n%s" % (activeEffect.TypeIdentifier, operationInformation), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
+				operationSuccessful = False
+
+			data[effectsSavingKey] = effectsListData
+
+		if not operationSuccessful:
+			return False, data
+
+		return superOperationSuccessful, data
+
+	def _ResetInternal (self) -> bool:
+		superOperationSuccessful = super()._ResetInternal()  # type: bool
+
+		operationInformation = self.SavableOperationInformation  # type: str
+
+		for activeEffect in self._activeEffects:  # type: EffectsBase.EffectBase
+			if not isinstance(activeEffect, EffectsBase.EffectBase):
+				Debug.Log("Found an object in the effects list that was not an effect.\n%s" % operationInformation, self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__, lockIdentifier = __name__ + ":TrackerSavingOperationNotTrackerType")
+				continue
+
+			activeEffect.Reset()
+
+		return superOperationSuccessful

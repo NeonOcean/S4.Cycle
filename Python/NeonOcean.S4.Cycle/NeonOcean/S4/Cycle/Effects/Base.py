@@ -3,12 +3,14 @@ from __future__ import annotations
 import abc
 import typing
 
-from NeonOcean.S4.Cycle import ReproductionShared
+from NeonOcean.S4.Cycle import ReproductionShared, This
 from NeonOcean.S4.Main.Tools import Classes, Exceptions, Savable
 
 _effectTypes = list()  # type: typing.List[typing.Type[EffectBase]]
 
 class EffectBase(abc.ABC, Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, affectingSystem: ReproductionShared.ReproductiveSystem):
 		if not isinstance(affectingSystem, ReproductionShared.ReproductiveSystem):
 			raise Exceptions.IncorrectTypeException(affectingSystem, "affectingSystem", (ReproductionShared.ReproductiveSystem,))

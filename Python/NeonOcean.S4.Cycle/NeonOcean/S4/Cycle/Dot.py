@@ -4,13 +4,13 @@ import typing
 import game_services
 import services
 import time_service
-from NeonOcean.S4.Cycle import Guides as CycleGuides, ReproductionShared, This, Saving
+from NeonOcean.S4.Cycle import Guides as CycleGuides, ReproductionShared, Saving, This
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
 from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
 from NeonOcean.S4.Cycle.Tools import SimPointer
 from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Saving import SectionBranched
-from NeonOcean.S4.Main.Tools import Exceptions, Parse, Savable, Version
+from NeonOcean.S4.Main.Tools import Exceptions, Parse, Savable, Sims as ToolsSims, Version
 from sims import sim_info
 
 if typing.TYPE_CHECKING:
@@ -451,6 +451,8 @@ class DotCycle:
 		return CycleGuides.HumanCycleMenstrualGuide.Guide
 
 class DotInformation(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, targetSimInfoOrID: typing.Union[sim_info.SimInfo, int, None]):
 		"""
 		An object to save information for and handle interactions with the dot menstrual cycle tracker app.
@@ -478,6 +480,18 @@ class DotInformation(Savable.SavableExtension):
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Enabled", "Enabled", self.Enabled))  # TODO add type verifiers to values without built in verifiers else where.
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("TrackingMode", "TrackingMode", self.TrackingMode, encoder = encodeEnum, decoder = decodeTrackingMode))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("TimeSinceCycleStart", "TimeSinceCycleStart", self.TimeSinceCycleStart))
+
+	@property
+	def SavableOperationInformation (self) -> str:
+		return self.DebugInformation
+
+	@property
+	def DebugInformation (self) -> str:
+		return "%s | Section Key: %s | Sim ID: %s | Sim: %s" % \
+			   (self.__class__.__name__,
+				DotSavingKey,
+				self.TargetSimInfo.id,
+				ToolsSims.GetFullName(self.TargetSimInfo))
 
 	@property
 	def TargetSimInfo (self) -> typing.Optional[sim_info.SimInfo]:
@@ -604,8 +618,11 @@ class DotInformation(Savable.SavableExtension):
 
 	def Load (self, simsSection: SectionBranched.SectionBranched) -> bool:
 		"""
-		Load the reproductive system's data from this saving section.
+		Load the reproductive system's data from this saving section. An exception will be raised if no valid sim has been set for this dot object.
 		"""
+
+		if self.TargetSimID is None or self.TargetSimInfo is None:
+			raise Exception("Cannot load a dot information object with no target sim.")
 
 		if not isinstance(simsSection, SectionBranched.SectionBranched):
 			raise Exceptions.IncorrectTypeException(simsSection, "simsSection", (SectionBranched.SectionBranched,))
@@ -614,7 +631,11 @@ class DotInformation(Savable.SavableExtension):
 		operationSuccessful = True  # type: bool
 
 		try:
-			dotInformationData = simsSection.GetValue(str(self.TargetSimID), DotSavingKey, default = dict())
+			dotInformationData = simsSection.GetValue(str(self.TargetSimID), DotSavingKey, default = None)
+
+			if dotInformationData is None:
+				Debug.Log("'%s' has had a dot information object created for the first time, or at least, they had no saved data in the loaded save file.\n%s" % (ToolsSims.GetFullName(self.TargetSimInfo), operationInformation), self.HostNamespace, Debug.LogLevels.Info, group = self.HostNamespace, owner = __name__)
+				dotInformationData = dict()
 
 			if not isinstance(dotInformationData, dict):
 				Debug.Log("Incorrect type in dot information data with the section key.\n" + operationInformation + "\n" + Exceptions.GetIncorrectTypeExceptionText(dotInformationData, "DotInformationData", (dict,)), self.HostNamespace, Debug.LogLevels.Warning, group = self.HostNamespace, owner = __name__)
@@ -743,6 +764,9 @@ def CreateDotInformation (targetSimInfo: sim_info.SimInfo) -> DotInformation:
 	"""
 	Create a new set of dot information for the target sim. If such information already exists it will be replaced with the new one.
 	"""
+
+	if not isinstance(targetSimInfo, sim_info.SimInfo):
+		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
 
 	targetDotInformation = DotInformation(targetSimInfo)  # type: DotInformation
 	_RegisterDotInformation(targetSimInfo.id, targetDotInformation)

@@ -14,11 +14,18 @@ class WoohooSafetyMethodUseSetting(SettingsBase.Setting):
 		if not isinstance(lastChangeVersion, Version.Version) and lastChangeVersion is not None:
 			raise Exceptions.IncorrectTypeException(lastChangeVersion, "lastChangeVersion", (Version.Version, "None"))
 
-		for methodID, usingMethod in value.items():  # type: int, bool
+		for methodID, usingMethod in value.items():  # type: typing.Union[int, str], bool
+			if isinstance(methodID, str):
+				try:
+					methodID = int(methodID)
+				except ValueError as e:
+					raise ValueError("Cannot convert the method id value '%s' to integer." % methodID) from e
+
 			if not isinstance(methodID, int):
 				raise Exceptions.IncorrectTypeException(methodID, "value<Key>", (int,))
 
 			if not isinstance(usingMethod, int):
 				raise Exceptions.IncorrectTypeException(usingMethod, "value[%s]" % methodID, (bool,))
-
+	
 		return value
+		

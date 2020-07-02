@@ -11,6 +11,8 @@ from NeonOcean.S4.Main.Tools import Events, Exceptions, Python, Sims as ToolsSim
 from sims import sim_info
 
 class Ovum(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self):
 		super().__init__()
 

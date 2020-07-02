@@ -125,6 +125,9 @@ class DotHandler(HandlersBase.HandlerBase):
 			if dotInformation.TimeSinceCycleStart is None:
 				cycleTracker = self.HandlingSystem.GetTracker(FemalesShared.CycleTrackerIdentifier)  # type: typing.Optional[CycleTracker.CycleTracker]
 
+				if cycleTracker.CurrentCycle is None:
+					return
+
 				currentSimulation = self.HandlingSystem.Simulation  # type: typing.Optional[ReproductionShared.Simulation]
 
 				if currentSimulation is None:

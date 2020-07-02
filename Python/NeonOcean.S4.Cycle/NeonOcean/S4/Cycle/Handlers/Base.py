@@ -3,12 +3,14 @@ from __future__ import annotations
 import abc
 import typing
 
-from NeonOcean.S4.Cycle import ReproductionShared
+from NeonOcean.S4.Cycle import ReproductionShared, This
 from NeonOcean.S4.Main.Tools import Classes, Exceptions, Savable
 
 _handlerTypes = list()  # type: typing.List[typing.Type[HandlerBase]]
 
 class HandlerBase(abc.ABC, Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, handlingSystem: ReproductionShared.ReproductiveSystem):
 		if not isinstance(handlingSystem, ReproductionShared.ReproductiveSystem):
 			raise Exceptions.IncorrectTypeException(handlingSystem, "handlingSystem", (ReproductionShared.ReproductiveSystem,))

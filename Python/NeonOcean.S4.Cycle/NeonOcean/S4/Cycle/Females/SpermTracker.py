@@ -189,7 +189,7 @@ class SpermTracker(ReproductionShared.TrackerBase):
 		super()._PrepareForSimulation(simulation)
 
 		simulation.RegisterPhase(
-			ReproductionShared.SimulationPhase(-20, self._SpermSimulationPhase)
+			ReproductionShared.SimulationPhase(25, self._SpermSimulationPhase)
 		)
 
 	def _GetNextReproductiveTimeMultiplier (self) -> float:

@@ -4,10 +4,13 @@ import random
 import typing
 import copy
 
+from NeonOcean.S4.Cycle import This
 from NeonOcean.S4.Main.Tools import Exceptions, Savable
 from sims4.tuning import tunable
 
 class Option(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, identifier: str, weight: float, weightOffset: float = 0):
 		"""
 		An option for a probability object to select.
@@ -187,6 +190,8 @@ class OptionWeightAdjuster:
 		adjustingOption.WeightOffset = adjustedOffset
 
 class Probability(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, options: typing.Union[typing.List[Option], typing.Tuple[Option, ...]]):
 		"""
 		An object to randomly select from a set of options.

@@ -77,7 +77,7 @@ def _ClearSperm (targetSimHandler: argument_helpers.RequiredTargetParam, _connec
 		if targetSimSystem is None:
 			return
 
-		targetSimSpermTracker = targetSimSystem.GetTracker(FemalesShared.SpermTrackerIdentifier)
+		targetSimSpermTracker = targetSimSystem.GetTracker(FemalesShared.SpermTrackerIdentifier)  # type: typing.Any
 
 		if targetSimSpermTracker is None:
 			return
@@ -102,7 +102,7 @@ def _AddOvum (targetSimHandler: argument_helpers.RequiredTargetParam, _connectio
 		if targetSimSystem is None:
 			return
 
-		targetSimOvumTracker = targetSimSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)
+		targetSimOvumTracker = targetSimSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)  # type: typing.Any
 
 		if targetSimOvumTracker is None:
 			return
@@ -127,7 +127,7 @@ def _ClearOva (targetSimHandler: argument_helpers.RequiredTargetParam, clearFert
 		if targetSimSystem is None:
 			return
 
-		targetSimOvumTracker = targetSimSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)
+		targetSimOvumTracker = targetSimSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)  # type: typing.Any
 
 		if targetSimOvumTracker is None:
 			return

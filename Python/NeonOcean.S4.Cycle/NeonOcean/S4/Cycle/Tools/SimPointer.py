@@ -4,10 +4,13 @@ import typing
 
 import game_services
 import services
+from NeonOcean.S4.Cycle import This
 from NeonOcean.S4.Main.Tools import Exceptions, Savable
 from sims import sim_info, sim_info_manager
 
 class SimPointer(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self):
 		super().__init__()
 
@@ -118,6 +121,8 @@ def CreatePointerFor (simInfo: sim_info.SimInfo) -> SimPointer:
 # 	Everything = Name | Basic | Genetic | Appearance | Traits  # type: InformationCategories
 #
 # class SimPointer(Savable.SavableExtension):
+#	HostNamespace = This.Mod.Namespace
+#
 # 	CreationSource = This.Mod.Namespace + "-Sim_Pointer"  # type: str
 #
 # 	def __init__ (self):

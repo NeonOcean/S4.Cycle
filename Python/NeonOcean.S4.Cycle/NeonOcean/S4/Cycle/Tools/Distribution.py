@@ -11,6 +11,8 @@ from NeonOcean.S4.Main.Tools import Exceptions, Python, Savable
 from sims4.tuning import tunable
 
 class NormalDistribution(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, mean: float = 0, standardDeviation: float = 0):
 		"""
 		A type for storing a normal distribution's average and standard deviation in one convenient object.

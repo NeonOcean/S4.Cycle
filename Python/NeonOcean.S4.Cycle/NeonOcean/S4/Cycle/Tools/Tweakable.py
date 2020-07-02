@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import typing
 
+from NeonOcean.S4.Cycle import This
 from NeonOcean.S4.Main.Tools import Exceptions, Savable
 
 class TweakableBoolean(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, value: bool):
 		if not isinstance(value, bool):
 			raise Exceptions.IncorrectTypeException(value, "value", (bool,))
@@ -61,6 +64,8 @@ class TweakableBoolean(Savable.SavableExtension):
 		tweakableCopy._locked = self._locked
 
 class TweakableInteger(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, value: int):
 		if not isinstance(value, int):
 			raise Exceptions.IncorrectTypeException(value, "value", (int,))
@@ -160,6 +165,8 @@ class TweakableInteger(Savable.SavableExtension):
 		tweakableCopy._lowerBound = self._lowerBound
 
 class TweakableRealNumber(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, value: typing.Union[float, int]):
 		if not isinstance(value, (float, int)):
 			raise Exceptions.IncorrectTypeException(value, "value", (float, int))

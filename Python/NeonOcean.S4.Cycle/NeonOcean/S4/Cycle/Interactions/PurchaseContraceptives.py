@@ -45,6 +45,11 @@ class _PurchaseWithInteraction(Dependent.DependentExtension, Events.EventsExtens
 			return dict()
 
 	def __init_subclass__ (cls, *args, **kwargs):
+		if cls._additional_tests is not None:
+			for additionalTest in reversed(cls._additional_tests):
+				if isinstance(additionalTest, cls._InteractionEnabledTest):
+					return
+
 		cls.add_additional_test(cls._InteractionEnabledTest())
 
 	@property

@@ -11,6 +11,8 @@ from NeonOcean.S4.Main.Tools import Events, Exceptions, Python, Sims as ToolsSim
 from sims import sim_info
 
 class Sperm(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	# TODO Track the location of sperm / the sperm would decay quicker or slower based on location.
 
 	LifeSpanDeviationLimit = 3  # type: int  # All sperm cells will be instantly killed if they live this many standard deviations above the average lifespan.

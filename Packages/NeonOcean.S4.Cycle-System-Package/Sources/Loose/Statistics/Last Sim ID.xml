@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Statistics_Last_Sim_ID" s="9391266768967019788" i="statistic" m="statistics.statistic" c="Statistic">
+	<T n="max_value_tuning">18446744073709551615</T>
+	<T n="min_value_tuning">0</T>
+	<U n="initial_tuning">
+		<T n="_initial_value">0</T>
+		<T n="_use_stat_value_on_init">True</T>
+	</U>
+</I>

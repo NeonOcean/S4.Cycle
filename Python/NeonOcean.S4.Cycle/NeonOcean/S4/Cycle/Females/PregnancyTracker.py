@@ -458,7 +458,7 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		self.ResetPregnancyVisualsIfAppropriate()
 
 	# noinspection PyUnusedLocal
-	def _PregnancyTrackerSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:
+	def _PregnancyVisualsSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:
 		if self.IsPregnant:
 			self.SetPregnancyVisualsIfAppropriate()
 		else:
@@ -468,7 +468,7 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		super()._PrepareForSimulation(simulation)
 
 		simulation.RegisterPhase(
-			ReproductionShared.SimulationPhase(0, self._PregnancyTrackerSimulationPhase)
+			ReproductionShared.SimulationPhase(-30, self._PregnancyVisualsSimulationPhase)
 		)
 
 	def _GetNextReproductiveTimeMultiplier (self) -> float:

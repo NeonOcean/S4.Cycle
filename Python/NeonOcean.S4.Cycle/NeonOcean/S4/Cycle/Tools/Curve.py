@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import typing
 
+from NeonOcean.S4.Cycle import This
 from NeonOcean.S4.Main.Tools import Exceptions, Savable
 from sims4.tuning import tunable
 
 class CurvePoint(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	def __init__ (self, x: typing.Union[float, int] = 0, y: typing.Union[float, int] = 0):
 		super().__init__()
 
@@ -44,6 +47,8 @@ class CurvePoint(Savable.SavableExtension):
 		return "(%s, %s)" % (self.X, self.Y)
 
 class Curve(Savable.SavableExtension):
+	HostNamespace = This.Mod.Namespace
+
 	SecantMethodMaxIterations = 15
 
 	def __init__ (self, points: typing.Union[typing.Tuple[CurvePoint, ...], typing.List[CurvePoint]] = None):

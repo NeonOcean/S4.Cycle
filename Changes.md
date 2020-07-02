@@ -1,4 +1,15 @@
-## v1.0.1 (June 24, 2020)
+## v1.1.1 (July 2, 2020)
+
+### Performance Improvements
+- Improved load times in heavily modded games.
+
+### Fixed bugs
+- Changing whether or not a sim should use condoms will no longer cause minor loading errors.
+
+### Other Improvements
+- Added system to try to always remember which sim is which, even if another mod goes and changes their sim id.
+
+## v1.1.0 (June 24, 2020)
 
 ### Fixed bugs
 - It is now no longer impossible to get pregnant after saving once.

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import copy
 import random
 import typing
+import copy
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, This
 from NeonOcean.S4.Cycle.Buffs import Menstrual as BuffsMenstrual, Shared as BuffsShared
@@ -11,9 +11,10 @@ from NeonOcean.S4.Cycle.Females import CycleTracker, Shared as FemalesShared
 from NeonOcean.S4.Cycle.Females.Cycle import Menstrual as CycleMenstrual, Shared as CycleShared
 from NeonOcean.S4.Main import Debug, LoadingShared
 from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Types
+from NeonOcean.S4.Cycle.Tools import Probability
 
 if typing.TYPE_CHECKING:
-	from NeonOcean.S4.Cycle.Tools import Probability, Distribution
+	from NeonOcean.S4.Cycle.Tools import Distribution
 	from buffs import buff
 
 class MenstrualEffect(EffectsBase.EffectBase):
@@ -23,10 +24,17 @@ class MenstrualEffect(EffectsBase.EffectBase):
 		self.BuffAddedEvent = Events.EventHandler()
 		self.BuffRemovedEvent = Events.EventHandler()
 
-		self._buffRarity = copy.copy(self.MenstruationEffectGuide.BuffRarity)  # type: Probability.Probability
+		self._buffRarity = None  # type: typing.Optional[Probability.Probability]
 		self._buffCoolDown = None  # type: typing.Optional[float]
 
-		self.RegisterSavableAttribute(Savable.StaticSavableAttributeHandler("BuffRarity", "_buffRarity"))
+		self.RegisterSavableAttribute(Savable.DynamicSavableAttributeHandler(
+			"BuffRarity",
+			"_buffRarity",
+			lambda: Probability.Probability(list()),
+			lambda: None,
+			nullable = True
+		))
+
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("BuffCoolDown", "_buffCoolDown", None))
 
 	# noinspection PyMethodParameters
@@ -99,7 +107,7 @@ class MenstrualEffect(EffectsBase.EffectBase):
 		return BuffsMenstrual.GetAllMenstrualBuffs()
 
 	@property
-	def BuffRarity (self) -> Probability.Probability:
+	def BuffRarity (self) -> typing.Optional[Probability.Probability]:
 		"""
 		A probability object to randomly select the rarity of the next buff
 		"""
@@ -199,6 +207,9 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 		return matchingMenstrualBuffs
 
+	def _SetupBuffRarity (self) -> None:
+		self._buffRarity = copy.copy(self.MenstruationEffectGuide.BuffRarity)
+
 	def _ApplyBuffCoolDown (self, buffRarity: BuffsShared.BuffRarity) -> None:
 		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
 
@@ -227,6 +238,9 @@ class MenstrualEffect(EffectsBase.EffectBase):
 		if optionAdjusters is None:
 			return
 
+		if self.BuffRarity is None:
+			self._SetupBuffRarity()
+
 		for optionIdentifier, optionAdjuster in optionAdjusters.items():  # type: str, Probability.OptionWeightAdjuster
 			rarityOption = self.BuffRarity.GetOption(optionIdentifier)  # type: typing.Optional[Probability.Option]
 
@@ -237,6 +251,9 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 	def _ApplyAbstainedRarityOffset (self) -> None:
 		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
+
+		if self.BuffRarity is None:
+			self._SetupBuffRarity()
 
 		for optionIdentifier, optionAdjuster in effectGuide.AbstainedBuffRarityOffset.items():  # type: str, Probability.OptionWeightAdjuster
 			rarityOption = self.BuffRarity.GetOption(optionIdentifier)  # type: typing.Optional[Probability.Option]
@@ -287,6 +304,9 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 			if self.BuffCoolDown <= 0:
 				self.BuffCoolDown = None
+
+		if self.BuffRarity is None:
+			self._SetupBuffRarity()
 
 		for buffRarityOption in self.BuffRarity.Options:  # type: Probability.Option
 			if buffRarityOption.WeightOffset == 0:

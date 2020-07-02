@@ -27,7 +27,6 @@ class CycleTracker(ReproductionShared.TrackerBase):
 		self.CycleStartTestingEvent += self._CycleStartTestingCallback
 		self.CycleAbortTestingEvent += self._CycleAbortTestingCallback
 
-		self.DoneInitialSetup = False
 		self.CompletedInitialCycle = False
 		self.CompletedFirstCycle = False
 
@@ -43,7 +42,6 @@ class CycleTracker(ReproductionShared.TrackerBase):
 		encodeLastCycleCompletionReason = lambda value: value.name if value is not None else None
 		decodeLastCycleCompletionReason = lambda valueString: Parse.ParsePythonEnum(valueString, CycleShared.CompletionReasons) if valueString is not None else None
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("DoneInitialSetup", "DoneInitialSetup", self.DoneInitialSetup, requiredSuccess = False))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("CompletedInitialCycle", "CompletedInitialCycle", self.CompletedInitialCycle, requiredSuccess = False))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("CompletedFirstCycle", "CompletedFirstCycle", self.CompletedFirstCycle, requiredSuccess = False))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("CycleStartTestingSeed", "CycleStartTestingSeed", self.CycleStartTestingSeed, requiredSuccess = False))
@@ -166,21 +164,6 @@ class CycleTracker(ReproductionShared.TrackerBase):
 			raise Exceptions.IncorrectTypeException(value, "CycleCompletedEvent", (Events.EventHandler,))
 
 		self._cycleCompletedEvent = value
-
-	@property
-	def DoneInitialSetup (self) -> bool:
-		"""
-		Whether or not we have done the work necessary for a brand new cycle tracker instance.
-		"""
-
-		return self._doneInitialSetup
-
-	@DoneInitialSetup.setter
-	def DoneInitialSetup (self, value) -> None:
-		if not isinstance(value, bool):
-			raise Exceptions.IncorrectTypeException(value, "DoneInitialSetup", (bool,))
-
-		self._doneInitialSetup = value
 
 	@property
 	def CompletedInitialCycle (self) -> bool:
@@ -433,9 +416,13 @@ class CycleTracker(ReproductionShared.TrackerBase):
 	def Verify (self) -> None:
 		replanSimulation = False  # type: bool
 
-		if self.CurrentCycle is not None:
+		if not self.CompletedInitialCycle and not self.RunningInitialCycle:
+			self._SetInitialCycle()
+			replanSimulation = True
+		elif self.CurrentCycle is not None:
 			if self.CurrentCycle.Completed or self.DoCycleAbortTesting().AbortCycle.Value:
 				self.CurrentCycle = None
+				replanSimulation = True
 
 		if replanSimulation and self.TrackingSystem.Simulating:
 			self.TrackingSystem.Simulation.NeedToPlan = True
@@ -453,10 +440,7 @@ class CycleTracker(ReproductionShared.TrackerBase):
 	def _Setup (self) -> None:
 		super()._Setup()
 
-		if not self.DoneInitialSetup:
-			self._DoInitialSetup()
-
-	def _DoInitialSetup (self) -> None:
+	def _SetInitialCycle (self) -> None:
 		if self.CompletedInitialCycle:
 			Debug.Log("Doing initial setup despite such work having already been completed.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 
@@ -491,8 +475,6 @@ class CycleTracker(ReproductionShared.TrackerBase):
 					ovumTracker.ReleaseOvum(releasedOvum)
 
 			self.CurrentCycle = initialCycle
-
-		self.DoneInitialSetup = True
 
 	# noinspection PyUnusedLocal
 	def _CycleSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:

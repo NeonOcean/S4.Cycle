@@ -33,6 +33,12 @@ class DebugExtension:
 	def __init_subclass__ (cls, *args, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 
+		if hasattr(cls, "_additional_tests"):
+			if cls._additional_tests is not None:
+				for additionalTest in reversed(cls._additional_tests):
+					if isinstance(additionalTest, DebugEnabledTest):
+						return
+
 		if hasattr(cls, "add_additional_test"):
 			cls.add_additional_test(DebugEnabledTest())
 

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import random
 import sys
+import time
 import typing
 
 from NeonOcean.S4.Cycle import ReproductionShared, Saving, This
@@ -13,6 +15,9 @@ RegisteredReproductiveSystemEvent = Events.EventHandler()  # type: Events.EventH
 UnregisteredReproductiveSystemEvent = Events.EventHandler()  # type: Events.EventHandler #The event arguments will be of the type RegistrationChangedArguments for both of these.
 
 _reproductiveSystems = dict()  # type: typing.Dict[sim_info.SimInfo, ReproductionShared.ReproductiveSystem]
+
+_fullUpdateTimes = list()  # type: typing.List[float]
+_individualUpdateTimes = list()  # type: typing.List[float]
 
 # TODO let the reset interaction to reset the save.
 
@@ -50,7 +55,7 @@ def UnregisterReproductiveSystem (reproductiveSystem: ReproductionShared.Reprodu
 
 	InvokeUnregisteredReproductiveSystemEvent(reproductiveSystem)
 
-def InitiateReproductiveSystem (simInfo: sim_info.SimInfo) -> ReproductionShared.ReproductiveSystem: #TODO make this replace instead.
+def InitiateReproductiveSystem (simInfo: sim_info.SimInfo) -> ReproductionShared.ReproductiveSystem:
 	"""
 	Create a blank reproductive system for this sim. If one already exists the existing one will be returned as opposed of creating a new one.
 	:param simInfo: The target sim's info.
@@ -244,9 +249,34 @@ def UpdateSystems (reproductiveSystems: typing.Optional[typing.Iterable[Reproduc
 	if reproductiveSystems is None:
 		reproductiveSystems = GetAllSystems(automaticallyUpdate = False)
 
+	if len(reproductiveSystems) == 0:
+		return
+
+	updateTimedRoll = random.random()  # type: float
+	updateTimedProbability = 0.125  # type: float
+
+	maximumSavedUpdateTimes = 200  # type: int
+
+	if len(_fullUpdateTimes) == 0:
+		updateTimed = True
+	else:
+		updateTimed = len(_fullUpdateTimes) != maximumSavedUpdateTimes and updateTimedRoll <= updateTimedProbability  # type: bool
+
+	if updateTimed:
+		fullUpdateStartTime = time.time()  # type: typing.Optional[float]
+		chosenTimedSystem = random.choice(reproductiveSystems)  # type: typing.Optional[ReproductionShared.ReproductiveSystem]
+	else:
+		fullUpdateStartTime = None  # type: typing.Optional[float]
+		chosenTimedSystem = None  # type: typing.Optional[ReproductionShared.ReproductiveSystem]
+
 	for reproductiveSystem in reproductiveSystems:  # type: ReproductionShared.ReproductiveSystem
 		reportLockIdentifier = __name__ + ":" + str(Python.GetLineNumber())  # type: str
 		reportLockReference = reproductiveSystem
+
+		if updateTimed and reproductiveSystem is chosenTimedSystem:
+			individualUpdateStartTime = time.time()  # type: typing.Optional[float]
+		else:
+			individualUpdateStartTime = None  # type: typing.Optional[float]
 
 		try:
 			if reproductiveSystem.ShouldUpdate:
@@ -255,6 +285,12 @@ def UpdateSystems (reproductiveSystems: typing.Optional[typing.Iterable[Reproduc
 			Debug.Log("Failed to update a reproductive system\n." + reproductiveSystem.DebugInformation, This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = reportLockIdentifier, lockReference = reportLockReference)
 		else:
 			Debug.Unlock(reportLockIdentifier, reportLockReference)
+
+		if individualUpdateStartTime is not None:
+			_individualUpdateTimes.append(time.time() - individualUpdateStartTime)
+
+	if fullUpdateStartTime is not None:
+		_fullUpdateTimes.append(time.time() - fullUpdateStartTime)
 
 def SimulateSystems (ticks: int, reproductiveSystems: typing.Optional[typing.Iterable[ReproductionShared.ReproductiveSystem]] = None) -> None:
 	"""
