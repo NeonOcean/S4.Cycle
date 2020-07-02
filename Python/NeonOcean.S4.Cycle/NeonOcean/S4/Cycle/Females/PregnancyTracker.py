@@ -5,6 +5,7 @@ import typing
 import services
 from NeonOcean.S4.Cycle import Events as CycleEvents, References, ReproductionShared, This
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
+from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
 from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Types
 from protocolbuffers import PersistenceBlobs_pb2
@@ -24,6 +25,8 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 
 		self._nonPregnantBellyModifier = 0 # type: float
 		self._pregnancyVisualsActive = False  # type: bool
+
+		self.PregnancyStartedEvent += self._PregnancyStartedCallback
 
 	# noinspection PyMethodParameters
 	@Classes.ClassProperty
@@ -481,6 +484,16 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 	# noinspection PyUnusedLocal
 	def _TrackerRemovedCallback (self, owner: ReproductionShared.ReproductiveSystem, eventArguments: CycleEvents.TrackerAddedArguments) -> None:
 		self._UnsetTrackerCallbacks(eventArguments.Tracker)
+
+	# noinspection PyUnusedLocal
+	def _PregnancyStartedCallback(self, owner: PregnancyTracker, eventArguments: CycleEvents.PregnancyStartedArguments) -> None:
+		cycleTracker = self.TrackingSystem.GetTracker(FemalesShared.CycleTrackerIdentifier)  # type: typing.Any
+
+		if cycleTracker is None:
+			return
+
+		if cycleTracker.CurrentCycle is not None:
+			cycleTracker.CurrentCycle.End(CycleShared.CompletionReasons.Pregnancy)
 
 	# noinspection PyUnusedLocal
 	def _CycleStartTestingCallback (self, owner: ReproductionShared.TrackerBase, eventArguments: CycleEvents.CycleStartTestingArguments) -> None:

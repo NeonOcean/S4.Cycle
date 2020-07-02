@@ -472,6 +472,9 @@ class Sperm(Savable.SavableExtension):
 	def _PlanSimulationInternal (self, simulation: ReproductionShared.Simulation, reproductiveTimeMultiplier: typing.Union[float, int]) -> None:
 		decayTick = ReproductionShared.ReproductiveMinutesToTicks(self.TimeRemaining, reproductiveTimeMultiplier)  # type: int
 
+		if decayTick <= 0:
+			decayTick = 1
+
 		if simulation.RemainingTicks >= decayTick:
 			simulation.Schedule.AddPoint(decayTick)
 

@@ -505,6 +505,9 @@ class Ovum(Savable.SavableExtension):
 		if not self.Fertilized:
 			decayTick = ReproductionShared.ReproductiveMinutesToTicks(self.TimeRemaining, reproductiveTimeMultiplier)  # type: int
 
+			if decayTick <= 0:
+				decayTick = 1
+
 			if simulation.RemainingTicks >= decayTick:
 				simulation.Schedule.AddPoint(decayTick)
 		else:

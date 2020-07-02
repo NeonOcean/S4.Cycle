@@ -420,25 +420,19 @@ class CycleTracker(ReproductionShared.TrackerBase):
 			self._SetInitialCycle()
 			replanSimulation = True
 		elif self.CurrentCycle is not None:
-			if self.CurrentCycle.Completed or self.DoCycleAbortTesting().AbortCycle.Value:
+			if self.CurrentCycle.Completed:
 				self.CurrentCycle = None
+				replanSimulation = True
+			elif self.DoCycleAbortTesting().AbortCycle.Value:
+				self.CurrentCycle.End(CycleShared.CompletionReasons.Unknown)
+
+				if self.CurrentCycle is not None:
+					self.CurrentCycle = None
+
 				replanSimulation = True
 
 		if replanSimulation and self.TrackingSystem.Simulating:
 			self.TrackingSystem.Simulation.NeedToPlan = True
-
-	def _SetCycleCallbacks (self, cycle: CycleBase.CycleBase) -> None:
-		self._UnsetCycleCallbacks(cycle)
-
-		cycle.CompletedCallback = self._CurrentCycleCompletedCallback
-		cycle.ReleasedOvumCallback = self._CurrentCycleReleasedOvumCallback
-
-	def _UnsetCycleCallbacks (self, cycle: CycleBase.CycleBase) -> None:
-		cycle.CompletedCallback = None
-		cycle.ReleasedOvumCallback = None
-
-	def _Setup (self) -> None:
-		super()._Setup()
 
 	def _SetInitialCycle (self) -> None:
 		if self.CompletedInitialCycle:
@@ -475,6 +469,19 @@ class CycleTracker(ReproductionShared.TrackerBase):
 					ovumTracker.ReleaseOvum(releasedOvum)
 
 			self.CurrentCycle = initialCycle
+
+	def _SetCycleCallbacks (self, cycle: CycleBase.CycleBase) -> None:
+		self._UnsetCycleCallbacks(cycle)
+
+		cycle.CompletedCallback = self._CurrentCycleCompletedCallback
+		cycle.ReleasedOvumCallback = self._CurrentCycleReleasedOvumCallback
+
+	def _UnsetCycleCallbacks (self, cycle: CycleBase.CycleBase) -> None:
+		cycle.CompletedCallback = None
+		cycle.ReleasedOvumCallback = None
+
+	def _Setup (self) -> None:
+		super()._Setup()
 
 	# noinspection PyUnusedLocal
 	def _CycleSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:
@@ -605,3 +612,5 @@ class CycleTracker(ReproductionShared.TrackerBase):
 	def _CycleAbortTestingCallback (self, owner: CycleTracker, eventArguments: CycleEvents.CycleAbortTestingArguments) -> None:
 		if owner.IsTooYoung() or owner.IsTooOld():
 			eventArguments.AbortCycle.Value = True
+
+
