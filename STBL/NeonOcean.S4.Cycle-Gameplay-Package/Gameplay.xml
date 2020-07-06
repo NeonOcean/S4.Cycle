@@ -10,6 +10,11 @@
 	<IdentifiersName>NeonOcean_S4_Cycle_Snippets_STBL_Gameplay_Identifiers</IdentifiersName>
 	<Entries>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Unpack.Display_Name</Identifier>
+			<Key>638122012</Key>
+			<English>Unpack</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Description</Identifier>
 			<Key>1059234707</Key>
 			<English>{0.SimFirstName} is experiencing cramping in their lower abdomen.</English>

@@ -39,7 +39,7 @@ class ReadInstructionsInteraction(Dependent.DependentExtension, Events.EventsExt
 	def __init_subclass__ (cls, *args, **kwargs):
 		try:
 			super().__init_subclass__(*args, **kwargs)
-			TakePregnancyTestInteractions.append(cls)
+			ReadInstructionsInteractions.append(cls)
 		except Exception as e:
 			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 			raise e

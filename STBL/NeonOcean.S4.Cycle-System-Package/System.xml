@@ -212,6 +212,11 @@ Minimum: 0.035, Maximum: 2</English>
 			<English>Woohoo Is Always Safe</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mods.WickedWhims.Disabled_Because_Installed_Tooltip</Identifier>
+			<Key>1436152463</Key>
+			<English>Disabled because WickedWhims is installed.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Boolean.Enabled_Disabled.False</Identifier>
 			<Key>2488958822</Key>
 			<English>Disabled</English>

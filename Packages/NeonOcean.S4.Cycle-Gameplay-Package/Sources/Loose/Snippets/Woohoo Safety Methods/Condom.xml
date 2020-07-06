@@ -25,6 +25,57 @@
 					</U>
 				</V>
 			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062315</T>
+					</U>
+				</V>
+			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062316</T>
+					</U>
+				</V>
+			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062317</T>
+					</U>
+				</V>
+			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062318</T>
+					</U>
+				</V>
+			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062319</T>
+					</U>
+				</V>
+			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062320</T>
+					</U>
+				</V>
+			</L>
+			<L>
+				<V t="objectRequirement">
+					<U n="objectRequirement">
+						<T n="RequiredObject">11033454205624062321</T>
+					</U>
+				</V>
+			</L>
+			
+			
 		</L>
 		<L n="PerformanceTypes">
 			<U>
@@ -74,12 +125,59 @@
 				</U>
 			</L>
 		</U>
-		<V n="UseReduction" t="inventoryStatistic">
-			<U n="inventoryStatistic">
-				<T n="TargetObject">14480569499002809959</T>
-				<T n="TargetStatistic">6354205262159876328<!--Commodity: NeonOcean_S4_Cycle_Statistics_Condom_Box_Count--></T>
+		<V n="UseReduction" t="options">
+			<U n="options">
+				<L n="Options">
+					<V t="inventoryStatistic">
+						<U n="inventoryStatistic">
+							<T n="TargetObject">14480569499002809959</T>
+							<T n="TargetStatistic">6354205262159876328<!--Commodity: NeonOcean_S4_Cycle_Statistics_Condom_Box_Count--></T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062315</T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062316</T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062317</T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062318</T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062319</T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062320</T>
+						</U>
+					</V>
+					<V t="inventoryObject">
+						<U n="inventoryObject">
+							<T n="TargetObject">11033454205624062321</T>
+						</U>
+					</V>
+				</L>
 			</U>
 		</V>
 		<T n="PreferInseminatedUses">False</T>
+		<V n="HandleUseCommand" t="enabled">
+			<T n="enabled">neonocean.s4.cycle.woohoo_safety_methods.condom.handle_post_use</T>
+		</V>
+		<V n="HandlePostUseReduction" t="enabled">
+			<T n="enabled">neonocean.s4.cycle.woohoo_safety_methods.condom.handle_post_use_reduction</T>
+		</V>
 	</U>
 </I>

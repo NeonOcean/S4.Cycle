@@ -196,7 +196,7 @@ def _PregnancyCommodityWatcher (statisticTracker: base_statistic_tracker.BaseSta
 		if statisticType is not GamePregnancyTracker.PregnancyTracker.PREGNANCY_COMMODITY_MAP.get(sim_info_types.Species.HUMAN, None):
 			return
 
-		statistic = statisticTracker.get_statistic(statisticType)  # type: base_statistic.BaseStatistic
+		statistic = statisticTracker.get_statistic(statisticType, add = True)  # type: base_statistic.BaseStatistic
 		_ApplySettingsPregnancyStatistic(statistic)
 	except:
 		Debug.Log("Failed to handle statistic change.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))

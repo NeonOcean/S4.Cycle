@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Condom_Box_Unpack" s="15810318143883996565" i="interaction" m="NeonOcean.S4.Cycle.Interactions.CondomBox" c="UnpackInteraction">
+	<T n="display_name">638122012</T>
+	<V n="pie_menu_icon" t="enabled">
+		<V n="enabled" t="resource_key">
+			<U n="resource_key">
+				<T n="key" p="InGame\UI\Icons\PieMenu\Interactions\icon_pieMenu_immediateInteraction.png">2f7d0004:00000000:25eea5cdba6a6fd6</T>
+			</U>
+		</V>
+	</V>
+	<V n="_saveable" t="disabled" />
+	<T n="allow_from_sim_inventory">True</T>
+	<L n="basic_extras">>
+		<V t="do_command">
+			<U n="do_command">
+				<L n="arguments">
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">Actor</E>
+						</U>
+					</V>
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">Object</E>
+						</U>
+					</V>
+				</L>
+				<T n="command">neonocean.s4.cycle.condom_box.add_unpacked_wicked_whims_condoms</T>
+			</U>
+		</V>
+		<V t="destroy_object">
+			<U n="destroy_object">
+				<V n="objects_to_destroy" t="from_participant">
+					<U n="from_participant">
+						<E n="participant">Object</E>
+					</U>
+				</V>
+			</U>
+		</V>
+	</L>
+</I>

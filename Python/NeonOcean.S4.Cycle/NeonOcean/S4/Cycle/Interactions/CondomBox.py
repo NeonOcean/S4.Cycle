@@ -4,18 +4,21 @@ import typing
 
 import interactions
 import services
-from NeonOcean.S4.Cycle import Safety, This
+import snippets
+from NeonOcean.S4.Cycle import This
+from NeonOcean.S4.Cycle.Safety import WoohooSafety
+from NeonOcean.S4.Cycle.Mods import WickedWhims
 from NeonOcean.S4.Main import Debug, This
-from NeonOcean.S4.Main.Interactions.Support import Events, Dependent, Events, Registration
+from NeonOcean.S4.Main.Interactions.Support import Dependent, Events, Registration, DisableInteraction
 from event_testing import results, test_base
 from interactions.base import immediate_interaction
-from sims import sim_info, sim
+from sims import sim, sim_info
 from sims4 import resources
 from sims4.tuning import tunable
-import snippets
 
 StartUsingInteractions = list()  # type: typing.List[typing.Type[StartUsingInteraction]]
 StopUsingInteractions = list()  # type: typing.List[typing.Type[StopUsingInteraction]]
+UnpackInteractions = list()  # type: typing.List[typing.Type[UnpackInteraction]]
 
 class _ChangeUseStateInteraction(Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, immediate_interaction.ImmediateSuperInteraction):
 	class MethodUseTest(test_base.BaseTest):
@@ -31,11 +34,11 @@ class _ChangeUseStateInteraction(Dependent.DependentExtension, Events.EventsExte
 				Debug.Log("Method use test recived an empty actors parameter.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 				return results.TestResult(False)
 
-			if not isinstance(affordance.WoohooSafetyMethod.value, Safety.WoohooSafetyMethod):
+			if not isinstance(affordance.WoohooSafetyMethod.value, WoohooSafety.WoohooSafetyMethod):
 				Debug.Log("Change use state interaction value 'WoohooSafetyMethod' did not point to a valid woohoo safety method snippet.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 				return results.TestResult(False)
 
-			if Safety.IsUsingWoohooSafetyMethod(affordance.WoohooSafetyMethod.value, actors[0]):
+			if WoohooSafety.IsUsingWoohooSafetyMethod(affordance.WoohooSafetyMethod.value, actors[0]):
 				if affordance.EnablingMethodUse:
 					return results.TestResult(False)
 			else:
@@ -62,12 +65,15 @@ class _ChangeUseStateInteraction(Dependent.DependentExtension, Events.EventsExte
 	def __init_subclass__ (cls, *args, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 
+		hasMethodUseTest = False  # type: bool
+
 		if cls._additional_tests is not None:
 			for additionalTest in reversed(cls._additional_tests):
 				if isinstance(additionalTest, cls.MethodUseTest):
-					return
+					hasMethodUseTest = True
 
-		cls.add_additional_test(cls.MethodUseTest())
+		if not hasMethodUseTest:
+			cls.add_additional_test(cls.MethodUseTest())
 
 	def OnStarted (self) -> None:
 		actor = self.get_participant()
@@ -78,7 +84,7 @@ class _ChangeUseStateInteraction(Dependent.DependentExtension, Events.EventsExte
 		if isinstance(actor, sim.Sim):
 			actor = actor.sim_info
 
-		Safety.SetIsUsingWoohooSafetyMethod(self.WoohooSafetyMethod.value, actor, self.EnablingMethodUse)
+		WoohooSafety.SetIsUsingWoohooSafetyMethod(self.WoohooSafetyMethod.value, actor, self.EnablingMethodUse)
 
 class StartUsingInteraction(_ChangeUseStateInteraction):
 	def __init_subclass__ (cls, *args, **kwargs):
@@ -96,6 +102,28 @@ class StopUsingInteraction(_ChangeUseStateInteraction):
 		try:
 			super().__init_subclass__(*args, **kwargs)
 			StopUsingInteractions.append(cls)
+		except Exception as e:
+			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			raise e
+
+class UnpackInteraction(Dependent.DependentExtension, Events.EventsExtension, Registration.RegistrationExtension, immediate_interaction.ImmediateSuperInteraction):
+	EnablingMethodUse = False  # type: bool
+
+	def __init_subclass__ (cls, *args, **kwargs):
+		"""
+		Used when WickedWhims is installed.
+		"""
+
+		try:
+			super().__init_subclass__(*args, **kwargs)
+
+			if not WickedWhims.ModInstalled() or not WickedWhims.CyclePatchEnabled("AddUnpackCondomBoxInteraction"):
+				if cls._additional_tests is not None:
+					for additionalTest in reversed(cls._additional_tests):
+						if isinstance(additionalTest, DisableInteraction.DisabledInteractionTest):
+							return
+
+				cls.add_additional_test(DisableInteraction.DisabledInteractionTest())
 		except Exception as e:
 			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 			raise e

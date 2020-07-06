@@ -214,7 +214,7 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 
 		pregnancyCommodityType = gamePregnancyTracker.PREGNANCY_COMMODITY_MAP.get(self.TrackingSystem.SimInfo.species)  # type: typing.Type[commodity.Commodity]
 		pregnancyCommodityTracker = self.TrackingSystem.SimInfo.get_tracker(pregnancyCommodityType)  # type: commodity_tracker.CommodityTracker
-		pregnancyCommodity = pregnancyCommodityTracker.get_statistic(pregnancyCommodityType)  # type: commodity.Commodity
+		pregnancyCommodity = pregnancyCommodityTracker.get_statistic(pregnancyCommodityType, add = True)  # type: commodity.Commodity
 
 		pregnancyProgress = pregnancyCommodity.get_value() / pregnancyCommodity.max_value  # type: float
 

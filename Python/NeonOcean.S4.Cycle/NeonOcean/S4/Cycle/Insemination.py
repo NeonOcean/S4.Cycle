@@ -3,7 +3,8 @@ from __future__ import annotations
 import typing
 
 from sims import sim_info
-from NeonOcean.S4.Cycle import Reproduction, ReproductionShared, Safety
+from NeonOcean.S4.Cycle import Reproduction, ReproductionShared
+from NeonOcean.S4.Cycle.Safety import WoohooSafety
 from NeonOcean.S4.Cycle import Guides as CycleGuides
 from NeonOcean.S4.Cycle.Males import Sperm, Shared as MalesShared
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
@@ -14,7 +15,7 @@ def AutoInseminate (
 		sourceSimInfo: sim_info.SimInfo,
 		tryingForBaby: bool = True,
 		generateGenericSperm: bool = False,
-		woohooSafetyMethods: typing.Optional[typing.List[Safety.WoohooSafetyMethod]] = None,
+		woohooSafetyMethods: typing.Optional[typing.List[WoohooSafety.WoohooSafetyMethod]] = None,
 		arrivingSpermPercentage: typing.Optional[float] = None) -> None:
 
 	"""
@@ -51,10 +52,10 @@ def AutoInseminate (
 
 	if woohooSafetyMethods is not None:
 		for woohooSafetyMethodIndex in range(len(woohooSafetyMethods)):  # type: int
-			woohooSafetyMethod = woohooSafetyMethods[woohooSafetyMethodIndex]  # type: Safety.WoohooSafetyMethod
+			woohooSafetyMethod = woohooSafetyMethods[woohooSafetyMethodIndex]  # type: WoohooSafety.WoohooSafetyMethod
 
-			if not isinstance(woohooSafetyMethod, Safety.WoohooSafetyMethod):
-				raise Exceptions.IncorrectTypeException(woohooSafetyMethod, "woohooSafetyMethod[%s]" % woohooSafetyMethodIndex, (Safety.WoohooSafetyMethod, ))
+			if not isinstance(woohooSafetyMethod, WoohooSafety.WoohooSafetyMethod):
+				raise Exceptions.IncorrectTypeException(woohooSafetyMethod, "woohooSafetyMethod[%s]" % woohooSafetyMethodIndex, (WoohooSafety.WoohooSafetyMethod, ))
 
 	if not isinstance(arrivingSpermPercentage, float) and arrivingSpermPercentage is not None:
 		raise Exceptions.IncorrectTypeException(arrivingSpermPercentage, "arrivingSpermPercentage", (float, None))
@@ -86,14 +87,14 @@ def AutoInseminate (
 
 	if not tryingForBaby:
 		if woohooSafetyMethods is None:
-			woohooSafetyMethods = set()  # type: typing.Set[Safety.WoohooSafetyMethod]
+			woohooSafetyMethods = set()  # type: typing.Set[WoohooSafety.WoohooSafetyMethod]
 
-			woohooSafetyMethods.update(Safety.GetUsingWoohooSafetyMethods(inseminatedSimInfo))
-			woohooSafetyMethods.update(Safety.GetUsingWoohooSafetyMethods(sourceSimInfo))
+			woohooSafetyMethods.update(WoohooSafety.GetUsingWoohooSafetyMethods(inseminatedSimInfo))
+			woohooSafetyMethods.update(WoohooSafety.GetUsingWoohooSafetyMethods(sourceSimInfo))
 
-			woohooSafetyMethods = list(woohooSafetyMethods)  # type: typing.List[Safety.WoohooSafetyMethod]
+			woohooSafetyMethods = list(woohooSafetyMethods)  # type: typing.List[WoohooSafety.WoohooSafetyMethod]
 
-		methodPerformanceSelections = Safety.MethodPerformanceSelectionSet(woohooSafetyMethods)
+		methodPerformanceSelections = WoohooSafety.MethodPerformanceSelectionSet(woohooSafetyMethods)
 
 		if arrivingSpermPercentage is None:
 			arrivingSpermPercentage = methodPerformanceSelections.GenerateSpermArrivingPercentage()

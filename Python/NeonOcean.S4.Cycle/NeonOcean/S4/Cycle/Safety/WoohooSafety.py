@@ -15,7 +15,6 @@ from objects.components import inventory as ComponentsInventory, types as Compon
 from sims import sim, sim_info
 from sims4 import commands, resources
 from sims4.tuning import tunable
-from statistics import statistic
 
 if typing.TYPE_CHECKING:
 	from objects import game_object
@@ -37,11 +36,11 @@ class WoohooSafetyMethod(tunable.HasTunableSingletonFactory, tunable.AutoFactory
 
 	class ObjectRequirement(Requirement, tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit):
 		FACTORY_TUNABLES = {
-			"RequiredObject": tunable.TunableReference(description = "A sim must have this object in their inventory in order to meet this requirement.", manager = services.get_instance_manager(resources.Types.OBJECT)),
+			"RequiredObject": tunable.TunableReference(description = "A sim must have this object in their inventory in order to meet this requirement.", manager = services.get_instance_manager(resources.Types.OBJECT), pack_safe = True),
 			"RequiredObjectTests": tests.TunableTestSet(description = "A set of tests the object must pass in order to this requirement to be meet.")
 		}
 
-		RequiredObject: definition.Definition
+		RequiredObject: typing.Optional[definition.Definition]
 		RequiredObjectTests: tests.CompoundTestList
 
 		def RequirementMet (self, targetSim: sim.Sim) -> bool:
@@ -51,6 +50,9 @@ class WoohooSafetyMethod(tunable.HasTunableSingletonFactory, tunable.AutoFactory
 
 			if not isinstance(targetSim, sim.Sim):
 				raise Exceptions.IncorrectTypeException(targetSim, "targetSim", (sim.Sim,))
+
+			if self.RequiredObject is None:
+				return False
 
 			inventoryComponent = targetSim.get_component(ComponentsTypes.INVENTORY_COMPONENT)  # type: ComponentsInventory.InventoryComponent
 
@@ -250,97 +252,6 @@ class WoohooSafetyMethod(tunable.HasTunableSingletonFactory, tunable.AutoFactory
 		"""
 
 		if not isinstance(inseminatedSimInfo, sim_info.SimInfo) and inseminatedSimInfo is not None:
-			raise Exceptions.IncorrectTypeException(inseminatedSimInfo, "inseminatedSimInfo", (sim_info.SimInfo, ))
-
-		if not isinstance(inseminatedSimInfo, sim_info.SimInfo) and inseminatedSimInfo is not None:
-			raise Exceptions.IncorrectTypeException(inseminatedSimInfo, "inseminatedSimInfo", (sim_info.SimInfo, ))
-
-		if not isinstance(performanceType, str):
-			raise Exceptions.IncorrectTypeException(performanceType, "performanceType", (str, ))
-
-		if self.HandleUseCommand is not None:
-			methodGUID = self.GUID if self.GUID is not None else 0  # type: int
-			inseminatedSimID = inseminatedSimInfo.id if inseminatedSimInfo is not None else 0
-			sourceSimID = sourceSimInfo.id if sourceSimInfo is not None else 0
-
-			consoleCommand = self.HandleUseCommand + " " + str(methodGUID) + str(inseminatedSimID) + " " + str(sourceSimID) + " " + performanceType
-			commands.execute(consoleCommand, None)
-
-class LimitedUseWoohooSafetyMethod(WoohooSafetyMethod):
-	class UseReductionBase:
-		def RemoveUse (self, targetSimInfo: sim_info.SimInfo) -> bool:
-			"""
-			Remove one or more uses from this woohoo safety method.
-			:param targetSimInfo: The sim who we are removing a use of this safety method for.
-			:type targetSimInfo: sim_info.SimInfo
-			:return: Whether or not we could remove a use from the target sim.
-			:rtype: bool
-			"""
-
-			raise NotImplementedError()
-
-	class UseReductionInventoryStatistic(UseReductionBase, tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit):
-		FACTORY_TUNABLES = {
-			"TargetObject": tunable.TunableReference(description = "The type of object for which we should reduce the target statistic.", manager = services.get_instance_manager(resources.Types.OBJECT)),
-			"TargetStatistic": tunable.TunableReference(description = "The statistic that counts how many uses this woohoo method has available.", manager = services.get_instance_manager(resources.Types.STATISTIC)),
-		}
-
-		TargetObject: definition.Definition
-		TargetStatistic: typing.Type[statistic.Statistic]
-
-		def RemoveUse (self, targetSimInfo: sim_info.SimInfo) -> bool:
-			"""
-			Remove one or more uses from this woohoo safety method.
-			:param targetSimInfo: The sim who we are removing a use of this safety method for.
-			:type targetSimInfo: sim_info.SimInfo
-			:return: Whether or not we could remove a use from the target sim. This will return false if no matching object was found in the sim's
-			inventory or all match objects found were out of uses. This will always return false if the sim is not instanced; we cannot read the
-			inventory of sims not instanced.
-			:rtype: bool
-			"""
-
-			if not isinstance(targetSimInfo, sim_info.SimInfo):
-				raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
-
-			if not targetSimInfo.is_instanced():
-				return False
-
-			targetSim = targetSimInfo.get_sim_instance()  # type: sim.Sim
-
-			inventoryComponent = targetSim.get_component(ComponentsTypes.INVENTORY_COMPONENT)  # type: ComponentsInventory.InventoryComponent
-
-			if not inventoryComponent.has_item_with_definition(self.TargetObject):
-				return False
-
-			for matchingObject in inventoryComponent.get_items_with_definition_gen(self.TargetObject):  # type: game_object.GameObject
-				matchingStatistic = matchingObject.statistic_tracker.get_statistic(self.TargetStatistic)  # type: statistic.BaseStatistic
-				matchingStatisticValue = matchingStatistic.get_value()
-
-				if matchingStatisticValue <= 0:
-					continue
-
-				matchingStatistic.set_value(matchingStatisticValue - 1)
-				break
-
-			return True
-
-	FACTORY_TUNABLES = {
-		"UseReduction": tunable.TunableVariant(
-			inventoryStatistic = UseReductionInventoryStatistic.TunableFactory(),
-		),
-		"PreferInseminatedUses": tunable.Tunable(description = "If true, we will search the inseminated sim for uses to remove before the source sim.", tunable_type = bool, default = True)
-	}
-	#TODO used last (condom) message?
-
-	UseReduction: UseReductionBase
-	PreferInseminatedUses: bool
-
-	def HandlePostUse (self, inseminatedSimInfo: typing.Optional[sim_info.SimInfo], sourceSimInfo: typing.Optional[sim_info.SimInfo], performanceType: str) -> None:
-		"""
-		Handle the after effects of using this woohoo safety method.
-		"""
-
-		if not isinstance(inseminatedSimInfo, sim_info.SimInfo) and inseminatedSimInfo is not None:
 			raise Exceptions.IncorrectTypeException(inseminatedSimInfo, "inseminatedSimInfo", (sim_info.SimInfo,))
 
 		if not isinstance(inseminatedSimInfo, sim_info.SimInfo) and inseminatedSimInfo is not None:
@@ -349,15 +260,18 @@ class LimitedUseWoohooSafetyMethod(WoohooSafetyMethod):
 		if not isinstance(performanceType, str):
 			raise Exceptions.IncorrectTypeException(performanceType, "performanceType", (str,))
 
-		primaryReductionSimInfo = inseminatedSimInfo if self.PreferInseminatedUses else sourceSimInfo
-		secondaryReductionSimInfo = sourceSimInfo if self.PreferInseminatedUses else inseminatedSimInfo
+		if self.HandleUseCommand is not None:
+			methodGUID = self.GUID if self.GUID is not None else 0  # type: int
+			inseminatedSimID = inseminatedSimInfo.id if inseminatedSimInfo is not None else 0
+			sourceSimID = sourceSimInfo.id if sourceSimInfo is not None else 0
 
-		if primaryReductionSimInfo is not None and self.UseReduction.RemoveUse(primaryReductionSimInfo):
-			pass
-		elif secondaryReductionSimInfo is not None and self.UseReduction.RemoveUse(secondaryReductionSimInfo):
-			pass
+			try:
+				consoleCommand = " ".join((self.HandleUseCommand, str(methodGUID), str(inseminatedSimID), str(sourceSimID), performanceType))
+				commands.execute(consoleCommand, None)
+			except:
+				Debug.Log("Failed to call handle post use command for woohoo safety method '%s'." % str(self.GUID), This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
-		super().HandlePostUse(inseminatedSimInfo, sourceSimInfo, performanceType)
+from NeonOcean.S4.Cycle.Safety.LimitedUse import LimitedUseWoohooSafetyMethod
 
 class MethodPerformanceSelection:
 	def __init__ (self, woohooSafetyMethod: WoohooSafetyMethod, autoSelectPerformance: bool = True, autoSelectSeed: typing.Optional[int] = None):
@@ -404,6 +318,16 @@ class MethodPerformanceSelection:
 
 class MethodPerformanceSelectionSet(list):
 	def __init__ (self, woohooSafetyMethods: typing.List[WoohooSafetyMethod], autoSelectBaseSeed: typing.Optional[int] = None):
+		"""
+		An object to select woohoo safety method performance types and get the amount of sperm these performances allow to pass through.
+		:param woohooSafetyMethods: A list of woohoo safety methods. For each we will randomly select a performance type. Safety methods that cannot
+		be used because it cannot compound with another method will be filtered out.
+		:type woohooSafetyMethods: typing.List[WoohooSafetyMethod]
+		:param autoSelectBaseSeed: The base seed used to select the performance types. This will be combined with each woohoo safety method's
+		unique seed in order to randomly select a performance type for that method.
+		:type autoSelectBaseSeed: typing.Optional[int]
+		"""
+
 		if not isinstance(woohooSafetyMethods, typing.List):
 			raise Exceptions.IncorrectTypeException(woohooSafetyMethods, "woohooSafetyMethods", (typing.List,))
 
@@ -415,14 +339,29 @@ class MethodPerformanceSelectionSet(list):
 
 		performanceSelections = list()  # type: typing.List[MethodPerformanceSelection]
 
+		hasCompoundingMethod = False  # type: bool
+
 		for woohooSafetyMethodIndex in range(len(woohooSafetyMethods)):  # type: int
 			woohooSafetyMethod = woohooSafetyMethods[woohooSafetyMethodIndex]  # type: WoohooSafetyMethod
 
 			if not isinstance(woohooSafetyMethod, WoohooSafetyMethod):
 				raise Exceptions.IncorrectTypeException(woohooSafetyMethods, "woohooSafetyMethods[%s]" % woohooSafetyMethodIndex, (WoohooSafetyMethod,))
 
+			if woohooSafetyMethod.CompoundingMethod:
+				hasCompoundingMethod = True
+
+		for woohooSafetyMethodIndex in range(len(woohooSafetyMethods)):  # type: int
+			woohooSafetyMethod = woohooSafetyMethods[woohooSafetyMethodIndex]  # type: WoohooSafetyMethod
+
+			if hasCompoundingMethod and not woohooSafetyMethod.CompoundingMethod:
+				continue
+
 			autoSelectSeed = autoSelectBaseSeed + woohooSafetyMethod.GetUniqueSeed()
 			performanceSelections.append(MethodPerformanceSelection(woohooSafetyMethod, autoSelectSeed = autoSelectSeed))
+
+			if not hasCompoundingMethod:
+				# We have only been given a list of non compounding methods. Added the first of the list and no other because the rest can't compound with the first.
+				break
 
 		super().__init__(performanceSelections)
 
@@ -445,8 +384,6 @@ class MethodPerformanceSelectionSet(list):
 		else:
 			arrivingPercentage = 1  # type: float
 
-			countedSafetyMethod = False  # type: bool
-
 			for performanceSelectionIndex in range(len(self)):  # type: int
 				performanceSelection = self[performanceSelectionIndex]  # type: MethodPerformanceSelection
 
@@ -461,31 +398,8 @@ class MethodPerformanceSelectionSet(list):
 					Debug.Log("Performance selection had never selected a performance type.\n Woohoo Safety Method GUID: %s" % (str(woohooSafetyMethod.GUID)), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
 					continue
 
-				if not woohooSafetyMethod.CompoundingMethod:
-					continue
-
-				countedSafetyMethod = True
-
 				safetyMethodSeed = woohooSafetyMethod.GetUniqueSeed()
 				arrivingPercentage *= performanceTypeInfo.GenerateSpermArrivingPercentage(seed = generationBaseSeed + safetyMethodSeed)  # type: float
-
-			if not countedSafetyMethod:
-				for performanceSelection in self:  # type: MethodPerformanceSelection
-					if not isinstance(performanceSelection, MethodPerformanceSelection):
-						continue  # No need to log this, we would have already done so in the last loop.
-
-					woohooSafetyMethod = performanceSelection.WoohooSafetyMethod  # type: WoohooSafetyMethod
-					performanceTypeInfo = performanceSelection.SelectedPerformanceTypeInfo  # type: WoohooSafetyMethod.PerformanceTypeInfo
-
-					if performanceTypeInfo is None:
-						continue  # No need to log this, we would have already done so in the last loop.
-
-					if woohooSafetyMethod.CompoundingMethod:
-						continue
-
-					safetyMethodSeed = woohooSafetyMethod.GetUniqueSeed()
-					arrivingPercentage = performanceTypeInfo.GenerateSpermArrivingPercentage(seed = generationBaseSeed + safetyMethodSeed)  # type: float
-					break
 
 			return arrivingPercentage
 

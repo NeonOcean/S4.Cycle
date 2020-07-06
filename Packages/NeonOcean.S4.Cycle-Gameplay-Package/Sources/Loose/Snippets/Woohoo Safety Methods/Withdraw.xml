@@ -66,5 +66,8 @@
 		</U>
 		
 		<T n="CompoundingMethod">False</T>
+		<V n="HandleUseCommand" t="enabled">
+			<T n="enabled">neonocean.s4.cycle.woohoo_safety_methods.withdraw.handle_post_use</T>
+		</V>
 	</U>
 </I>

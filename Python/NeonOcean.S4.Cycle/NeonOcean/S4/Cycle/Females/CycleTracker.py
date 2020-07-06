@@ -596,7 +596,7 @@ class CycleTracker(ReproductionShared.TrackerBase):
 		self.LastCycleCompletionReason = completionReason
 
 		if completionReason == CycleShared.CompletionReasons.Finished:
-			self.TimeSinceLastKnownCycle = 0  # TODO this should be set only if the sim experiences any symptoms instead.
+			self.TimeSinceLastCycle = 0  # TODO this should be set only if the sim experiences any symptoms instead.
 
 	def _CurrentCycleReleasedOvumCallback (self, releasedOva: int) -> None:
 		ovumTracker = self.TrackingSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)

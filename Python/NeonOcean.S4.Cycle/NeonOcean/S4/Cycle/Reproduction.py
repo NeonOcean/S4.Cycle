@@ -377,3 +377,15 @@ def InvokeUnregisteredReproductiveSystemEvent (reproductiveSystem: ReproductionS
 			unregisteredEventCallback(thisModule, registeredArguments)
 		except:
 			Debug.Log("Failed to run unregistered reproductive system event callback " + Types.GetFullName(unregisteredEventCallback), This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+
+# noinspection PyUnusedLocal
+def _OnStop (cause) -> None:
+	if len(_fullUpdateTimes) != 0:
+		averageFullUpdateTime = round(sum(_fullUpdateTimes) / len(_fullUpdateTimes), 5)  # type: float
+
+		Debug.Log("Average full reproductive system update time for session: %s seconds." % str(averageFullUpdateTime), This.Mod.Namespace, Debug.LogLevels.Info, group = This.Mod.Namespace, owner = __name__)
+
+	if len(_individualUpdateTimes) != 0:
+		averageIndividualUpdateTime = round(sum(_individualUpdateTimes) / len(_individualUpdateTimes), 5)  # type: float
+
+		Debug.Log("Average individual reproductive system update time for session: %s seconds." % str(averageIndividualUpdateTime), This.Mod.Namespace, Debug.LogLevels.Info, group = This.Mod.Namespace, owner = __name__)

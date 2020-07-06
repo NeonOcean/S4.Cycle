@@ -30,9 +30,13 @@ def GetLastSimID (targetSimInfo: sim_info.SimInfo) -> typing.Optional[int]:
 
 	if lastSimIDStatisticType is None:
 		Debug.Log("Could not find the last sim id statistic type.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticType")
-		return
+		return None
 
-	lastSimIDStatistic = targetSimInfo.get_statistic(lastSimIDStatisticType)  # type: statistic.Statistic
+	lastSimIDStatistic = targetSimInfo.get_statistic(lastSimIDStatisticType, add = True)  # type: statistic.Statistic
+
+	if lastSimIDStatistic is None:
+		Debug.Log("Could not retrieve a sim's last sim id statistic", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatistic")
+		return None
 
 	lastSimID = lastSimIDStatistic.get_value()  # type: int
 
@@ -51,5 +55,10 @@ def UpdateLastSimID (targetSimInfo: sim_info.SimInfo) -> None:
 		Debug.Log("Could not find the last sim id statistic type.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticType")
 		return
 
-	lastSimIDStatistic = targetSimInfo.get_statistic(lastSimIDStatisticType)  # type: statistic.Statistic
+	lastSimIDStatistic = targetSimInfo.get_statistic(lastSimIDStatisticType, add = True)  # type: statistic.Statistic
+
+	if lastSimIDStatistic is None:
+		Debug.Log("Could not retrieve a sim's last sim id statistic", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatistic")
+		return
+
 	lastSimIDStatistic.set_value(targetSimInfo.id)

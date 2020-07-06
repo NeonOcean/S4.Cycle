@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import typing
 from NeonOcean.S4.Cycle.SimSettings import Base as SettingsBase
 from NeonOcean.S4.Main.Tools import Exceptions, Version
 
