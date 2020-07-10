@@ -1,3 +1,10 @@
+## v1.1.3 (July 10, 2020)
+
+### Fixed bugs
+- Fixed strange issue in which missing sim statistic trackers would prevent the mod from saving.
+
+______________________________
+
 ## v1.1.2 (July 6, 2020)
 
 ### WickedWhims Support

@@ -9,7 +9,7 @@ from NeonOcean.S4.Main import Debug, Director
 from NeonOcean.S4.Main.Tools import Exceptions
 from sims import sim_info
 from sims4 import resources
-from statistics import statistic
+from statistics import statistic, statistic_tracker
 
 LastSimIDStatisticID = 9391266768967019788  # type: int
 
@@ -29,13 +29,19 @@ def GetLastSimID (targetSimInfo: sim_info.SimInfo) -> typing.Optional[int]:
 	lastSimIDStatisticType = services.get_instance_manager(resources.Types.STATISTIC).get(LastSimIDStatisticID, None)  # type: typing.Optional[typing.Type[statistic.Statistic]]
 
 	if lastSimIDStatisticType is None:
-		Debug.Log("Could not find the last sim id statistic type.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticType")
+		Debug.Log("Could not find the last sim id statistic type.\nTarget Sim ID: %s" % str(targetSimInfo.id), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticType")
 		return None
 
-	lastSimIDStatistic = targetSimInfo.get_statistic(lastSimIDStatisticType, add = True)  # type: statistic.Statistic
+	lastSimIDStatisticTracker = targetSimInfo.get_tracker(lastSimIDStatisticType)  # type: typing.Optional[statistic_tracker.StatisticTracker]
+
+	if lastSimIDStatisticTracker is None:
+		Debug.Log("Could not find the last sim id statistic's tracker in the target sim.\nTarget Sim ID: %s" % str(targetSimInfo.id), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticTracker")
+		return None
+
+	lastSimIDStatistic = lastSimIDStatisticTracker.get_statistic(lastSimIDStatisticType, add = True)  # type: typing.Optional[statistic.Statistic]
 
 	if lastSimIDStatistic is None:
-		Debug.Log("Could not retrieve a sim's last sim id statistic", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatistic")
+		Debug.Log("Could not retrieve a sim's last sim id statistic\nTarget Sim ID: %s" % str(targetSimInfo.id), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatistic")
 		return None
 
 	lastSimID = lastSimIDStatistic.get_value()  # type: int
@@ -52,13 +58,19 @@ def UpdateLastSimID (targetSimInfo: sim_info.SimInfo) -> None:
 	lastSimIDStatisticType = services.get_instance_manager(resources.Types.STATISTIC).get(LastSimIDStatisticID, None)  # type: typing.Optional[typing.Type[statistic.Statistic]]
 
 	if lastSimIDStatisticType is None:
-		Debug.Log("Could not find the last sim id statistic type.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticType")
+		Debug.Log("Could not find the last sim id statistic type.\nTarget Sim ID: %s" % str(targetSimInfo.id), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticType")
 		return
 
-	lastSimIDStatistic = targetSimInfo.get_statistic(lastSimIDStatisticType, add = True)  # type: statistic.Statistic
+	lastSimIDStatisticTracker = targetSimInfo.get_tracker(lastSimIDStatisticType)  # type: typing.Optional[statistic_tracker.StatisticTracker]
+
+	if lastSimIDStatisticTracker is None:
+		Debug.Log("Could not find the last sim id statistic's tracker in the target sim.\nTarget Sim ID: %s" % str(targetSimInfo.id), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatisticTracker")
+		return None
+
+	lastSimIDStatistic = lastSimIDStatisticTracker.get_statistic(lastSimIDStatisticType, add = True)  # type: statistic.Statistic
 
 	if lastSimIDStatistic is None:
-		Debug.Log("Could not retrieve a sim's last sim id statistic", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatistic")
+		Debug.Log("Could not retrieve a sim's last sim id statistic\nTarget Sim ID: %s" % str(targetSimInfo.id), This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":MissingLastSimIDStatistic")
 		return
 
 	lastSimIDStatistic.set_value(targetSimInfo.id)

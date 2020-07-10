@@ -27,13 +27,18 @@ def GetSimSimsSectionBranchKey (targetSimInfo: sim_info.SimInfo) -> str:
 	"""
 
 	if not isinstance(targetSimInfo, sim_info.SimInfo):
-		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo, ))
+		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
 
-	lastSimID = LastSimID.GetLastSimID(targetSimInfo)
 	currentSimID = targetSimInfo.id
 
-	lastSimIDString = str(lastSimID)  # type: str
+	try:
+		lastSimID = LastSimID.GetLastSimID(targetSimInfo)
+	except:
+		Debug.Log("Could not retrieve the last sim id for a sim with the current id of '%s'." % currentSimID, This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
+		lastSimID = None
+
 	currentSimIDString = str(currentSimID)  # type: str
+	lastSimIDString = str(lastSimID)  # type: str
 
 	if lastSimID is None or lastSimID == 0:
 		return currentSimIDString
@@ -41,10 +46,10 @@ def GetSimSimsSectionBranchKey (targetSimInfo: sim_info.SimInfo) -> str:
 	if lastSimID != currentSimID:
 		Debug.Log("Found a sim that seems to have changed their sim id. Current ID: %s Last ID: %s" % (currentSimID, lastSimID), This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
 
-	if GetSimsSection().BranchExists(lastSimIDString):
-		return lastSimIDString
-	else:
+	if not GetSimsSection().BranchExists(lastSimIDString):
 		return currentSimIDString
+	else:
+		return lastSimIDString
 
 def _Setup () -> None:
 	global _savingObject, _simsSection, _allSimsSection
