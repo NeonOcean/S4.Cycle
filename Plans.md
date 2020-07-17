@@ -1,5 +1,5 @@
 ## Dot App
-- Allow the app to send the player notifications when a sim is fertile. (By patron request!)
+- Allow the app to send the player notifications when a sim is fertile. (By patron request!) (Available in patron preview version!)
 
 ## Mod Support
 (Let me know about a mod you want Cycle to support. If I know many people want Cycle the support a certain mod then it increases the likelihood I will add such support.)
@@ -7,7 +7,7 @@
 - Basemental Drugs, doing drugs should negatively impact fetus health, it should even cause miscarriages.
 
 ## New Items
-- Birth Control Pills
+- Birth Control Pills  (Available in patron preview version!)
 	- Would greatly reduce the chance that a sim ovulates.
 	- Can cause periods to be lighter or even stop.
 	- Purchasable only after getting a prescription from a doctor, settings should allow this requirement to be disabled.
@@ -30,7 +30,7 @@
 
 ## Miscarriage
 - Pregnancy could end in an miscarriage randomly a certain percentage of times. (It should be possible to disable this)
-- Certain actions could increase the likelyhood of miscarriage.
+- Certain actions could increase the likelihood of miscarriage.
 
 ## Area Laws
 - Things like birth control and abortions could be illegal or hard to get depending on what neighborhood you live in.
