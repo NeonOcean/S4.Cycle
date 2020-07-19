@@ -5,7 +5,7 @@ import typing
 from distutils import dir_util
 
 from Mod_NeonOcean_S4_Cycle import Mod, Paths
-from Mod_NeonOcean_S4_Cycle.Building import Information, Merging, Misc, Package, Python, STBL
+from Mod_NeonOcean_S4_Cycle.Building import Information, Merging, Package, Python, STBL
 from Mod_NeonOcean_S4_Cycle.Publishing import Distribution
 from Mod_NeonOcean_S4_Cycle.Tools import Exceptions
 
@@ -110,7 +110,7 @@ _modBuildModes = {
 	],
 
 	"Normal": [
-		Misc.BuildMisc,
+		# Misc.BuildMisc,
 		Python.BuildPython,
 		STBL.BuildSTBLChanges,
 		Package.BuildPackageChanges,
@@ -120,7 +120,7 @@ _modBuildModes = {
 	],
 
 	"Rebuild": [
-		Misc.BuildMisc,
+		# Misc.BuildMisc,
 		Python.BuildPython,
 		STBL.BuildSTBLEverything,
 		Package.BuildPackageEverything,
