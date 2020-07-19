@@ -19,9 +19,14 @@
 	- Replacement for the simplistic interaction on toilets (Which doesn't currently work well with Cycle).
 	- Pregnancy tests would no longer increase the pregnancy progress like it does in the base game.
 	- Would allow you to test without required your sim to have tried for a baby recently.
-	
+
+## Pregnancy Buffs
+- The game has pregnancy buffs always make the sim happy. This doesn't work when accidental pregnancy becomes a possibility. Pregnancy buffs should at least apply a neutral mood effect and not exclaim how happy a sim is about it.
+- What a sim feels about their pregnancy could be settable by the player. (By patron request!)
+
 ## Manual control
 - Sims could have different levels of manual control, specified by the player.
+- The mod could refer to a certain sim in the second-person (uses "you" to refer to the sim instead "him/her/they").
 - Sims chosen to be manually controlled by the player wouldn't do some things automatically, like remember to take their birth control pills.
 - This feature would be good for players who like to focus on one or two sims in a household.
 
