@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import random
 import sys
-import time
+import random
 import typing
+import time
 
 from NeonOcean.S4.Cycle import ReproductionShared, Saving, This
 from NeonOcean.S4.Main import Debug
@@ -387,5 +387,6 @@ def _OnStop (cause) -> None:
 
 	if len(_individualUpdateTimes) != 0:
 		averageIndividualUpdateTime = round(sum(_individualUpdateTimes) / len(_individualUpdateTimes), 5)  # type: float
+
 
 		Debug.Log("Average individual reproductive system update time for session: %s seconds." % str(averageIndividualUpdateTime), This.Mod.Namespace, Debug.LogLevels.Info, group = This.Mod.Namespace, owner = __name__)

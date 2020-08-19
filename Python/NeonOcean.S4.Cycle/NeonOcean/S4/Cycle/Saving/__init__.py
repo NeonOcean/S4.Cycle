@@ -27,7 +27,7 @@ def GetSimSimsSectionBranchKey (targetSimInfo: sim_info.SimInfo) -> str:
 	"""
 
 	if not isinstance(targetSimInfo, sim_info.SimInfo):
-		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
+		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo, ))
 
 	currentSimID = targetSimInfo.id
 

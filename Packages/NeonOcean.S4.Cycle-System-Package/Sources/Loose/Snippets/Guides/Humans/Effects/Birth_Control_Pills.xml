@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Birth_Control_Pills_Effect" s="8656203888705923891" i="snippet" m="snippets" c="NeonoceanS4CycleHumanBirthControlPillsEffectGuide">
+	<U n="value">
+		<T n="NeedPerGameMinute">0.00046296296</T>
+		<U n="EntrenchmentPerReproductiveMinute">
+			<L n="points">
+				<U>
+					<T n="x">0.8</T>
+					<T n="y">0.00001240079</T>
+				</U>
+				<U>
+					<T n="x">1</T>
+					<T n="y">-0.00006944444</T>
+				</U>
+			</L>
+		</U>
+		<L n="MenstrualBuffRarityOptionAdjusters">
+			<U>
+				<T n="key">Abstain</T>
+				<U n="value">
+					<V n="adjustment" t="expression">
+						<U n="expression">
+							<T n="expression">CurrentOffset + ((90 - Current) * Entrenchment)<!-- 90 = 100 - all target weights (when at an entrenchment of 1)--></T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">Common</T>
+				<U n="value">
+					<V n="adjustment" t="expression">
+						<U n="expression">
+							<T n="expression">CurrentOffset - (Current * 0.8 * Entrenchment)</T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">Uncommon</T>
+				<U n="value">
+					<V n="adjustment" t="expression">
+						<U n="expression">
+							<T n="expression">CurrentOffset - (Current * 0.9 * Entrenchment)</T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">Rare</T>
+				<U n="value">
+					<V n="adjustment" t="expression">
+						<U n="expression">
+							<T n="expression">CurrentOffset - (Current * 0.95 * Entrenchment)</T>
+						</U>
+					</V>
+				</U>
+			</U>
+			<U>
+				<T n="key">VeryRare</T>
+				<U n="value">
+					<V n="adjustment" t="expression">
+						<U n="expression">
+							<T n="expression">CurrentOffset - (Current * Entrenchment)</T>
+						</U>
+					</V>
+				</U>
+			</U>
+		</L>
+		<U n="OvumReleaseSuppressionCurve">
+			<L n="points">
+				<U>
+					<T n="x">0</T>
+					<T n="y">0</T>
+				</U>
+				<U>
+					<T n="x">0.25</T>
+					<T n="y">0.6</T>
+				</U>
+				<U>
+					<T n="x">0.5</T>
+					<T n="y">0.8</T>
+				</U>
+				<U>
+					<T n="x">1</T>
+					<T n="y">0.9</T>
+				</U>
+			</L>
+		</U>
+		<T n="GameMinutesBetweenPills">1440</T>
+		<T n="GameMinutesBeforePillMissed">1080</T>
+		<T n="GameMinutesUntilPillInteractionAllowed">960</T>
+		<T n="MissedPillsBeforeIntentional">4</T>
+	</U>
+</I>

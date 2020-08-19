@@ -5,7 +5,7 @@ import typing
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, This
 from NeonOcean.S4.Cycle.Females import Ovum, Shared as FemalesShared
-from NeonOcean.S4.Cycle.Females.Cycle import Base as CycleBase, Shared as CycleShared, Types as CycleTypes
+from NeonOcean.S4.Cycle.Females.Cycle import Base as CycleBase, Shared as CycleShared, Types as CycleTypes, OvumRelease as CycleOvumRelease
 from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Parse, Python, Savable, Types
 from sims import sim_info_types, sim_info
@@ -23,6 +23,7 @@ class CycleTracker(ReproductionShared.TrackerBase):
 		self.CycleGeneratingEvent = Events.EventHandler()
 		self.CycleChangedEvent = Events.EventHandler()
 		self.CycleCompletedEvent = Events.EventHandler()
+		self.CycleReleaseOvumTestingEvent = Events.EventHandler()
 
 		self.CycleStartTestingEvent += self._CycleStartTestingCallback
 		self.CycleAbortTestingEvent += self._CycleAbortTestingCallback
@@ -164,6 +165,22 @@ class CycleTracker(ReproductionShared.TrackerBase):
 			raise Exceptions.IncorrectTypeException(value, "CycleCompletedEvent", (Events.EventHandler,))
 
 		self._cycleCompletedEvent = value
+
+	@property
+	def CycleReleaseOvumTestingEvent (self) -> Events.EventHandler:
+		"""
+		An event that will be triggered when a cycle is about to release an ovum to determine if we actually should.
+		The event arguments parameter should be a 'CycleReleaseOvumTestingArguments' object.
+		"""
+
+		return self._cycleReleaseOvumTestingEvent
+
+	@CycleReleaseOvumTestingEvent.setter
+	def CycleReleaseOvumTestingEvent (self, value: Events.EventHandler) -> None:
+		if not isinstance(value, Events.EventHandler):
+			raise Exceptions.IncorrectTypeException(value, "CycleReleaseOvumTestingEvent", (Events.EventHandler,))
+
+		self._cycleReleaseOvumTestingEvent = value
 
 	@property
 	def CompletedInitialCycle (self) -> bool:
@@ -356,6 +373,26 @@ class CycleTracker(ReproductionShared.TrackerBase):
 
 		return eventArguments
 
+	def DoCycleReleaseOvumTesting (self, ovumRelease: CycleOvumRelease.OvumRelease) -> CycleEvents.CycleReleaseOvumTestingArguments:
+		"""
+		Test if the a cycle should release an ovum.
+		:param ovumRelease: The object that has indicated to the cycle that an ovum should release.
+		:type ovumRelease: CycleOvumRelease.OvumRelease
+		:return: Testing event arguments that carry information on whether or not a cycle should release an ovum.
+		:rtype: EventsCycles.CycleReleaseOvumTestingArguments
+		"""
+
+		eventArguments = CycleEvents.CycleReleaseOvumTestingArguments(ovumRelease)  # type: CycleEvents.CycleReleaseOvumTestingArguments
+
+		for cycleReleaseOvumTestingCallback in self.CycleReleaseOvumTestingEvent:
+			try:
+				cycleReleaseOvumTestingCallback(self, eventArguments)
+			except:
+				Debug.Log("Failed to call cycle release ovum testing callback '" + Types.GetFullName(cycleReleaseOvumTestingCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
+						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = cycleReleaseOvumTestingCallback)
+
+		return eventArguments
+
 	def IsTooYoung (self) -> bool:
 		"""
 		Whether or not this system's sim is too young to have a cycle.
@@ -454,11 +491,13 @@ class CycleTracker(ReproductionShared.TrackerBase):
 
 			ovumTracker = self.TrackingSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)
 			if ovumTracker is not None:
-				for ovumReleaseTime in initialCycle.OvumReleaseTimes:  # type: typing.Union[float, int]
+				for ovumRelease in initialCycle.OvumReleases:  # type: CycleOvumRelease.OvumRelease
+					ovumReleaseTime = ovumRelease.ReleaseMinute  # type: float
+
 					if ovumReleaseTime > cycleAge:
 						continue
 
-					ovumAge = max(cycleAge - ovumReleaseTime, 0)  # type: typing.Union[float, int]
+					ovumAge = max(cycleAge - ovumReleaseTime, 0)  # type: float
 					releasedOvum = ovumTracker.GenerateOvum()  # type: Ovum.Ovum
 
 					if ovumAge >= releasedOvum.Lifetime:
@@ -598,12 +637,18 @@ class CycleTracker(ReproductionShared.TrackerBase):
 		if completionReason == CycleShared.CompletionReasons.Finished:
 			self.TimeSinceLastCycle = 0  # TODO this should be set only if the sim experiences any symptoms instead.
 
-	def _CurrentCycleReleasedOvumCallback (self, releasedOva: int) -> None:
+	def _CurrentCycleReleasedOvumCallback (self, ovumRelease: CycleOvumRelease.OvumRelease) -> None:
 		ovumTracker = self.TrackingSystem.GetTracker(FemalesShared.OvumTrackerIdentifier)
 
 		if ovumTracker is not None:
-			for releaseOvaIndex in range(releasedOva):
-				ovumTracker.GenerateAndReleaseOvum()
+			releaseOvumTesting = self.DoCycleReleaseOvumTesting(ovumRelease)  # type: CycleEvents.CycleReleaseOvumTestingArguments
+
+			if not releaseOvumTesting.Release:
+				return
+
+			ovumTracker.GenerateAndReleaseOvum()  # type: Ovum.Ovum
+
+			ovumRelease.Released = True
 
 	def _CycleStartTestingCallback (self, owner: CycleTracker, eventArguments: CycleEvents.CycleStartTestingArguments) -> None:
 		if owner.IsTooYoung() or owner.IsTooOld():

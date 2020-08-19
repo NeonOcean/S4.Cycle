@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Birth_Control_Pills_Take_Pill" s="3542348517548635572" i="interaction" m="NeonOcean.S4.Cycle.Interactions.BirthControlPills" c="TakePillInteraction">
+	<T n="display_name">1531473120</T>
+	<T n="pie_menu_priority">5</T>
+	<V n="pie_menu_icon" t="enabled">
+		<V n="enabled" t="resource_key">
+			<U n="resource_key">
+				<T n="key" p="InGame\UI\Icons\PieMenu\Interactions\icon_pieMenu_immediateInteraction.png">2f7d0004:00000000:25eea5cdba6a6fd6</T>
+			</U>
+		</V>
+	</V>
+	<V n="_saveable" t="disabled" />
+	<T n="allow_from_sim_inventory">True</T>
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<L n="arguments">
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">Actor</E>
+						</U>
+					</V>
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">Object</E>
+						</U>
+					</V>
+				</L>
+				<T n="command">neonocean.s4.cycle.birth_control_pills.take_pill</T>
+			</U>
+		</V>
+	</L>
+	<L n="test_globals">
+		<V t="statistic">
+			<U n="statistic">
+				<T n="stat">10149873938934991278<!--Statistic: NeonOcean_S4_Cycle_Statistics_Birth_Control_Pills_Count--></T>
+				<V n="threshold" t="value_threshold">
+					<U n="value_threshold">
+						<E n="comparison">GREATER</E>
+						<T n="value">0</T>
+					</U>
+				</V>
+				<E n="who">Object</E>
+			</U>
+		</V>
+		<V t="sim_info">
+			<U n="sim_info">
+				<V n="ages" t="specified">
+					<L n="specified">
+						<E>TEEN</E>
+						<E>YOUNGADULT</E>
+						<E>ADULT</E>
+					</L>
+				</V>
+				<V n="species" t="specified">
+					<U n="specified">
+						<L n="species">
+							<E />
+						</L>
+					</U>
+				</V>
+				<E n="who">Actor</E>
+			</U>
+		</V>
+	</L>
+</I>

@@ -20,6 +20,11 @@
 			<English>Mod Settings</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Settings.Sim_Settings.Display_Name</Identifier>
+			<Key>17766914</Key>
+			<English>Sim Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Standard.About_Mod.Display_Name</Identifier>
 			<Key>2363395158</Key>
 			<English>About</English>
@@ -45,14 +50,44 @@
 			<English>Settings for the mod Cycle.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Interactions.Description</Identifier>
 			<Key>1429461409</Key>
-			<English>Settings to change how birth control is works and is purchased.</English>
+			<English>Settings to change how various interactions work.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Title</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Interactions.Title</Identifier>
 			<Key>2463021129</Key>
-			<English>Contraceptive Settings</English>
+			<English>Interaction Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items.Description</Identifier>
+			<Key>3543797257</Key>
+			<English>Settings to change how various items work.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items.Title</Identifier>
+			<Key>924930888</Key>
+			<English>Items Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items_PregnancyTest.Description</Identifier>
+			<Key>522912475</Key>
+			<English>Settings to change how pregnancy tests work.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items_PregnancyTest.Title</Identifier>
+			<Key>4063563538</Key>
+			<English>Pregnancy Test Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Menstruation.Description</Identifier>
+			<Key>893913967</Key>
+			<English>Settings to change how menstruation works.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Menstruation.Title</Identifier>
+			<Key>710763909</Key>
+			<English>Menstruation Settings</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Reproduction.Description</Identifier>
@@ -88,6 +123,16 @@
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.List.Title</Identifier>
 			<Key>406503699</Key>
 			<English>Mod Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.All_Sims_Experience_PMS.Description</Identifier>
+			<Key>598662684</Key>
+			<English>Whether or not all sims should experience premenstrual syndrome. Setting this to yes will cause the mod to ignore the "Experiences PMS" sim setting.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.All_Sims_Experience_PMS.Name</Identifier>
+			<Key>2003593750</Key>
+			<English>All Sims Experience PMS</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Debug_Mode.Description</Identifier>
@@ -168,6 +213,16 @@ Minimum: 0.0035, Maximum: 2</English>
 			<English>Pregnancy Speed</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Test_Requires_Item.Description</Identifier>
+			<Key>3147884250</Key>
+			<English>If yes, taking a pregnancy test requires a sim to have the pregnancy test item in their inventory. Otherwise the sim will instantly purchase a test kit when they go to do the test.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Test_Requires_Item.Name</Identifier>
+			<Key>338165547</Key>
+			<English>Pregnancy Test Requires Item</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Quick_Mode.Description</Identifier>
 			<Key>1679354719</Key>
 			<English>When quick mode is enabled, adjustments will be made to the reproductive simulation to try to support very short cycles.</English>
@@ -210,6 +265,11 @@ Minimum: 0.035, Maximum: 2</English>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Woohoo_Is_Always_Safe.Name</Identifier>
 			<Key>1865223985</Key>
 			<English>Woohoo Is Always Safe</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Mods.Cycle.Disabled_Because_Installed_Tooltip</Identifier>
+			<Key>1647186056</Key>
+			<English>Disabled because Cycle by NeonOcean is installed.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mods.WickedWhims.Disabled_Because_Installed_Tooltip</Identifier>
@@ -295,6 +355,50 @@ Minimum: 0.035, Maximum: 2</English>
 			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Reproductive_Speed.Value</Identifier>
 			<Key>861739185</Key>
 			<English>{0.Number}{0.String} ({1:Number}{1.String} day cycle)</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root.Description</Identifier>
+			<Key>1573311563</Key>
+			<English>An individual sim's settings for the mod Cycle.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root_Menstruation.Description</Identifier>
+			<Key>3578702961</Key>
+			<English>Settings to change how menstruation for this sim works.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root_Menstruation.Title</Identifier>
+			<Key>2045888242</Key>
+			<English>Menstruation Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.List.Title</Identifier>
+			<Key>2048466286</Key>
+			<English>Sim Settings</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.Values.Autonomously_Use_Woohoo_Safety_Methods.Description</Identifier>
+			<Key>400348034</Key>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.Values.Autonomously_Use_Woohoo_Safety_Methods.Name</Identifier>
+			<Key>2828217405</Key>
+			<English>Autonomously Use Woohoo Safety Methods</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.Values.Experiences_PMS.All_Sims_Experience_PMS_Override_Reason</Identifier>
+			<Key>3080925824</Key>
+			<English>The "All Sims Experience PMS" setting has been changed to "Yes".</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.Values.Experiences_PMS.Description</Identifier>
+			<Key>747196487</Key>
+			<English>Whether or not this sim should experience premenstrual syndrome. The value is normally randomly decided, but this setting allows you to choose whether or not a specific sim should go though it.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.Values.Experiences_PMS.Name</Identifier>
+			<Key>3146680024</Key>
+			<English>Experiences PMS</English>
 		</STBLXMLEntry>
 	</Entries>
 </STBLXMLFile>

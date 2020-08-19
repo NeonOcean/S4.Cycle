@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   viewBox="0 0 256 256"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="Pregnancy Test Texture.svg"
+   inkscape:export-filename="K:\NeonOcean\Environment Development\Mods\NeonOcean.S4.Cycle\Models\Pregnancy Test\Pregnancy Test Texture.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994952"
+     inkscape:cx="34.156415"
+     inkscape:cy="57.273666"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer13"
+     showgrid="false"
+     units="px"
+     inkscape:snap-global="true"
+     inkscape:object-paths="true"
+     showguides="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer14"
+     inkscape:label="Background">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.83464571;paint-order:normal"
+       id="rect2260"
+       width="256"
+       height="256"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     inkscape:label="Front"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-629.33333)">
+    <rect
+       style="display:inline;opacity:1;vector-effect:none;fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.83464571;paint-order:normal"
+       id="rect2262"
+       width="76"
+       height="256.00003"
+       x="0"
+       y="629.33331" />
+    <g
+       id="g2493"
+       transform="translate(-2,8)">
+      <g
+         style="stroke-width:1.36386824"
+         transform="matrix(0.73381116,0,0,0.73260669,9.2290492,203.55995)"
+         id="g2371">
+        <rect
+           style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.72773647;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect2337"
+           width="17"
+           height="34"
+           x="20.708126"
+           y="704.6087"
+           rx="0"
+           ry="8.5" />
+        <rect
+           style="opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.72773647;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect2367"
+           width="16.999998"
+           height="2.5"
+           x="20.708126"
+           y="726.58331" />
+      </g>
+      <text
+         transform="rotate(-90)"
+         id="text2455"
+         y="34.39407"
+         x="-714.56201"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333349px;line-height:125%;font-family:immajer-Simlish;-inkscape-font-specification:immajer-Simlish;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:10.66666698px"
+           y="34.39407"
+           x="-714.56201"
+           id="tspan2453"
+           sodipodi:role="line">Not pregnant</tspan></text>
+    </g>
+    <g
+       id="g2486"
+       transform="translate(2,8)">
+      <rect
+         ry="6.2271566"
+         rx="0"
+         y="719.76099"
+         x="39.101128"
+         height="24.908627"
+         width="12.47479"
+         id="rect2337-0"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+      <rect
+         y="735.85974"
+         x="39.101128"
+         height="1.8315167"
+         width="12.474789"
+         id="rect2367-6"
+         style="opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+      <rect
+         y="729.9989"
+         x="39.101128"
+         height="1.8315167"
+         width="12.474789"
+         id="rect2367-6-6"
+         style="opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+      <text
+         transform="rotate(-90)"
+         id="text2455-6"
+         y="48.411438"
+         x="-714.56201"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333349px;line-height:125%;font-family:immajer-Simlish;-inkscape-font-specification:immajer-Simlish;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:10.66666698px"
+           y="48.411438"
+           x="-714.56201"
+           id="tspan2453-1"
+           sodipodi:role="line">pregnant</tspan></text>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer15"
+     inkscape:label="Display">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#c8c6be;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.83464571;paint-order:normal"
+       id="rect2296"
+       width="64"
+       height="100"
+       x="76"
+       y="156" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer16"
+     inkscape:label="Featureless"
+     style="display:inline">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#cf80d2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.83464571;paint-order:normal"
+       id="rect2299"
+       width="3"
+       height="3"
+       x="253"
+       y="0" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:#c1c1c1;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.83464571;paint-order:normal"
+       id="rect2299-7"
+       width="3"
+       height="3"
+       x="247"
+       y="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer13"
+     inkscape:label="Old Texture"
+     style="display:inline">
+    <image
+       y="0"
+       x="-279.23352"
+       id="image2241"
+       xlink:href="data:image/png;base64,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 "
+       style="stroke-width:1.33333337;image-rendering:optimizeSpeed"
+       preserveAspectRatio="none"
+       height="256"
+       width="256" />
+  </g>
+</svg>

@@ -6,12 +6,18 @@ import enum_lib
 import uuid
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, This
-from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
+from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared, OvumRelease as CycleOvumRelease
 from NeonOcean.S4.Main import Debug
-from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable
+from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Version
 
 class CycleBase(abc.ABC, Savable.SavableExtension):
 	HostNamespace = This.Mod.Namespace
+
+	_uniqueIdentifierSavingKey = "UniqueIdentifier"  # type: str
+	_uniqueSeedSavingKey = "UniqueSeed"  # type: str
+
+	_ovumReleasesOldSavingKey = "OvumReleaseTimes"  # type: str
+	_ovumReleasesSavingKey = "OvumReleases"  # type: str
 
 	class _Phase:
 		def __init__(self,
@@ -50,8 +56,10 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 		self.CompletedCallback = None
 		self.ReleasedOvumCallback = None
 
-		self.OvumReleaseTimes = list()
+		self.OvumReleases = list()
 		self.Age = 0
+
+		self.OvumReleaseDelays = 0
 
 		# noinspection PyProtectedMember
 		self._phases = {}  # type: typing.Dict[enum_lib.Enum, CycleBase._Phase]
@@ -59,11 +67,57 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 		encodeUUID = lambda value: str(value) if value is not None else None
 		decodeUUID = lambda valueString: uuid.UUID(valueString) if valueString is not None else None
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("UniqueIdentifier", "_uniqueIdentifier", None, requiredAttribute = True, encoder = encodeUUID, decoder = decodeUUID))
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("UniqueSeed", "_uniqueSeed", None, requiredAttribute = True))
+		# noinspection PyUnusedLocal
+		def uniqueSeedUpdater (data: dict, lastVersion: typing.Optional[Version.Version]) -> None:
+			if isinstance(data.get(self._uniqueSeedSavingKey, None), list):
+				data.pop(self._uniqueSeedSavingKey)
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("OvumReleaseTimes", "OvumReleaseTimes", self.OvumReleaseTimes, requiredSuccess = False))
+		def uniqueIdentifierVerifier (value: typing.Optional[uuid.UUID]) -> None:
+			if not isinstance(value, uuid.UUID) and value is not None:
+				raise Exceptions.IncorrectTypeException(value, self._uniqueIdentifierSavingKey, (uuid.UUID, None))
+
+		def uniqueSeedVerifier (value: typing.Optional[int]) -> None:
+			if not isinstance(value, int) and value is not None:
+				raise Exceptions.IncorrectTypeException(value, self._uniqueSeedSavingKey, (int, None))
+
+		# noinspection PyUnusedLocal
+		def ovumReleasesUpdater (data: dict, lastVersion: typing.Optional[Version.Version]) -> None:
+			if self._ovumReleasesOldSavingKey in data and not self._ovumReleasesSavingKey in data:
+				data[self._ovumReleasesSavingKey] = data[self._ovumReleasesOldSavingKey]
+
+			if not self._ovumReleasesSavingKey in data:
+				return
+
+			ovumReleasesData = data[self._ovumReleasesSavingKey]  # type: typing.List[typing.Union[float, int, dict]]
+
+			if not isinstance(ovumReleasesData, list):
+				return
+
+			for ovumReleaseDataIndex in range(len(ovumReleasesData)):  # type: int
+				ovumReleaseData = ovumReleasesData[ovumReleaseDataIndex]  # type: typing.Union[float, int, dict]
+
+				if isinstance(ovumReleaseData, (float, int)):
+					ovumRelease = CycleOvumRelease.OvumRelease()
+					ovumRelease.BaseReleaseMinute = ovumReleaseData
+					ovumReleasesData[ovumReleaseDataIndex] = {
+						"Data": ovumRelease.SaveToDictionary()[1]
+					}
+
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler(self._uniqueIdentifierSavingKey, "_uniqueIdentifier", None, encoder = encodeUUID, decoder = decodeUUID, typeVerifier = uniqueIdentifierVerifier))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler(self._uniqueSeedSavingKey, "_uniqueSeed", None, updater = uniqueSeedUpdater, typeVerifier = uniqueSeedVerifier))
+
+		self.RegisterSavableAttribute(Savable.ListedSavableAttributeHandler(
+			self._ovumReleasesSavingKey,
+			"OvumReleases",
+			lambda: CycleOvumRelease.OvumRelease(),
+			lambda: list(),
+			requiredSuccess = False,
+			requiredEntrySuccess = False,
+			updater = ovumReleasesUpdater))
+
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Age", "Age", self.Age))
+
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("OvumReleaseDelays", "OvumReleaseDelays", self.OvumReleaseDelays))
 
 	# noinspection PyMethodParameters
 	@Classes.ClassProperty
@@ -119,7 +173,7 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 	def ReleasedOvumCallback (self) -> typing.Optional[typing.Callable]:
 		"""
 		Callback that will be triggered once an egg cell was released by the cycle. This should be set by the cycle tracker when this cycle
-		becomes active. The callback should take one argument, the amount of ova released.
+		becomes active. The callback should take one argument, the ovum release object that indicates one should be releasing.
 		"""
 
 		return self._releasedOvumCallback
@@ -132,23 +186,23 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 		self._releasedOvumCallback = value
 
 	@property
-	def OvumReleaseTimes (self) -> typing.List[typing.Union[float, int]]:
+	def OvumReleases (self) -> typing.List[CycleOvumRelease.OvumRelease]:
 		"""
-		A list of reproductive minutes relative to the cycles start time at which a single egg cell will be released.
+		A list of ovum release objects that indicate at what time a single egg cell should be released.
 		"""
 
-		return self._ovumReleaseTimes
+		return self._ovumReleases
 
-	@OvumReleaseTimes.setter
-	def OvumReleaseTimes (self, value: typing.List[typing.Union[float, int]]) -> None:
+	@OvumReleases.setter
+	def OvumReleases (self, value: typing.List[CycleOvumRelease.OvumRelease]) -> None:
 		if not isinstance(value, list):
-			raise Exceptions.IncorrectTypeException(value, "OvumReleaseTimes", (list,))
+			raise Exceptions.IncorrectTypeException(value, "OvumReleases", (list,))
 
 		for valueIndex in range(len(value)):
-			if not isinstance(value[valueIndex], float) and not isinstance(value[valueIndex], int):
-				raise Exceptions.IncorrectTypeException(value[valueIndex], "OvumReleaseTimes[%s]" % valueIndex, (float, int))
+			if not isinstance(value[valueIndex], CycleOvumRelease.OvumRelease):
+				raise Exceptions.IncorrectTypeException(value[valueIndex], "OvumReleases[%s]" % valueIndex, (CycleOvumRelease.OvumRelease, ))
 
-		self._ovumReleaseTimes = value
+		self._ovumReleases = value
 
 	@property
 	def OvumReleaseAmount (self) -> int:
@@ -156,7 +210,7 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 		The amount of egg cells that will be released this cycle.
 		"""
 
-		return len(self.OvumReleaseTimes)
+		return len(self.OvumReleases)
 
 	@property
 	def Anovulatory (self) -> bool:
@@ -208,7 +262,7 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 	@Progress.setter
 	def Progress (self, value: float) -> None:
 		if not isinstance(value, (float, int)):
-			raise Exceptions.IncorrectTypeException(value, "Age", (float, int))
+			raise Exceptions.IncorrectTypeException(value, "Progress", (float, int))
 
 		if value < 0:
 			raise ValueError("Progress values must be greater than or equal to 0.")
@@ -521,13 +575,17 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 		length = round(self.Lifetime)  # type: typing.Union[float, int]
 		age = round(self.Age)  # type: typing.Union[float, int]
 
-		return cycleDebugFormatting % (self.TypeIdentifier, length, age, len(self.OvumReleaseTimes))
+		return cycleDebugFormatting % (self.TypeIdentifier, length, age, len(self.OvumReleases))
 
 	def _GenerateInternal (self, generationArguments: CycleEvents.CycleGeneratingArguments) -> None:
 		self._uniqueIdentifier = generationArguments.GetUniqueIdentifier()
 		self._uniqueSeed = generationArguments.GetUniqueSeed()
 
-		self.OvumReleaseTimes = generationArguments.GetOvumReleaseTimes()
+		for ovumReleaseTime in generationArguments.GetOvumReleaseTimes():  # type: float
+			ovumRelease = CycleOvumRelease.OvumRelease()  # type: CycleOvumRelease.OvumRelease
+			ovumRelease.BaseReleaseMinute = ovumReleaseTime
+
+			self._ovumReleases.append(ovumRelease)
 
 	# noinspection PyUnusedLocal
 	def _SimulateInternal (self, simulation: ReproductionShared.Simulation, ticks: int, reproductiveTimeMultiplier: typing.Union[float, int]) -> None:
@@ -536,24 +594,29 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 
 		self.Age = ReproductionShared.TicksToReproductiveMinutes(nextAgeTick, reproductiveTimeMultiplier)
 
-		releasedOva = 0  # type: int
+		releasingOva = list()  # type: typing.List[CycleOvumRelease.OvumRelease]
 		ended = False  # type: bool
 
-		for ovumReleaseTime in self.OvumReleaseTimes:  # type: float
+		for ovumRelease in self.OvumReleases:  # type: CycleOvumRelease.OvumRelease
+			if ovumRelease.Released:
+				continue
+
+			ovumReleaseTime = ovumRelease.ReleaseMinute  # type: float
 			ovumReleaseTick = ReproductionShared.ReproductiveMinutesToTicks(ovumReleaseTime, reproductiveTimeMultiplier)  # type: int
 
 			if lastAgeTick < ovumReleaseTick <= nextAgeTick:
-				releasedOva += 1
+				releasingOva.append(ovumRelease)
 
 		endTick = ReproductionShared.ReproductiveMinutesToTicks(self.Lifetime, reproductiveTimeMultiplier)  # type: typing.Union[float, int]
 		if lastAgeTick < endTick <= nextAgeTick:
 			ended = True
 
-		if releasedOva > 0:
+		if len(releasingOva) != 0:
 			if self.ReleasedOvumCallback is None:
 				Debug.Log("Missing callback to be triggered on ovum release.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
 			else:
-				self.ReleasedOvumCallback(releasedOva)
+				for ovumRelease in releasingOva:  # type: CycleOvumRelease.OvumRelease
+					self.ReleasedOvumCallback(ovumRelease)
 
 		if ended:
 			self.End(completedReason = CycleShared.CompletionReasons.Finished)
@@ -564,7 +627,11 @@ class CycleBase(abc.ABC, Savable.SavableExtension):
 		if simulation.RemainingTicks >= ticksToCompletion:
 			simulation.Schedule.AddPoint(ticksToCompletion)
 
-		for ovumReleaseTime in self.OvumReleaseTimes:  # type: float
+		for ovumRelease in self.OvumReleases:  # type: CycleOvumRelease.OvumRelease
+			if ovumRelease.Released:
+				continue
+
+			ovumReleaseTime = ovumRelease.ReleaseMinute  # type: float
 			minutesToOvumRelease = ovumReleaseTime - self.Age  # type: float
 
 			if minutesToOvumRelease <= 0:

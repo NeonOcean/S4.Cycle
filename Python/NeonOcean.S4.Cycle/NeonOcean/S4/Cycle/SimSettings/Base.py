@@ -4,7 +4,7 @@ import sys
 import types
 import typing
 
-from NeonOcean.S4.Cycle import Debug, Saving, This
+from NeonOcean.S4.Cycle import Saving, This
 from NeonOcean.S4.Main import Debug, Language, LoadingShared
 from NeonOcean.S4.Main.Abstract import Settings as AbstractSettings
 from NeonOcean.S4.Main.Data import Persistence, PersistenceBranched
@@ -90,7 +90,7 @@ class Setting(AbstractSettings.SettingBranchedAbstract):
 	def Get (cls, simID: str, ignoreOverride: bool = False) -> typing.Any:
 		"""
 		Get the setting's value.
-		:param simID: The ID of the sim who's setting value is requested.
+		:param simID: The ID of the sim (aka branch) who's setting value is requested.
 		:type simID: str
 		:param ignoreOverride: If true we will ignore any value overrides will be ignored when retrieving the value.
 		:type ignoreOverride: bool
@@ -140,6 +140,19 @@ class Setting(AbstractSettings.SettingBranchedAbstract):
 		"""
 
 		return SettingsPersistence.GetAllBranchIdentifiers(cls.Key)
+
+	@classmethod
+	def ValueIsSet (cls, simID: str) -> bool:
+		"""
+		Get whether or not the specified branch's value has been set. This will not consider this setting's overrides.
+		:param simID: The ID of the sim (aka branch) who's setting value's existence is being test for.
+		:type simID: str
+		"""
+
+		if not isinstance(simID, str):
+			raise Exceptions.IncorrectTypeException(simID, "simID", (str,))
+
+		return _ValueIsSet(simID, cls.Key)
 
 	@classmethod
 	def Set (cls, simID: str, value: typing.Any, autoSave: bool = True, autoUpdate: bool = True) -> None:
@@ -352,7 +365,7 @@ class Setting(AbstractSettings.SettingBranchedAbstract):
 		if cls._overrides is None and cls._universalOverrides is None:
 			return False
 
-		if len(cls._overrides) == 0 and len(cls._universalOverrides) == 0:
+		if (cls._overrides is None or len(cls._overrides) == 0) and (cls._universalOverrides is None or len(cls._universalOverrides) == 0):
 			return False
 
 		return True
@@ -578,7 +591,7 @@ class Setting(AbstractSettings.SettingBranchedAbstract):
 		return Language.CreateLocalizationString("**")
 
 	@classmethod
-	def GetValueText (cls, branch: str) -> localization.LocalizedString:
+	def GetValueText (cls, value: str) -> localization.LocalizedString:
 		return Language.CreateLocalizationString("**")
 
 	@classmethod
@@ -666,6 +679,9 @@ def _isDefaultSetup (key: str) -> bool:
 
 def _Get (simID: str, key: str) -> typing.Any:  # TODO make versions of these for the default settings. / Draw from the default settings if its not set in the regular.
 	return SettingsPersistence.Get(simID, key)
+
+def _ValueIsSet (simID: str, key: str) -> bool:
+	return SettingsPersistence.ValueIsSet(simID, key)
 
 def _Set (simID: str, key: str, value: typing.Any, autoSave: bool = True, autoUpdate: bool = True) -> None:
 	SettingsPersistence.Set(simID, key, value, autoSave = autoSave, autoUpdate = autoUpdate)

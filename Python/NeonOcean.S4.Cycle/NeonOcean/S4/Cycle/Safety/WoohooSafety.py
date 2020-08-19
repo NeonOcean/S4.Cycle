@@ -6,6 +6,7 @@ import typing
 import services
 import snippets
 from NeonOcean.S4.Cycle import SimSettings, This
+from NeonOcean.S4.Cycle.Safety import BirthControlPills as SafetyBirthControlPills
 from NeonOcean.S4.Cycle.Tools import Distribution, Probability
 from NeonOcean.S4.Main import Debug, Snippets as MainSnippets
 from NeonOcean.S4.Main.Tools import Exceptions
@@ -406,6 +407,17 @@ class MethodPerformanceSelectionSet(list):
 	def HandlePostUse (self, inseminatedSimInfo: typing.Optional[sim_info.SimInfo], sourceSimInfo: typing.Optional[sim_info.SimInfo]) -> None:
 		for performanceSelection in self:  # type: MethodPerformanceSelection
 			performanceSelection.WoohooSafetyMethod.HandlePostUse(inseminatedSimInfo, sourceSimInfo, performanceSelection.SelectedPerformanceType)
+
+def SuppressWoohooSafetyMethodFailureWarnings (targetSimInfo: sim_info.SimInfo) -> bool:
+	"""
+	Whether or not woohoo safety method failure warnings should be suppressed for the target sim. This should be true if the sim wouldn't be worried about
+	failures because their using some kind of passive birth control, like pills or IUDs.
+	"""
+
+	if SafetyBirthControlPills.OnBirthControlPills(targetSimInfo):
+		return True
+
+	return False
 
 def GetWoohooSafetyMethods () -> typing.List[WoohooSafetyMethod]:
 	"""

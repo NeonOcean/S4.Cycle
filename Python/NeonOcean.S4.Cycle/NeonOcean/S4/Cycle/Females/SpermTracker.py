@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import random
 import typing
+import textwrap
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
@@ -114,7 +115,7 @@ class SpermTracker(ReproductionShared.TrackerBase):
 		for activeSpermIndex in range(len(self._activeSperm)):  # type: int
 			activeSperm = self._activeSperm[activeSpermIndex]  # type: Sperm.Sperm
 
-			debugString += ("\n  [%s] " % activeSpermIndex) + activeSperm.GetDebugNotificationString().replace("\n", "\n  ")
+			debugString += ("\n  [%s] " % activeSpermIndex) + textwrap.indent(activeSperm.GetDebugNotificationString(), " ")
 
 		return debugString
 

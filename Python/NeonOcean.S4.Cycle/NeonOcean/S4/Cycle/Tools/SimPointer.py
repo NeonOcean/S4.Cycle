@@ -121,8 +121,6 @@ def CreatePointerFor (simInfo: sim_info.SimInfo) -> SimPointer:
 # 	Everything = Name | Basic | Genetic | Appearance | Traits  # type: InformationCategories
 #
 # class SimPointer(Savable.SavableExtension):
-#	HostNamespace = This.Mod.Namespace
-#
 # 	CreationSource = This.Mod.Namespace + "-Sim_Pointer"  # type: str
 #
 # 	def __init__ (self):

@@ -2,72 +2,128 @@
 <I n="NeonOcean_S4_Cycle_Snippets_STBL_Gameplay_Identifiers" s="4392605453318397925" i="snippet" m="snippets" c="NeonoceanS4GlobalLanguageIdentifiers">
 	<L n="value">
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Condom_Box.Unpack.Display_Name</T>
-			<T n="value">638122012</T>
+			<T n="key">NeonOcean.S4.Cycle.Birth_Control_Pills.Missed_Pill_Notification.Text</T>
+			<T n="value">1057438570</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Birth_Control_Pills.Missed_Pill_Notification.Title</T>
+			<T n="value">890486910</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Abdominal_Cramping.Description</T>
 			<T n="value">1059234707</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Abdominal_Cramping.Name</T>
 			<T n="value">2441854718</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Heavy_Vaginal_Bleeding.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Heavy_Vaginal_Bleeding.Description</T>
 			<T n="value">162206171</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Heavy_Vaginal_Bleeding.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Heavy_Vaginal_Bleeding.Name</T>
 			<T n="value">2678545089</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Intense_Abdominal_Cramping.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Intense_Abdominal_Cramping.Description</T>
 			<T n="value">1566324602</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Intense_Abdominal_Cramping.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Intense_Abdominal_Cramping.Name</T>
 			<T n="value">3543514897</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Light_Vaginal_Bleeding.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Light_Vaginal_Bleeding.Description</T>
 			<T n="value">1779989014</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Light_Vaginal_Bleeding.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Light_Vaginal_Bleeding.Name</T>
 			<T n="value">4192881132</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Mild_Abdominal_Cramping.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Mild_Abdominal_Cramping.Description</T>
 			<T n="value">3557734401</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Mild_Abdominal_Cramping.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Mild_Abdominal_Cramping.Name</T>
 			<T n="value">3795451181</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Painful_Abdominal_Cramping.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Painful_Abdominal_Cramping.Description</T>
 			<T n="value">3854428980</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Painful_Abdominal_Cramping.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Painful_Abdominal_Cramping.Name</T>
 			<T n="value">63985913</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Severe_Vaginal_Bleeding.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Severe_Vaginal_Bleeding.Description</T>
 			<T n="value">1684222161</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Severe_Vaginal_Bleeding.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Severe_Vaginal_Bleeding.Name</T>
 			<T n="value">2779881638</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Vaginal_Bleeding.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Vaginal_Bleeding.Description</T>
 			<T n="value">976515727</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Buffs.Vaginal_Bleeding.Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.Menstruation_Vaginal_Bleeding.Name</T>
 			<T n="value">315694888</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Abdominal_Cramping.Description</T>
+			<T n="value">147116202</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Abdominal_Cramping.Name</T>
+			<T n="value">3345843731</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Bloating.Description</T>
+			<T n="value">160554334</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Bloating.Name</T>
+			<T n="value">1370536343</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Fatigued.Description</T>
+			<T n="value">4053897595</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Fatigued.Name</T>
+			<T n="value">1314596483</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Angry.Description</T>
+			<T n="value">1042736350</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Angry.Name</T>
+			<T n="value">2685851646</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Happy.Description</T>
+			<T n="value">622763155</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Happy.Name</T>
+			<T n="value">524269915</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Sad.Description</T>
+			<T n="value">2060210415</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Sad.Name</T>
+			<T n="value">2902818407</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Buffs_Reasons.Reproductive_System</T>
+			<T n="value">4077070563</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Dot.Error_Notification.Text</T>
@@ -76,6 +132,22 @@
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Dot.Error_Notification.Title</T>
 			<T n="value">2487373507</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Dot.Fertility_Notification.Text</T>
+			<T n="value">272176693</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Dot.Fertility_Notification.Title</T>
+			<T n="value">1864088028</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Dot.Fertility_Notifications_Enabled_Notification.Text</T>
+			<T n="value">1060379512</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Dot.Fertility_Notifications_Enabled_Notification.Title</T>
+			<T n="value">3825030231</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Dot.Status_Notification.Text.Follicular</T>
@@ -134,6 +206,26 @@
 			<T n="value">2123064516</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Read_Instructions.Display_Name</T>
+			<T n="value">2578363045</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Read_Instructions.Notification.Text</T>
+			<T n="value">3479619943</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Read_Instructions.Notification.Title</T>
+			<T n="value">3860429037</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Take_Pill.Display_Name</T>
+			<T n="value">1531473120</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Take_Pill.Too_Recent_Tooltip</T>
+			<T n="value">987158916</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Cycle.Interactions.Condom_Box.Start_Using.Display_Name</T>
 			<T n="value">3932764483</T>
 		</U>
@@ -150,12 +242,20 @@
 			<T n="value">149208833</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Condom_Box.Unpack.Display_Name</T>
+			<T n="value">638122012</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Cycle.Interactions.Dot.Check_Status.Display_Name</T>
 			<T n="value">285493694</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Interactions.Dot.Delete.Display_Name</T>
 			<T n="value">3502316159</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Dot.Disable_Fertility_Notifications.Display_Name</T>
+			<T n="value">1931744679</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Interactions.Dot.Download.Display_Name</T>
@@ -166,32 +266,88 @@
 			<T n="value">3732136531</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Display_Name</T>
-			<T n="value">2089865575</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Dot.Enable_Fertility_Notifications.Display_Name</T>
+			<T n="value">1996070328</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Toilet.Display_Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Read_Instructions.Display_Name</T>
+			<T n="value">3999679771</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Read_Instructions.Notification.Text</T>
+			<T n="value">168358531</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Read_Instructions.Notification.Title</T>
+			<T n="value">859306308</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Take_Pill.Display_Name</T>
+			<T n="value">2614700008</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Read_Instructions.Display_Name</T>
+			<T n="value">262544983</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Read_Instructions.Notification.Text</T>
+			<T n="value">1740099000</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Read_Instructions.Notification.Title</T>
+			<T n="value">4021949418</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Display_Name</T>
 			<T n="value">3192685275</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Toilet.Missing_Test_Tooltip</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Missing_Test_Tooltip</T>
 			<T n="value">507496842</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Inventory_Delivery.Text</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Stall.Display_Name</T>
+			<T n="value">2683656791</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Stall.Missing_Test_Tooltip</T>
+			<T n="value">1568087093</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_Notification.Inventory_Delivery.Text</T>
 			<T n="value">1122117568</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Mail_Delivery.Text</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_Notification.Mail_Delivery.Text</T>
 			<T n="value">3004621417</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_With_Computer.Display_Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Computer.Display_Name</T>
 			<T n="value">243817945</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_With_Mailbox.Display_Name</T>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Computer.Tooltip</T>
+			<T n="value">1439660574</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Mailbox.Display_Name</T>
 			<T n="value">1421966004</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Mailbox.Tooltip</T>
+			<T n="value">2602204239</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Objects.Birth_Control_Pills.Description</T>
+			<T n="value">4009108033</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Objects.Birth_Control_Pills.Name</T>
+			<T n="value">3076458897</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Objects.Birth_Control_Pills.Tooltip.Subtext</T>
+			<T n="value">4148652970</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Objects.Condom_Box.Description</T>
@@ -206,12 +362,68 @@
 			<T n="value">4031720320</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Cycle.Objects.Emergency_Contraceptive_Pill.Description</T>
+			<T n="value">3548263913</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Objects.Emergency_Contraceptive_Pill.Name</T>
+			<T n="value">3896175074</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Cycle.Objects.Pregnancy_Test.Description</T>
 			<T n="value">1457303407</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Objects.Pregnancy_Test.Name</T>
 			<T n="value">4135298290</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Pregnancy_Test.Negative_Test_Result_Notification.Text</T>
+			<T n="value">3175413550</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Pregnancy_Test.Negative_Test_Result_Notification.Title</T>
+			<T n="value">1629317130</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Pregnancy_Test.Positive_Test_Result_Notification.Text</T>
+			<T n="value">3731683505</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Pregnancy_Test.Positive_Test_Result_Notification.Title</T>
+			<T n="value">1617668769</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Broke_Notification.Text</T>
+			<T n="value">2727316278</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Broke_Notification.Title</T>
+			<T n="value">3289774573</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Ran_Out_Notification.Text</T>
+			<T n="value">2152891482</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Ran_Out_Notification.Title</T>
+			<T n="value">3863329179</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.No_Withdraw_Notification.Text</T>
+			<T n="value">1787001439</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.No_Withdraw_Notification.Title</T>
+			<T n="value">1572049103</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.Very_Late_Withdraw_Notification.Text</T>
+			<T n="value">237400587</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.Very_Late_Withdraw_Notification.Title</T>
+			<T n="value">3689684700</T>
 		</U>
 	</L>
 </I>

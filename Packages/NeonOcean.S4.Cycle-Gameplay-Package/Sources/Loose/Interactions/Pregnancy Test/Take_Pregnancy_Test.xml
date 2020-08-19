@@ -172,7 +172,6 @@
 			<T n="start_user_directed_inertial">True</T>
 		</U>
 	</V>
-	
 	<L n="basic_extras">
 		<V t="state_change">
 			<U n="state_change">
@@ -300,61 +299,16 @@
 		<U n="single">
 			<U n="actions">
 				<L n="basic_extras">
-					<V t="notification">
-						<U n="notification">
-							<V n="dialog" t="tested">
-								<U n="tested">
-									<L n="records">
-										<U>
-											<V n="item" t="literal">
-												<U n="literal">
-													<V n="icon" t="enabled">
-														<V n="enabled" t="participant" />
-													</V>
-													<V n="text" t="variation">
-														<U n="variation">
-															<L n="variations">
-																<T>0xC64BE50C<!--String: "{0.SimFirstName} is not pregnant. Maybe next time!"--></T>
-															</L>
-														</U>
-													</V>
-												</U>
-											</V>
-											<L n="tests">
-												<L>
-													<V t="state">
-														<U n="state">
-															<T n="value">15299<!--CommodityBasedObjectStateValue: Pregnant_NotPregnant--></T>
-															<E n="who">Actor</E>
-														</U>
-													</V>
-												</L>
-											</L>
-										</U>
-									</L>
-								</U>
-							</V>
-						</U>
-					</V>
-					<V t="destroy_specified_objects_from_target_inventory">
-						<U n="destroy_specified_objects_from_target_inventory">
-							<V n="count" t="number" />
-							<E n="inventory_owner">Actor</E>
-							<L n="object_tests">
-								<L>
-									<V t="object_criteria">
-										<U n="object_criteria">
-											<V n="desired_state_threshold" t="enabled">
-												<U n="enabled">
-													<E n="comparison">EQUAL</E>
-													<T n="value">15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
-												</U>
-											</V>
-											<V n="subject_specific_tests" t="single_object" />
-										</U>
-									</V>
-								</L>
+					<V t="do_command">
+						<U n="do_command">
+							<L n="arguments">
+								<V t="participant">
+									<U n="participant">
+										<E n="argument">Actor</E>
+									</U>
+								</V>
 							</L>
+							<T n="command">neonocean.s4.cycle.pregnancy_test.show_test_results</T>
 						</U>
 					</V>
 				</L>
@@ -362,8 +316,6 @@
 				<L n="loot_list">
 					<T>10396<!--LootActions: loot_Commodity_Motive_Hygiene_UseToilet--></T>
 					<T>241070<!--RandomWeightedLoot: randomWeightedLoot_ToiletFire--></T>
-					<T>11087<!--LootActions: TakePregnancyTest_Loot--></T>
-
 				</L>
 			</U>
 		</U>
@@ -448,25 +400,10 @@
 	</V>
 	<E n="target_type">OBJECT</E>
 	<L n="test_globals">
-		<V t="inventory">
-			<U n="inventory">
-				<V n="contents_check" t="has_object_with_states">
-					<U n="has_object_with_states">
-						<L n="state_set">
-							<T>15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
-						</L>
-					</U>
-				</V>
-				<V n="tooltip" t="enabled">
-					<T n="enabled">0x1E3FC98A</T>
-				</V>
-			</U>
-		</V>
 		<V t="sim_info">
 			<U n="sim_info">
 				<V n="ages" t="specified">
 					<L n="specified">
-						<E>CHILD</E>
 						<E>TEEN</E>
 						<E>YOUNGADULT</E>
 						<E>ADULT</E>
@@ -508,41 +445,8 @@
 			</U>
 		</V>
 	</L>
-	<L n="tests">
-		<L>
-			<V t="trait">
-				<U n="trait">
-					<L n="whitelist_traits">
-						<T>136875<!--Trait: trait_GenderOptions_Pregnancy_CanBeImpregnated--></T>
-					</L>
-				</U>
-			</V>
-		</L>
-		<L>
-			<V t="trait">
-				<U n="trait">
-					<L n="whitelist_traits">
-						<T>136875<!--Trait: trait_GenderOptions_Pregnancy_CanBeImpregnated--></T>
-					</L>
-				</U>
-			</V>
-			<V t="statistic">
-				<U n="statistic">
-					<T n="stat">16652<!--Commodity: motive_Bladder--></T>
-					<V n="threshold" t="value_threshold">
-						<U n="value_threshold">
-							<E n="comparison">LESS</E>
-							<T n="value">0</T>
-						</U>
-					</V>
-					<E n="who">Actor</E>
-				</U>
-			</V>
-		</L>
-	</L>
 	<T n="time_overhead">10</T>
 	<E n="visual_type_override">SIMPLE</E>
-	
 	<L n="ObjectRegistrationInformation">
 		<V t="byType">
 			<U n="byType">
@@ -552,4 +456,47 @@
 			</U>
 		</V>
 	</L>
+	<U n="ItemRequiredDestroyObjectsInInventoryElement">
+		<V n="count" t="number" />
+		<E n="inventory_owner">Actor</E>
+		<L n="object_tests">
+			<L>
+				<V t="object_criteria">
+					<U n="object_criteria">
+						<V n="desired_state_threshold" t="enabled">
+							<U n="enabled">
+								<E n="comparison">EQUAL</E>
+								<T n="value">15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
+							</U>
+						</V>
+						<V n="subject_specific_tests" t="single_object" />
+					</U>
+				</V>
+			</L>
+		</L>
+	</U>
+	<U n="NoRequiredItemPaymentElement">
+		<V n="payment" t="literal">
+			<U n="literal">
+				<V n="payment_cost" t="amount">
+					<U n="amount">
+						<T n="amount">50</T>
+					</U>
+				</V>
+			</U>
+		</V>
+		<V n="timing" t="at_beginning" />
+	</U>
+	<U n="ItemRequiredInventoryTest">
+		<V n="contents_check" t="has_object_with_states">
+			<U n="has_object_with_states">
+				<L n="state_set">
+					<T>15099327867658495608<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Pregnancy_Test_Unused--></T>
+				</L>
+			</U>
+		</V>
+		<V n="tooltip" t="enabled">
+			<T n="enabled">507496842</T>
+		</V>
+	</U>
 </I>

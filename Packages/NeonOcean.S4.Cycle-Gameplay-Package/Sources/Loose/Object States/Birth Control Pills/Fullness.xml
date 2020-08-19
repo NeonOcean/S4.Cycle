@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Object_States_Birth_Control_Pills_Fullness" s="561845505710055984" i="object_state" m="objects.components.state" c="CommodityBasedObjectState">
+	<L n="_values">
+		<T>4090262376568190783<!--CommodityBasedObjectStateValue: NeonOcean_S4_Cycle_Object_States_Birth_Control_Pills_Fullness_Full--></T>
+		<T>4782358403425536168<!--CommodityBasedObjectStateValue: NeonOcean_S4_Cycle_Object_States_Birth_Control_Pills_Fullness_Empty--></T>
+	</L>
+	<T n="linked_stat">10149873938934991278<!--Statistic: NeonOcean_S4_Cycle_Statistics_Birth_Control_Pills_Count--></T>
+</I>

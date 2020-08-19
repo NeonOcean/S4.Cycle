@@ -40,6 +40,11 @@
 			<English>End Pregnancy</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Fix_Dot_Cycle</Identifier>
+			<Key>2942690136</Key>
+			<English>Fix Dot Cycle</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Make_Pregnant_Picker.Display_Name</Identifier>
 			<Key>1977150230</Key>
 			<English>Make Pregnant By</English>
@@ -48,6 +53,11 @@
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Set_Cycle_Progress_Dialog.Display_Name</Identifier>
 			<Key>3200036637</Key>
 			<English>Set Cycle Progress</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Set_Pregnancy_Progress_Dialog.Display_Name</Identifier>
+			<Key>3809504251</Key>
+			<English>Set Pregnancy Progress</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Debug.Show_Reproductive_Info.Display_Name</Identifier>
@@ -73,6 +83,26 @@
 			<Identifier>NeonOcean.S4.Cycle.Set_Cycle_Progress_Dialog.Title</Identifier>
 			<Key>1906675665</Key>
 			<English>Set Cycle Progress</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Pregnancy_Progress_Dialog.Cancel_Button</Identifier>
+			<Key>1752626355</Key>
+			<English>Cancel</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Pregnancy_Progress_Dialog.Ok_Button</Identifier>
+			<Key>2520170562</Key>
+			<English>Ok</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Pregnancy_Progress_Dialog.Text</Identifier>
+			<Key>2571550985</Key>
+			<English />
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Set_Pregnancy_Progress_Dialog.Title</Identifier>
+			<Key>1673336922</Key>
+			<English>Set Pregnancy Progress</English>
 		</STBLXMLEntry>
 	</Entries>
 </STBLXMLFile>

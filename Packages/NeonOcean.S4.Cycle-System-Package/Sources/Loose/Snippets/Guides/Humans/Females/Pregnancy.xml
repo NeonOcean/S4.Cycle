@@ -2,6 +2,26 @@
 <I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Pregnancy" s="14743675197889006109" i="snippet" m="snippets" c="NeonoceanS4CycleHumanPregnancyGuide">
 	<U n="value">
 		<T n="PregnancyTime">388800</T>
-		<T n="LatestDiscoveryTime"></T>
+		<T n="LatestDiscoveryTime">129600</T>
+		<U n="PregnancyTestProgressProbability">
+			<L n="points">
+				<U>
+					<T n="x">0.05</T>
+					<T n="y">0.75</T>
+					<E n="connectionType">Linear</E>
+				</U>
+				<U>
+					<T n="x">0.08</T>
+					<T n="y">0.9</T>
+					<E n="connectionType">Linear</E>
+				</U>
+				<U>
+					<T n="x">0.1</T>
+					<T n="y">0.95</T>
+					<E n="connectionType">Linear</E>
+				</U>
+			</L>
+		</U>
+		<T n="PregnancyTestFalsePositiveProbability">0.05</T>
 	</U>
 </I>

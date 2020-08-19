@@ -10,89 +10,161 @@
 	<IdentifiersName>NeonOcean_S4_Cycle_Snippets_STBL_Gameplay_Identifiers</IdentifiersName>
 	<Entries>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Unpack.Display_Name</Identifier>
-			<Key>638122012</Key>
-			<English>Unpack</English>
+			<Identifier>NeonOcean.S4.Cycle.Birth_Control_Pills.Missed_Pill_Notification.Text</Identifier>
+			<Key>1057438570</Key>
+			<English>It looks like {0.SimFirstName} has &lt;b&gt;missed {1.Number} birth control pill(s)&lt;/b&gt; since {F0.she}{M0.he} last took one!
+
+&lt;b&gt;Gameplay tip:&lt;/b&gt; &lt;i&gt;Missing a single pill is more dangerous when playing with short cycles. For example, when setting a cycle to last just 2 days, a sim that only forgot their pill for one day would, in reality, have been off their birth control for half their cycle.&lt;/i&gt;</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Birth_Control_Pills.Missed_Pill_Notification.Title</Identifier>
+			<Key>890486910</Key>
+			<English>Missed Pill!</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Abdominal_Cramping.Description</Identifier>
 			<Key>1059234707</Key>
-			<English>{0.SimFirstName} is experiencing cramping in their lower abdomen.</English>
+			<English>{0.SimFirstName} is experiencing cramping in {F0.her}{M0.his} lower abdomen.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Abdominal_Cramping.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Abdominal_Cramping.Name</Identifier>
 			<Key>2441854718</Key>
 			<English>Abdominal Cramping</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Heavy_Vaginal_Bleeding.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Heavy_Vaginal_Bleeding.Description</Identifier>
 			<Key>162206171</Key>
 			<English>{0.SimFirstName} is experiencing heavy vaginal bleeding.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Heavy_Vaginal_Bleeding.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Heavy_Vaginal_Bleeding.Name</Identifier>
 			<Key>2678545089</Key>
 			<English>Heavy Vaginal Bleeding</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Intense_Abdominal_Cramping.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Intense_Abdominal_Cramping.Description</Identifier>
 			<Key>1566324602</Key>
-			<English>{0.SimFirstName} is experiencing intense cramping in their lower abdomen.</English>
+			<English>{0.SimFirstName} is experiencing intense cramping in {F0.her}{M0.his} lower abdomen.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Intense_Abdominal_Cramping.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Intense_Abdominal_Cramping.Name</Identifier>
 			<Key>3543514897</Key>
 			<English>Intense Abdominal Cramping</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Light_Vaginal_Bleeding.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Light_Vaginal_Bleeding.Description</Identifier>
 			<Key>1779989014</Key>
 			<English>{0.SimFirstName} is experiencing light vaginal bleeding.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Light_Vaginal_Bleeding.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Light_Vaginal_Bleeding.Name</Identifier>
 			<Key>4192881132</Key>
 			<English>Light Vaginal Bleeding</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Mild_Abdominal_Cramping.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Mild_Abdominal_Cramping.Description</Identifier>
 			<Key>3557734401</Key>
-			<English>{0.SimFirstName} is experiencing mild cramping in their lower abdomen.</English>
+			<English>{0.SimFirstName} is experiencing mild cramping in {F0.her}{M0.his} lower abdomen.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Mild_Abdominal_Cramping.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Mild_Abdominal_Cramping.Name</Identifier>
 			<Key>3795451181</Key>
 			<English>Mild Abdominal Cramping</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Painful_Abdominal_Cramping.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Painful_Abdominal_Cramping.Description</Identifier>
 			<Key>3854428980</Key>
-			<English>{0.SimFirstName} is experiencing painful cramping in their lower abdomen.</English>
+			<English>{0.SimFirstName} is experiencing painful cramping in {F0.her}{M0.his} lower abdomen.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Painful_Abdominal_Cramping.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Painful_Abdominal_Cramping.Name</Identifier>
 			<Key>63985913</Key>
 			<English>Painful Abdominal Cramping</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Severe_Vaginal_Bleeding.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Severe_Vaginal_Bleeding.Description</Identifier>
 			<Key>1684222161</Key>
 			<English>{0.SimFirstName} is experiencing severe vaginal bleeding.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Severe_Vaginal_Bleeding.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Severe_Vaginal_Bleeding.Name</Identifier>
 			<Key>2779881638</Key>
 			<English>Severe Vaginal Bleeding</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Vaginal_Bleeding.Description</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Vaginal_Bleeding.Description</Identifier>
 			<Key>976515727</Key>
 			<English>{0.SimFirstName} is experiencing vaginal bleeding.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Buffs.Vaginal_Bleeding.Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.Menstruation_Vaginal_Bleeding.Name</Identifier>
 			<Key>315694888</Key>
 			<English>Vaginal Bleeding</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Abdominal_Cramping.Description</Identifier>
+			<Key>147116202</Key>
+			<English>{0.SimFirstName} is experiencing cramping in {F0.her}{M0.his} lower abdomen.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Abdominal_Cramping.Name</Identifier>
+			<Key>3345843731</Key>
+			<English>Abdominal Cramping</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Bloating.Description</Identifier>
+			<Key>160554334</Key>
+			<English>{0.SimFirstName} is feeling bloated.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Bloating.Name</Identifier>
+			<Key>1370536343</Key>
+			<English>Bloated</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Fatigued.Description</Identifier>
+			<Key>4053897595</Key>
+			<English>{0.SimFirstName} is feeling unusually fatigued, time for a nap.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Fatigued.Name</Identifier>
+			<Key>1314596483</Key>
+			<English>Fatigued</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Angry.Description</Identifier>
+			<Key>1042736350</Key>
+			<English>{0.SimFirstName} is feeling angry, though, {F0.she}{M0.he} can't particularly pin down why.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Angry.Name</Identifier>
+			<Key>2685851646</Key>
+			<English>Mood Swing</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Happy.Description</Identifier>
+			<Key>622763155</Key>
+			<English>{0.SimFirstName} is feeling happy, though, {F0.she}{M0.he} can't particularly pin down why.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Happy.Name</Identifier>
+			<Key>524269915</Key>
+			<English>Mood Swing</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Sad.Description</Identifier>
+			<Key>2060210415</Key>
+			<English>{0.SimFirstName} is feeling sad, though, {F0.she}{M0.he} can't particularly pin down why.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs.PMS_Mood_Swing_Sad.Name</Identifier>
+			<Key>2902818407</Key>
+			<English>Mood Swing</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Buffs_Reasons.Reproductive_System</Identifier>
+			<Key>4077070563</Key>
+			<English>(From Reproductive System)</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Dot.Error_Notification.Text</Identifier>
@@ -104,6 +176,31 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Dot.Error_Notification.Title</Identifier>
 			<Key>2487373507</Key>
+			<English>Dot Period &amp; Ovulation Tracker</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Fertility_Notification.Text</Identifier>
+			<Key>272176693</Key>
+			<English>You are now entering a period of fertility! 
+If your looking to start a family or just add a new member, now is the time!</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Fertility_Notification.Title</Identifier>
+			<Key>1864088028</Key>
+			<English>Dot Period &amp; Ovulation Tracker</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Fertility_Notifications_Enabled_Notification.Text</Identifier>
+			<Key>1060379512</Key>
+			<English>Fertility push notifications are now enabled!
+
+&lt;b&gt;Warning:&lt;/b&gt;
+Dot Period &amp; Ovulation Tracker is not intented for use as a contraceptive method. Dot Solutions LLC is not responsible for any incidents of accidental pregnancy that may occur during the use of this service.
+</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Dot.Fertility_Notifications_Enabled_Notification.Title</Identifier>
+			<Key>3825030231</Key>
 			<English>Dot Period &amp; Ovulation Tracker</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
@@ -177,6 +274,35 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<English>Dot Period &amp; Ovulation Tracker</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Read_Instructions.Display_Name</Identifier>
+			<Key>2578363045</Key>
+			<English>Read Instructions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Read_Instructions.Notification.Text</Identifier>
+			<Key>3479619943</Key>
+			<English>Take one pill per day, following the arrows and lines that indicate the order in which to take them. 
+
+Use caution during the first cycle after beginning this medication. Forgetting to take this medication can result in unintended pregnancy, use caution in these cases as well.
+
+&lt;b&gt;Gameplay tip:&lt;/b&gt; &lt;i&gt;Missing a single pill is more dangerous when playing with short cycles. For example, with cycles that last just 2 days, a sim that only forgot their pill for one day would, in reality, have been off their birth control for half their cycle.&lt;/i&gt;</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Read_Instructions.Notification.Title</Identifier>
+			<Key>3860429037</Key>
+			<English>Birth Control Pills Instructions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Take_Pill.Display_Name</Identifier>
+			<Key>1531473120</Key>
+			<English>Take Pill</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Birth_Control_Pills.Take_Pill.Too_Recent_Tooltip</Identifier>
+			<Key>987158916</Key>
+			<English>A pill was already taken recently.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Start_Using.Display_Name</Identifier>
 			<Key>3932764483</Key>
 			<English>Start Using</English>
@@ -197,6 +323,11 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<English>The active sim will stop using condoms during woohoo.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Condom_Box.Unpack.Display_Name</Identifier>
+			<Key>638122012</Key>
+			<English>Unpack</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Check_Status.Display_Name</Identifier>
 			<Key>285493694</Key>
 			<English>Check Status Of Cycle</English>
@@ -205,6 +336,11 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Delete.Display_Name</Identifier>
 			<Key>3502316159</Key>
 			<English>Delete Dot App</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Disable_Fertility_Notifications.Display_Name</Identifier>
+			<Key>1931744679</Key>
+			<English>Disable Fertility Notifications</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Download.Display_Name</Identifier>
@@ -217,39 +353,118 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<English>Download Dot, an app for keeping track of your menstrual cycle.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Display_Name</Identifier>
-			<Key>2089865575</Key>
-			<English>Take Pregnancy Test</English>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Dot.Enable_Fertility_Notifications.Display_Name</Identifier>
+			<Key>1996070328</Key>
+			<English>Enable Fertility Notifications</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Toilet.Display_Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Read_Instructions.Display_Name</Identifier>
+			<Key>3999679771</Key>
+			<English>Read Instructions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Read_Instructions.Notification.Text</Identifier>
+			<Key>168358531</Key>
+			<English>Take one pill as soon as possible after an accident for best pregnancy prevention results.
+
+This medication works by delaying your ovulation for a few days to allow time for sperm in your system to die off. Try to avoid engaging in activities that would refresh any supply of sperm cells in your system.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Read_Instructions.Notification.Title</Identifier>
+			<Key>859306308</Key>
+			<English>Emergency Contraceptive Pill Instructions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Emergency_Contraceptive_Pill.Take_Pill.Display_Name</Identifier>
+			<Key>2614700008</Key>
+			<English>Take Pill</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Read_Instructions.Display_Name</Identifier>
+			<Key>262544983</Key>
+			<English>Read Instructions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Read_Instructions.Notification.Text</Identifier>
+			<Key>1740099000</Key>
+			<English>- Remove the purple cap to reveal the sample collector. 
+- Hold the sample collector in your urine stream for a few seconds. 
+- Wait for lines to appear on the test's display.
+
+One line indicates you are not pregnant, two lines means you are. 
+
+&lt;b&gt;Incorrect Results:&lt;/b&gt;
+Taking this test very early into a pregnancy may result in a false negative. There is also a small chance this test may indicate an incorrect result for other reasons. If you feel like a result is incorrect, wait for a time and test again.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Read_Instructions.Notification.Title</Identifier>
+			<Key>4021949418</Key>
+			<English>Pregnancy Test Instructions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Display_Name</Identifier>
 			<Key>3192685275</Key>
 			<English>Take Pregnancy Test</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Toilet.Missing_Test_Tooltip</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test.Missing_Test_Tooltip</Identifier>
 			<Key>507496842</Key>
-			<English>{0.SimFirstName} doesn't have a pregnancy test in their inventory.</English>
+			<English>{0.SimFirstName} doesn't have a pregnancy test in {F0.her}{M0.his} inventory.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Inventory_Delivery.Text</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Stall.Display_Name</Identifier>
+			<Key>2683656791</Key>
+			<English>Take Pregnancy Test</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Pregnancy_Test.Take_Pregnancy_Test_Stall.Missing_Test_Tooltip</Identifier>
+			<Key>1568087093</Key>
+			<English>{0.SimFirstName} doesn't have a pregnancy test in {F0.her}{M0.his} inventory.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_Notification.Inventory_Delivery.Text</Identifier>
 			<Key>1122117568</Key>
 			<English>Thank you for choosing ProtectTech® for your contraceptive needs! The purchased items can now be found in {0.SimFirstName}'s inventory.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_Notification.Mail_Delivery.Text</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_Notification.Mail_Delivery.Text</Identifier>
 			<Key>3004621417</Key>
 			<English>Thank you for choosing ProtectTech® for your contraceptive needs! The purchased items will arrive by mail as soon as possible.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_With_Computer.Display_Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Computer.Display_Name</Identifier>
 			<Key>243817945</Key>
-			<English>Purchase Contraceptives</English>
+			<English>Purchase From Protect Tech</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
-			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_Contraceptives.Purchase_With_Mailbox.Display_Name</Identifier>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Computer.Tooltip</Identifier>
+			<Key>1439660574</Key>
+			<English>Purchase reproductive health items from Protect Tech LLC</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Mailbox.Display_Name</Identifier>
 			<Key>1421966004</Key>
-			<English>Order Contraceptives</English>
+			<English>Order From Protect Tech</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Interactions.Purchase_From_Protect_Tech.Purchase_With_Mailbox.Tooltip</Identifier>
+			<Key>2602204239</Key>
+			<English>Purchase reproductive health items from Protect Tech LLC</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Birth_Control_Pills.Description</Identifier>
+			<Key>4009108033</Key>
+			<English>Birth control pills, use these to suppress periods and ovulation.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Birth_Control_Pills.Name</Identifier>
+			<Key>3076458897</Key>
+			<English>Birth Control Pills</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Birth_Control_Pills.Tooltip.Subtext</Identifier>
+			<Key>4148652970</Key>
+			<English>Pills remaining: {0.Number}</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Objects.Condom_Box.Description</Identifier>
@@ -267,6 +482,16 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 			<English>Condoms remaining: {0.Number}</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Emergency_Contraceptive_Pill.Description</Identifier>
+			<Key>3548263913</Key>
+			<English>Single use emergency contraceptive, take as soon as possible after birth control failure to prevent pregnancy.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Objects.Emergency_Contraceptive_Pill.Name</Identifier>
+			<Key>3896175074</Key>
+			<English>Last Resort Emergency Contraceptive</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Objects.Pregnancy_Test.Description</Identifier>
 			<Key>1457303407</Key>
 			<English>Use this to find out if you have a bundle of joy coming your way.</English>
@@ -274,7 +499,67 @@ Looks like a bunch of llamas from our regular farm broke into our server farm an
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Objects.Pregnancy_Test.Name</Identifier>
 			<Key>4135298290</Key>
-			<English>Pregnancy Test</English>
+			<English>New Leaf Pregnancy Test</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Pregnancy_Test.Negative_Test_Result_Notification.Text</Identifier>
+			<Key>3175413550</Key>
+			<English>One line... {0.SimFirstName} is not pregnant, according to the test.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Pregnancy_Test.Negative_Test_Result_Notification.Title</Identifier>
+			<Key>1629317130</Key>
+			<English>Pregnancy Test Results</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Pregnancy_Test.Positive_Test_Result_Notification.Text</Identifier>
+			<Key>3731683505</Key>
+			<English>Two lines... {0.SimFirstName}'s pregnancy test indicates that they are pregnant!</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Pregnancy_Test.Positive_Test_Result_Notification.Title</Identifier>
+			<Key>1617668769</Key>
+			<English>Pregnancy Test Results</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Broke_Notification.Text</Identifier>
+			<Key>2727316278</Key>
+			<English>The condom that {0.SimFirstName} and {1.SimFirstName} were using broke! Time will tell if this accident is going to result in pregnancy.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Broke_Notification.Title</Identifier>
+			<Key>3289774573</Key>
+			<English>Woohoo Accident!</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Ran_Out_Notification.Text</Identifier>
+			<Key>2152891482</Key>
+			<English>{0.SimFirstName} just used up {F0.her}{M0.his} last condom. Seems like it might be time to buy some more.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Condom.Ran_Out_Notification.Title</Identifier>
+			<Key>3863329179</Key>
+			<English>Used Last Condom</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.No_Withdraw_Notification.Text</Identifier>
+			<Key>1787001439</Key>
+			<English>{0.SimFirstName} and {1.SimFirstName} were completely caught up in the moment, so much so that they entirely forgot to make use of the withdraw method. Time will tell if this accident is going to result in pregnancy.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.No_Withdraw_Notification.Title</Identifier>
+			<Key>1572049103</Key>
+			<English>Woohoo Accident!</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.Very_Late_Withdraw_Notification.Text</Identifier>
+			<Key>237400587</Key>
+			<English>{0.SimFirstName} and {1.SimFirstName} failed to correctly use the withdraw method. Although this could easily have consequences, the accident could have been worse. Time will tell if this incident will result in pregnancy.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Cycle.Woohoo_Safety_Methods.Withdraw.Very_Late_Withdraw_Notification.Title</Identifier>
+			<Key>3689684700</Key>
+			<English>Woohoo Accident!</English>
 		</STBLXMLEntry>
 	</Entries>
 </STBLXMLFile>

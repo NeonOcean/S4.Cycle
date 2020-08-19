@@ -3,7 +3,7 @@ from __future__ import annotations
 import enum_lib
 import typing
 
-from NeonOcean.S4.Cycle import Reproduction, ReproductionShared, This
+from NeonOcean.S4.Cycle import Reproduction, ReproductionShared, This, SimSettings
 from NeonOcean.S4.Cycle.Buffs import Shared as BuffsShared
 from NeonOcean.S4.Cycle.Effects import Shared as EffectsShared
 from NeonOcean.S4.Cycle.Females.Cycle import Menstrual as CycleMenstrual, Shared as CycleShared
@@ -14,7 +14,7 @@ from buffs import buff
 from sims import sim_info
 from sims4.tuning import tunable
 
-_menstrualBuffs = list()  # type: typing.List[typing.Type[MenstrualBuff]]
+_menstrualBuffs = list()  # type: typing.List[typing.Type[MenstrualBuffBase]]
 
 class CyclePhaseTest(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit):
 	class PhaseState(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit):
@@ -46,7 +46,7 @@ class CyclePhaseTest(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit
 		"""
 
 		if not isinstance(testingCycle, CycleMenstrual.MenstrualCycle):
-			raise Exceptions.IncorrectTypeException(testingCycle, "testingCycle", (CycleMenstrual.MenstrualCycle, ))
+			raise Exceptions.IncorrectTypeException(testingCycle, "testingCycle", (CycleMenstrual.MenstrualCycle,))
 
 		if len(self.PhaseStates) == 0:
 			return True
@@ -195,28 +195,17 @@ class CyclePhaseTest(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit
 		else:
 			return ReproductionShared.ReproductiveMinutesToTicks(soonestValidTime, reproductiveTimeMultiplier)
 
-class MenstrualBuff(buff.Buff):
+class MenstrualBuffBase(buff.Buff):
 	INSTANCE_TUNABLES = {
 		# TODO allow persistent buffs.
-		"Rarity": ToolsTunable.TunablePythonEnumEntry(description = "How rare this buff is.", enumType = BuffsShared.BuffRarity, default = BuffsShared.BuffRarity.NotApplicable),
+		"Rarity": tunable.OptionalTunable(description = "How rare this buff is.", tunable = ToolsTunable.TunablePythonEnumEntry(enumType = BuffsShared.BuffRarity, default = BuffsShared.BuffRarity.Common)),
 		"ApplyCoolDown": tunable.Tunable(description = "Whether or not adding this buff should temporarily prevent new menstrual buffs from being added.", tunable_type = bool, default = True),
-		"ApplyRarityOffset": tunable.Tunable(description = "Whether or not adding this buff will temporarily offset the chances that a buff of certain rarity types will appear.", tunable_type = bool, default = True),
 		"CyclePhaseTest": CyclePhaseTest.TunableFactory(description = "A test to determine if this buff can be added based on their current menstrual cycle."),
 	}
 
-	Rarity: BuffsShared.BuffRarity
+	Rarity: typing.Optional[BuffsShared.BuffRarity]
 	ApplyCoolDown: bool
-	ApplyRarityOffset: bool
 	CyclePhaseTest: CyclePhaseTest
-
-	def __init_subclass__ (cls, *args, **kwargs):
-		try:
-			super().__init_subclass__(*args, **kwargs)
-
-			_menstrualBuffs.append(cls)
-		except Exception as e:
-			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-			raise e
 
 	def on_add (self, from_load = False, apply_buff_loot = True) -> None:
 		returnValue = super().on_add(from_load = from_load, apply_buff_loot = apply_buff_loot)
@@ -264,25 +253,60 @@ class MenstrualBuff(buff.Buff):
 
 		return returnValue
 
-def GetAllMenstrualBuffs () -> typing.List[typing.Type[MenstrualBuff]]:
+class PMSMenstrualBuffBase(MenstrualBuffBase):
+	@classmethod
+	def can_add (cls, owner: sim_info.SimInfo):
+		if SimSettings.ExperiencesPMS.Get(str(owner.id)):
+			return True
+
+		return False
+
+class MenstrualBuff(MenstrualBuffBase):
+	def __init_subclass__ (cls, *args, **kwargs):
+		try:
+			super().__init_subclass__(*args, **kwargs)
+
+			_menstrualBuffs.append(cls)
+		except Exception as e:
+			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			raise e
+
+class PMSMenstrualBuff(PMSMenstrualBuffBase):
+	def __init_subclass__ (cls, *args, **kwargs):
+		try:
+			super().__init_subclass__(*args, **kwargs)
+
+			_menstrualBuffs.append(cls)
+		except Exception as e:
+			Debug.Log("Failed to initialize new sub class for '" + cls.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			raise e
+
+def GetAllMenstrualBuffs () -> typing.List[typing.Type[MenstrualBuffBase]]:
 	"""
 	Get all buffs that use the MenstrualBuff type.
 	"""
 
 	return list(_menstrualBuffs)
 
-def GetMenstrualBuffsWithRarity (rarity: BuffsShared.BuffRarity) -> typing.List[typing.Type[MenstrualBuff]]:
+def GetMenstrualBuffsWithRarity (rarity: BuffsShared.BuffRarity, includeBuffsWithNoRarity: bool = True) -> typing.List[typing.Type[MenstrualBuffBase]]:
 	"""
 	Get all menstrual buffs with a rarity flag that matches the input rarity flag.
+	:param rarity: The rarity flag by which we will search for buffs.
+	:type rarity: BuffsShared.BuffRarity
+	:param includeBuffsWithNoRarity: Whether or not buffs with no rarity should be included in the search.
+	:type includeBuffsWithNoRarity: bool
 	"""
 
 	if not isinstance(rarity, BuffsShared.BuffRarity):
-		raise Exceptions.IncorrectTypeException(rarity, "rarity", (BuffsShared.BuffRarity, ))
+		raise Exceptions.IncorrectTypeException(rarity, "rarity", (BuffsShared.BuffRarity,))
 
-	matchingBuffs = list()  # type: typing.List[typing.Type[MenstrualBuff]]
+	matchingBuffs = list()  # type: typing.List[typing.Type[MenstrualBuffBase]]
 
-	for menstrualBuff in _menstrualBuffs:  # type: typing.Type[MenstrualBuff]
-		if menstrualBuff.Rarity in rarity:
+	for menstrualBuff in _menstrualBuffs:  # type: typing.Type[MenstrualBuffBase]
+		if menstrualBuff.Rarity is None:
+			if includeBuffsWithNoRarity:
+				matchingBuffs.append(menstrualBuff)
+		elif menstrualBuff.Rarity in rarity:
 			matchingBuffs.append(menstrualBuff)
 
 	return matchingBuffs
@@ -298,4 +322,4 @@ def IsMenstrualBuff (testingBuff: typing.Union[buff.Buff, typing.Type[buff.Buff]
 	if not isinstance(testingBuff, type):
 		testingBuff = testingBuff.buff_type
 
-	return issubclass(testingBuff, MenstrualBuff)
+	return issubclass(testingBuff, MenstrualBuffBase)

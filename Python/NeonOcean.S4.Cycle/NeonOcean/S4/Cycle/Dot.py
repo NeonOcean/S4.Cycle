@@ -3,18 +3,17 @@ import typing
 
 import game_services
 import services
+import date_and_time
 import time_service
 from NeonOcean.S4.Cycle import Guides as CycleGuides, ReproductionShared, Saving, This
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
 from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
 from NeonOcean.S4.Cycle.Tools import SimPointer
+from NeonOcean.S4.Cycle.UI import Dot as UIDot
 from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Saving import SectionBranched
 from NeonOcean.S4.Main.Tools import Exceptions, Parse, Savable, Sims as ToolsSims, Version
 from sims import sim_info
-
-if typing.TYPE_CHECKING:
-	pass
 
 DotSavingKey = "Dot"
 
@@ -122,7 +121,7 @@ class DotCycle:
 		The exact life time of this cycle in game minutes.
 		"""
 
-		return self.LutealEndMinute
+		return _GetMenstrualCycleLifetime()
 
 	@property
 	def FollicularLength (self) -> float:
@@ -130,9 +129,7 @@ class DotCycle:
 		The amount of time in game minutes of the cycle's follicular phase.
 		"""
 
-		reproductiveTimeMultiplier = self._GetCycleReproductiveTimeMultiplier()  # type: float
-		menstrualCycleGuide = self._GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
-		return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.FollicularLength.Mean, reproductiveTimeMultiplier)
+		return _GetMenstrualCycleFollicularLength()
 
 	@property
 	def FollicularStartMinute (self) -> float:
@@ -140,7 +137,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that the follicular phase will start.
 		"""
 
-		return 0
+		return _GetMenstrualCycleFollicularStartMinute()
 
 	@property
 	def FollicularEndMinute (self) -> float:
@@ -148,7 +145,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that the follicular phase will end.
 		"""
 
-		return self.FollicularLength
+		return _GetMenstrualCycleFollicularEndMinute()
 
 	@property
 	def InFollicularPhase (self) -> bool:
@@ -165,9 +162,7 @@ class DotCycle:
 		phase ends, and will stop ovulating half of this many minutes after the luteal phase starts.
 		"""
 
-		reproductiveTimeMultiplier = self._GetCycleReproductiveTimeMultiplier()  # type: float
-		menstrualCycleGuide = self._GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
-		return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.OvulationLength.Mean, reproductiveTimeMultiplier)
+		return _GetMenstrualCycleOvulationLength()
 
 	@property
 	def OvulationStartMinute (self) -> float:
@@ -175,7 +170,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that ovulation will start.
 		"""
 
-		return self.FollicularLength - self.OvulationLength / 2
+		return _GetMenstrualCycleOvulationStartMinute()
 
 	@property
 	def OvulationEndMinute (self) -> float:
@@ -183,7 +178,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that ovulation will end.
 		"""
 
-		return self.FollicularLength + self.OvulationLength / 2
+		return _GetMenstrualCycleOvulationEndMinute()
 
 	@property
 	def Ovulating (self) -> bool:
@@ -199,9 +194,7 @@ class DotCycle:
 		The length of the cycle's luteal phase in game minutes.
 		"""
 
-		reproductiveTimeMultiplier = self._GetCycleReproductiveTimeMultiplier()  # type: float
-		menstrualCycleGuide = self._GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
-		return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.LutealLength.Mean, reproductiveTimeMultiplier)
+		return _GetMenstrualCycleLutealLength()
 
 	@property
 	def LutealStartMinute (self) -> float:
@@ -209,7 +202,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that the luteal phase will start.
 		"""
 
-		return self.FollicularLength
+		return _GetMenstrualCycleLutealStartMinute()
 
 	@property
 	def LutealEndMinute (self) -> float:
@@ -217,7 +210,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that the luteal phase will end.
 		"""
 
-		return self.FollicularLength + self.LutealLength
+		return _GetMenstrualCycleLutealEndMinute()
 
 	@property
 	def InLutealPhase (self) -> bool:
@@ -233,9 +226,7 @@ class DotCycle:
 		The length of the cycle's menstruation phase in game minutes.
 		"""
 
-		reproductiveTimeMultiplier = self._GetCycleReproductiveTimeMultiplier()  # type: float
-		menstrualCycleGuide = self._GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
-		return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.MenstruationLength.Mean, reproductiveTimeMultiplier)
+		return _GetMenstrualCycleMenstruationLength()
 
 	@property
 	def MenstruationStartMinute (self) -> float:
@@ -243,7 +234,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that menstruation will start.
 		"""
 
-		return self.LutealEndMinute - self.MenstruationLength
+		return _GetMenstrualCycleMenstruationStartMinute()
 
 	@property
 	def MenstruationEndMinute (self) -> float:
@@ -251,7 +242,7 @@ class DotCycle:
 		The amount of time in game minutes into the cycle that menstruation will end.
 		"""
 
-		return self.LutealEndMinute
+		return _GetMenstrualCycleMenstruationEndMinute()
 
 	@property
 	def Menstruating (self) -> bool:
@@ -444,14 +435,10 @@ class DotCycle:
 
 		return nextPhase
 
-	def _GetCycleReproductiveTimeMultiplier (self) -> float:
-		return FemalesShared.GetCycleTrackerReproductiveTimeMultiplier()
-
-	def _GetMenstrualCycleGuide (self) -> CycleGuides.CycleMenstrualGuide:
-		return CycleGuides.HumanCycleMenstrualGuide.Guide
-
 class DotInformation(Savable.SavableExtension):
 	HostNamespace = This.Mod.Namespace
+
+	MinimumTicksBeforeOvulationToNotify = ReproductionShared.GameMinutesToTicks(date_and_time.MINUTES_PER_HOUR * 8)
 
 	def __init__ (self, targetSimInfoOrID: typing.Union[sim_info.SimInfo, int, None]):
 		"""
@@ -470,15 +457,18 @@ class DotInformation(Savable.SavableExtension):
 
 		self.Enabled = False
 		self.TrackingMode = TrackingMode.Cycle
+		self.ShowFertilityNotifications = False
 
 		self.TimeSinceCycleStart = None
+
 		self.LastSimulatedTick = services.time_service().sim_now.absolute_ticks()
 
 		encodeEnum = lambda value: value.name if value is not None else None
 		decodeTrackingMode = lambda valueString: Parse.ParsePythonEnum(valueString, TrackingMode)
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Enabled", "Enabled", self.Enabled))  # TODO add type verifiers to values without built in verifiers else where.
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Enabled", "Enabled", self.Enabled))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("TrackingMode", "TrackingMode", self.TrackingMode, encoder = encodeEnum, decoder = decodeTrackingMode))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("ShowFertilityNotifications", "ShowFertilityNotifications", self.ShowFertilityNotifications))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("TimeSinceCycleStart", "TimeSinceCycleStart", self.TimeSinceCycleStart))
 
 	@property
@@ -538,6 +528,21 @@ class DotInformation(Savable.SavableExtension):
 			raise Exceptions.IncorrectTypeException(value, "TrackingMode", (TrackingMode,))
 
 		self._trackingMode = value
+
+	@property
+	def ShowFertilityNotifications (self) -> bool:
+		"""
+		Whether or not the app should notify the player when the target sim is about to become fertile.
+		"""
+
+		return self._showFertilityNotifications
+
+	@ShowFertilityNotifications.setter
+	def ShowFertilityNotifications (self, value: bool) -> None:
+		if not isinstance(value, bool):
+			raise Exceptions.IncorrectTypeException(value, "ShowFertilityNotifications", (bool,))
+
+		self._showFertilityNotifications = value
 
 	@property
 	def TimeSinceCycleStart (self) -> typing.Optional[float]:
@@ -608,14 +613,6 @@ class DotInformation(Savable.SavableExtension):
 
 		return self.Outdated and not self.Simulating
 
-	@property
-	def ReproductiveTimeMultiplier (self) -> typing.Union[float, int]:
-		"""
-		Get the value that is divided with the game time to get the reproductive time and multiplied with the reproductive time to get the game time.
-		"""
-
-		return FemalesShared.GetCycleTrackerReproductiveTimeMultiplier()
-
 	def Load (self, simsSection: SectionBranched.SectionBranched) -> bool:
 		"""
 		Load the reproductive system's data from this saving section. An exception will be raised if no valid sim has been set for this dot object.
@@ -631,7 +628,9 @@ class DotInformation(Savable.SavableExtension):
 		operationSuccessful = True  # type: bool
 
 		try:
-			dotInformationData = simsSection.GetValue(str(self.TargetSimID), DotSavingKey, default = None)
+			targetSimSavingKey = Saving.GetSimSimsSectionBranchKey(self.TargetSimInfo)  # type: str
+
+			dotInformationData = simsSection.GetValue(targetSimSavingKey, DotSavingKey, default = None)
 
 			if dotInformationData is None:
 				Debug.Log("'%s' has had a dot information object created for the first time, or at least, they had no saved data in the loaded save file.\n%s" % (ToolsSims.GetFullName(self.TargetSimInfo), operationInformation), self.HostNamespace, Debug.LogLevels.Info, group = self.HostNamespace, owner = __name__)
@@ -660,8 +659,11 @@ class DotInformation(Savable.SavableExtension):
 
 	def Save (self, simsSection: SectionBranched.SectionBranched) -> bool:
 		"""
-		Save the reproductive system's data to this saving section.
+		Save the reproductive system's data to this saving section. An exception will be raised if no valid sim has been set for this dot object.
 		"""
+
+		if self.TargetSimID is None or self.TargetSimInfo is None:
+			raise Exception("Cannot save a dot information object with no target sim.")
 
 		if not isinstance(simsSection, SectionBranched.SectionBranched):
 			raise Exceptions.IncorrectTypeException(simsSection, "simsSection", (SectionBranched.SectionBranched,))
@@ -673,8 +675,10 @@ class DotInformation(Savable.SavableExtension):
 		operationSuccessful = True  # type: bool
 
 		try:
+			targetSimSavingKey = Saving.GetSimSimsSectionBranchKey(self.TargetSimInfo)  # type: str
+
 			saveSuccessful, dotInformationData = self.SaveToDictionary()  # type: bool, dict
-			simsSection.Set(str(self.TargetSimID), DotSavingKey, dotInformationData)
+			simsSection.Set(targetSimSavingKey, DotSavingKey, dotInformationData)
 		except:
 			Debug.Log("Save operation in a dot information object aborted.\n" + operationInformation, self.HostNamespace, Debug.LogLevels.Exception, group = self.HostNamespace, owner = __name__)
 			return False
@@ -724,7 +728,7 @@ class DotInformation(Savable.SavableExtension):
 
 	def GetCurrentCycle (self) -> typing.Optional[DotCycle]:
 		"""
-		Get information about the current cycle, according to the dot app. This will be none if the app is not tracking the cycle, the target sim does not exists,
+		Get information about the current cycle, according to the dot app. This will be none if the app is not tracking the cycle, the target sim does not exist,
 		the target sim cannot menstruate, or we don't know when the last menstrual cycle occurred.
 		"""
 
@@ -734,11 +738,21 @@ class DotInformation(Savable.SavableExtension):
 		if self.TimeSinceCycleStart is None:
 			return None
 
-		gameTimeSinceCycleStart = ReproductionShared.ReproductiveMinutesToGameMinutes(self.TimeSinceCycleStart, self.ReproductiveTimeMultiplier)  # type: float
+		return self._GetCycle(self.TimeSinceCycleStart)
 
-		cycleInformation = DotCycle()
-		cycleInformation.Age = gameTimeSinceCycleStart % cycleInformation.Lifetime
-		return cycleInformation
+	def GetCurrentCycleAge (self) -> typing.Optional[float]:
+		"""
+		Get the age of the target sim's current cycle in game minutes, according to the dot app. This will be none if the app is not tracking the cycle,
+		the target sim does not exist, the target sim cannot menstruate, or we don't know when the last menstrual cycle occurred.
+		"""
+
+		if self.TrackingMode != TrackingMode.Cycle:
+			return None
+
+		if self.TimeSinceCycleStart is None:
+			return None
+
+		return self._GetCycleAge(self.TimeSinceCycleStart)
 
 	def SetCycleStart (self, minutesSince: float) -> None:
 		"""
@@ -756,9 +770,47 @@ class DotInformation(Savable.SavableExtension):
 		if ticks <= 0:
 			return
 
-		if self.TimeSinceCycleStart is not None:
-			simulatingMinutes = ReproductionShared.TicksToReproductiveMinutes(ticks, self.ReproductiveTimeMultiplier)  # type: float
-			self.TimeSinceCycleStart += simulatingMinutes
+		if self.TimeSinceCycleStart is None:
+			return
+
+		cycleReproductiveTimeMultiplier = _GetCycleReproductiveTimeMultiplier()  # type: float
+
+		lastTimeSinceCycleStart = self.TimeSinceCycleStart  # type: float
+		lastTickSinceCycleStart = ReproductionShared.ReproductiveMinutesToTicks(lastTimeSinceCycleStart, cycleReproductiveTimeMultiplier)  # type: int
+
+		nextTickSinceCycleStart = lastTickSinceCycleStart + ticks  # type: int
+		nextTimeSinceCycleStart = ReproductionShared.TicksToReproductiveMinutes(nextTickSinceCycleStart, cycleReproductiveTimeMultiplier)  # type: float
+
+		if self.ShowFertilityNotifications and self.Enabled:
+			currentCycleState = self._GetCycle(lastTimeSinceCycleStart)  # type: DotCycle
+			currentTicksUntilOvulationStarts = ReproductionShared.GameMinutesToTicks(currentCycleState.GetTimeUntilPhaseStarts(CycleShared.MenstrualCyclePhases.Ovulation))  # type: int
+
+			ticksBeforeOvulationToNotify = ReproductionShared.GameMinutesToTicks(_GetSpermHalfLifeTime())  # type: int
+
+			if ticksBeforeOvulationToNotify < self.MinimumTicksBeforeOvulationToNotify:
+				ticksBeforeOvulationToNotify = self.MinimumTicksBeforeOvulationToNotify
+
+			if currentTicksUntilOvulationStarts > 0 and ticksBeforeOvulationToNotify < currentTicksUntilOvulationStarts:
+				nextCycleState = self._GetCycle(nextTimeSinceCycleStart)  # type: DotCycle
+				nextTicksUntilOvulationStarts = ReproductionShared.GameMinutesToTicks(nextCycleState.GetTimeUntilPhaseStarts(CycleShared.MenstrualCyclePhases.Ovulation))  # type: int
+
+				if ticksBeforeOvulationToNotify > nextTicksUntilOvulationStarts:
+					UIDot.ShowFertilityNotification(self.TargetSimInfo)
+
+		self.TimeSinceCycleStart = nextTimeSinceCycleStart
+
+	def _GetCycle (self, reproductiveTimeSinceCycleStart: float) -> DotCycle:
+		cycleInformation = DotCycle()
+		currentCycleAge = self._GetCycleAge(reproductiveTimeSinceCycleStart)  # type: typing.Optional[float]
+
+		assert currentCycleAge is not None
+
+		cycleInformation.Age = currentCycleAge
+		return cycleInformation
+
+	def _GetCycleAge (self, reproductiveTimeSinceCycleStart: float) -> float: # Time in game minutes
+		gameTimeSinceCycleStart = ReproductionShared.ReproductiveMinutesToGameMinutes(reproductiveTimeSinceCycleStart, _GetCycleReproductiveTimeMultiplier())  # type: float
+		return gameTimeSinceCycleStart % _GetMenstrualCycleLifetime()
 
 def CreateDotInformation (targetSimInfo: sim_info.SimInfo) -> DotInformation:
 	"""
@@ -819,7 +871,7 @@ def GetAllDotInformation (automaticallyUpdate: bool = True) -> typing.Dict[int, 
 
 def ClearDotInformation (targetSimInfo: sim_info.SimInfo) -> None:
 	"""
-	Clear out the saved dot information for the target sim.
+	Clear out the saved dot information object for the target sim.
 	"""
 
 	if not isinstance(targetSimInfo, sim_info.SimInfo):
@@ -871,3 +923,68 @@ def ResetAllDotInformation (simsSection: typing.Optional[SectionBranched.Section
 
 def _RegisterDotInformation (targetSimID: int, targetDotInformation: DotInformation) -> None:
 	_allDotInformation[targetSimID] = targetDotInformation
+
+def _GetMenstrualCycleGuide () -> CycleGuides.CycleMenstrualGuide:
+	return CycleGuides.HumanCycleMenstrualGuide.Guide
+
+def _GetCycleReproductiveTimeMultiplier () -> float:
+	return FemalesShared.GetCycleTrackerReproductiveTimeMultiplier()
+
+# These functions get the average times in game minutes.
+def _GetMenstrualCycleLifetime () -> float:
+	return _GetMenstrualCycleLutealEndMinute()
+
+def _GetMenstrualCycleFollicularLength () -> float:
+	reproductiveTimeMultiplier = _GetCycleReproductiveTimeMultiplier()  # type: float
+	menstrualCycleGuide = _GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
+	return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.FollicularLength.Mean, reproductiveTimeMultiplier)
+
+def _GetMenstrualCycleFollicularStartMinute () -> float:
+	return 0
+
+def _GetMenstrualCycleFollicularEndMinute () -> float:
+	return _GetMenstrualCycleFollicularLength()
+
+def _GetMenstrualCycleOvulationLength () -> float:
+	reproductiveTimeMultiplier = _GetCycleReproductiveTimeMultiplier()  # type: float
+	menstrualCycleGuide = _GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
+	return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.OvulationLength.Mean, reproductiveTimeMultiplier)
+
+def _GetMenstrualCycleOvulationStartMinute () -> float:
+	return _GetMenstrualCycleFollicularLength() - _GetMenstrualCycleOvulationLength() / 2
+
+def _GetMenstrualCycleOvulationEndMinute () -> float:
+	return _GetMenstrualCycleFollicularLength() + _GetMenstrualCycleOvulationLength() / 2
+
+def _GetMenstrualCycleLutealLength () -> float:
+	reproductiveTimeMultiplier = _GetCycleReproductiveTimeMultiplier()  # type: float
+	menstrualCycleGuide = _GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
+	return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.LutealLength.Mean, reproductiveTimeMultiplier)
+
+def _GetMenstrualCycleLutealStartMinute () -> float:
+	return _GetMenstrualCycleFollicularLength()
+
+def _GetMenstrualCycleLutealEndMinute () -> float:
+	return _GetMenstrualCycleFollicularLength() + _GetMenstrualCycleLutealLength()
+
+def _GetMenstrualCycleMenstruationLength () -> float:
+	reproductiveTimeMultiplier = _GetCycleReproductiveTimeMultiplier()  # type: float
+	menstrualCycleGuide = _GetMenstrualCycleGuide()  # type: CycleGuides.CycleMenstrualGuide
+	return ReproductionShared.ReproductiveMinutesToGameMinutes(menstrualCycleGuide.MenstruationLength.Mean, reproductiveTimeMultiplier)
+
+def _GetMenstrualCycleMenstruationStartMinute () -> float:
+	return _GetMenstrualCycleLutealEndMinute() - _GetMenstrualCycleMenstruationLength()
+
+def _GetMenstrualCycleMenstruationEndMinute () -> float:
+	return _GetMenstrualCycleLutealEndMinute()
+
+def _GetSpermGuide () -> CycleGuides.SpermGuide:
+	return CycleGuides.HumanSpermGuide.Guide
+
+def _GetSpermReproductiveTimeMultiplier () -> float:
+	return FemalesShared.GetSpermTrackerReproductiveTimeMultiplier()
+
+def _GetSpermHalfLifeTime () -> float:
+	reproductiveTimeMultiplier = _GetSpermReproductiveTimeMultiplier()  # type: float
+	spermGuide = _GetSpermGuide()  # type: CycleGuides.SpermGuide
+	return ReproductionShared.ReproductiveMinutesToGameMinutes(spermGuide.LifetimeDistributionMean.Mean, reproductiveTimeMultiplier)

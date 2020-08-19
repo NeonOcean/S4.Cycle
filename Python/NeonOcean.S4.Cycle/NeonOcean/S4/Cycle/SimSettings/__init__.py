@@ -4,7 +4,8 @@ import types
 import typing
 
 from NeonOcean.S4.Cycle.SimSettings import Base as SimSettingsBase
-from NeonOcean.S4.Cycle.SimSettings.WoohooSafetyMethods import WoohooSafetyMethodUse
+from NeonOcean.S4.Cycle.SimSettings.WoohooSafety import WoohooSafetyMethodUse
+from NeonOcean.S4.Cycle.SimSettings.Menstruation import ExperiencesPMS
 from NeonOcean.S4.Main.Tools import Events
 
 def GetAllSettings () -> typing.List[typing.Type[SimSettingsBase.Setting]]:
@@ -13,7 +14,7 @@ def GetAllSettings () -> typing.List[typing.Type[SimSettingsBase.Setting]]:
 def Update () -> None:
 	SimSettingsBase.Update()
 
-def RegisterUpdateCallback (updateCallback: typing.Callable[[types.ModuleType, SimSettingsBase.UpdateEventArguments], None]) -> None:
+def RegisterOnUpdateCallback (updateCallback: typing.Callable[[types.ModuleType, SimSettingsBase.UpdateEventArguments], None]) -> None:
 	SimSettingsBase.RegisterOnUpdateCallback(updateCallback)
 
 def UnregisterOnUpdateCallback (updateCallback: typing.Callable[[types.ModuleType, SimSettingsBase.UpdateEventArguments], None]) -> None:

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Object_States_Emergency_Contraceptive_Pill_Usage" s="16221553076007106248" i="object_state" m="objects.components.state" c="ObjectState">
+	<L n="_values">
+		<T>4550259985461846355<!--ObjectStateValue: NeonOcean_S4_Cycle_Object_States_Emergency_Contraceptive_Pill_Unused--></T>
+	</L>
+</I>

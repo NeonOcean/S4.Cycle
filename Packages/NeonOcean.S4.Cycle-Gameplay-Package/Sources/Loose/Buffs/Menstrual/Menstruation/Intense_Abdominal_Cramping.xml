@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Buffs_Menstrual_Menstruation_Intense_Abdominal_Cramping" s="4026596648344888265" i="buff" m="NeonOcean.S4.Cycle.Buffs.Menstrual" c="MenstrualBuff">
+	<T n="buff_name">0xD335BF11</T>
+	<T n="buff_description">0x5D5C377A</T>
+	<T n="icon">00B2D882:00000000:2AB5296DBA211FA0</T>
+	<V n="_temporary_commodity_info" t="enabled">
+		<U n="enabled">
+			<L n="categories">
+				<E>Uncomfortable_Buffs</E>
+			</L>
+			<T n="max_duration">120</T>
+		</U>
+	</V>
+	<T n="mood_type">14646<!--Mood: Mood_Uncomfortable--></T>
+	<T n="mood_weight">3</T>
+	<T n="audio_sting_on_add" p="InGame\Audio\Stings\sting_buff_gain.propx">39B2AA4A:00000000:8AF8B916CF64C646</T>
+	<T n="audio_sting_on_remove" p="InGame\Audio\Stings\sting_buff_loss.propx">39B2AA4A:00000000:3BF33216A25546EA</T>
+	<V n="_add_test_set" t="tests_set">
+		<L n="tests_set">
+			<L>
+				<V t="buff">
+					<U n="buff">
+						<L n="blacklist">
+							<T>7156146428561212724<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_Menstruation_Abdominal_Cramping--></T>
+							<T>2289888751660416843<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_Menstruation_Mild_Abdominal_Cramping--></T>
+							<T>9400432491660744853<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_Menstruation_Painful_Abdominal_Cramping--></T>
+							<T>4026596648344888265<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_Menstruation_Intense_Abdominal_Cramping--></T>
+							<T>13745952327866095309<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Abdominal_Cramping_Rare--></T>
+							<T>6653472538396194473<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Abdominal_Cramping_Very_Rare--></T>
+						</L>
+					</U>
+				</V>
+			</L>
+		</L>
+	</V>
+	<V n="Rarity" t="enabled">
+		<E n="enabled">VeryRare</E>
+	</V>
+	<U n="CyclePhaseTest">
+		<L n="PhaseStates">
+			<U>
+				<E n="Phase">Menstruation</E>
+				<V n="StartCompletion" t="enabled">
+					<T n="enabled">0.1</T>
+				</V>
+				<V n="EndCompletion" t="enabled">
+					<T n="enabled">0.9</T>
+				</V>
+			</U>
+		</L>
+	</U>
+
+</I>

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import typing
+import textwrap
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, ReproductionShared, This
 from NeonOcean.S4.Cycle.Effects import Base as EffectsBase, Types as EffectsTypes
@@ -98,6 +99,22 @@ class EffectTracker(ReproductionShared.TrackerBase):
 		"""
 
 		return self.GetEffect(effectTypeIdentifier) is not None
+
+	def GetDebugNotificationString (self) -> str:
+		debugString = ""  # type: str
+
+		for activeEffect in self._activeEffects:  # type: EffectsBase.EffectBase
+			effectDebugNotificationString = activeEffect.GetDebugNotificationString()  # type: str
+
+			if effectDebugNotificationString == "":
+				continue
+
+			if debugString != "":
+				debugString += "\n"
+
+			debugString += activeEffect.TypeIdentifier + "\n " + textwrap.indent(effectDebugNotificationString, " ")
+
+		return debugString
 
 	def _Setup (self) -> None:
 		super()._Setup()

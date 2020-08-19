@@ -32,8 +32,8 @@
 			</U>
 		</V>
 	</L>
-	<V n="RequiredDotAppState" t="enabled">
-		<E t="enabled">Enabled</E>
+	<V n="RequiredDotEnabledState" t="enabled">
+		<T t="enabled">True</T>
 	</V>
 	<L n="ObjectRegistrationInformation">
 		<V t="byType">

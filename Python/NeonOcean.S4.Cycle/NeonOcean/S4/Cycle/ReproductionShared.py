@@ -8,7 +8,7 @@ import date_and_time
 import game_services
 import services
 import time_service
-from NeonOcean.S4.Cycle import Events as CycleEvents, GuideGroups as CycleGuideGroups, ReproductionTrackers, Saving, Settings, This
+from NeonOcean.S4.Cycle import Events as CycleEvents, GuideGroups as CycleGuideGroups, ReproductionTrackers, Settings, This, Saving
 from NeonOcean.S4.Main import Debug
 from NeonOcean.S4.Main.Saving import SectionBranched
 from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Sims as ToolsSims, Types, Version
@@ -883,7 +883,7 @@ class ReproductiveSystem(Savable.SavableExtension, metaclass = ReproductiveSyste
 		try:
 			simSavingKey = Saving.GetSimSimsSectionBranchKey(self.SimInfo)  # type: str
 
-			reproductiveSystemData = simsSection.GetValue(simSavingKey, self.SectionKey, default = None)
+			reproductiveSystemData = simsSection.GetValue(simSavingKey, self.SectionKey, default = None)  # type: typing.Optional[dict]
 
 			if reproductiveSystemData is None:
 				Debug.Log("'%s' has had a reproductive system object created for the first time, or at least, they had no saved data in the loaded save file.\n%s" % (ToolsSims.GetFullName(self.SimInfo), operationInformation), self.HostNamespace, Debug.LogLevels.Info, group = self.HostNamespace, owner = __name__)

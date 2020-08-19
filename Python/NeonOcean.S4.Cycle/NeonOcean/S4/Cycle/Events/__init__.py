@@ -7,16 +7,17 @@ from NeonOcean.S4.Cycle.Events.General import (
 )
 from NeonOcean.S4.Cycle.Events.Effects.Menstrual import (
 	MenstrualEffectBuffAddedArguments,
-	MenstrualEffectBuffRemovedArguments
+	MenstrualEffectBuffRemovedArguments,
+	MenstrualEffectBuffSelectionTestingArguments
 )
 from NeonOcean.S4.Cycle.Events.Females.Cycle import (
 	CycleAbortTestingArguments,
 	CycleChangedArguments,
 	CycleCompletedArguments,
 	CycleGeneratingArguments,
-	CycleReleasedOvaArguments,
 	CycleStartTestingArguments,
-	CycleMenstrualGeneratingArguments
+	CycleMenstrualGeneratingArguments,
+	CycleReleaseOvumTestingArguments,
 )
 from NeonOcean.S4.Cycle.Events.Females.Ovum import (
 	OvumFertilizationTestingArguments,

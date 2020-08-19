@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Snippets_Guides_Human_Emergency_Contraceptive_Pill_Effect" s="16342376888986895153" i="snippet" m="snippets" c="NeonoceanS4CycleHumanEmergencyContraceptivePillEffectGuide">
+	<U n="value">
+		<T n="StrengthPerReproductiveMinute">-0.00011574074</T>
+		<U n="DelayTimeMean">
+			<L n="points">
+				<U>
+					<T n="x">0</T>
+					<T n="y">0</T>
+				</U>
+				<U>
+					<T n="x">1</T>
+					<T n="y">7200</T>
+				</U>
+			</L>
+		</U>
+		
+		<U n="DelayTimeStandardDeviation">
+			<L n="points">
+				<U>
+					<T n="x">0</T>
+					<T n="y">720</T>
+				</U>
+				<U>
+					<T n="x">1</T>
+					<T n="y">1440</T>
+				</U>
+			</L>
+		</U>
+		
+		<T n="DelayTimeMaximum">10080</T>
+		<U n="QuickModeSpermBlockChance">
+			<L n="points">
+				<U>
+					<T n="x">0</T>
+					<T n="y">0</T>
+				</U>
+				<U>
+					<T n="x">0.25</T>
+					<T n="y">0.5</T>
+				</U>
+				<U>
+					<T n="x">0.5</T>
+					<T n="y">0.75</T>
+				</U>
+				<U>
+					<T n="x">1</T>
+					<T n="y">0.95</T>
+				</U>
+			</L>
+		</U>
+	</U>
+</I>

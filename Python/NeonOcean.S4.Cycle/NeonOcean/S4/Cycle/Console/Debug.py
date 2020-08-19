@@ -2,9 +2,9 @@ import typing
 
 import game_services
 import services
-from NeonOcean.S4.Cycle import Debug as CycleDebug, Reproduction, ReproductionShared, This
+from NeonOcean.S4.Cycle import Debug as CycleDebug, Reproduction, ReproductionShared, This, Dot
 from NeonOcean.S4.Cycle.Console import Command
-from NeonOcean.S4.Cycle.Females import CycleTracker, Shared as FemalesShared
+from NeonOcean.S4.Cycle.Females import CycleTracker, PregnancyTracker, Shared as FemalesShared
 from NeonOcean.S4.Main import Debug, Language, LoadingShared
 from NeonOcean.S4.Main.UI import Dialogs
 from server_commands import argument_helpers
@@ -16,14 +16,21 @@ ShowReproductiveInfoCommand: Command.ConsoleCommand
 ShowSetCycleProgressDialogCommand: Command.ConsoleCommand
 MakePregnantCommand: Command.ConsoleCommand
 EndPregnancyCommand: Command.ConsoleCommand
+ShowSetPregnancyProgressDialogCommand: Command.ConsoleCommand
+FixDotCycleCommand: Command.ConsoleCommand
 
-SetCycleProgressDialogText = Language.String(This.Mod.Namespace + ".Set_Cycle_Progress_Dialog.Text", fallbackText = "Set_Cycle_Progress_Dialog.Text")  # type: Language.String
-SetCycleProgressDialogTitle = Language.String(This.Mod.Namespace + ".Set_Cycle_Progress_Dialog.Title", fallbackText = "Set_Cycle_Progress_Dialog.Title")  # type: Language.String
+SetCycleProgressDialogText = Language.String(This.Mod.Namespace + ".Set_Cycle_Progress_Dialog.Text")  # type: Language.String
+SetCycleProgressDialogTitle = Language.String(This.Mod.Namespace + ".Set_Cycle_Progress_Dialog.Title")  # type: Language.String
 SetCycleProgressDialogOkButton = Language.String(This.Mod.Namespace + ".Set_Cycle_Progress_Dialog.Ok_Button", fallbackText = "Ok_Button")  # type: Language.String
 SetCycleProgressDialogCancelButton = Language.String(This.Mod.Namespace + ".Set_Cycle_Progress_Dialog.Cancel_Button", fallbackText = "Cancel_Button")  # type: Language.String
 
+SetPregnancyProgressDialogText = Language.String(This.Mod.Namespace + ".Set_Pregnancy_Progress_Dialog.Text")  # type: Language.String
+SetPregnancyProgressDialogTitle = Language.String(This.Mod.Namespace + ".Set_Pregnancy_Progress_Dialog.Title")  # type: Language.String
+SetPregnancyProgressDialogOkButton = Language.String(This.Mod.Namespace + ".Set_Pregnancy_Progress_Dialog.Ok_Button", fallbackText = "Ok_Button")  # type: Language.String
+SetPregnancyProgressDialogCancelButton = Language.String(This.Mod.Namespace + ".Set_Pregnancy_Progress_Dialog.Cancel_Button", fallbackText = "Cancel_Button")  # type: Language.String
+
 def _Setup () -> None:
-	global ShowReproductiveInfoCommand, ShowSetCycleProgressDialogCommand, MakePregnantCommand, EndPregnancyCommand
+	global ShowReproductiveInfoCommand, ShowSetCycleProgressDialogCommand, MakePregnantCommand, EndPregnancyCommand, ShowSetPregnancyProgressDialogCommand, FixDotCycleCommand
 
 	commandPrefix = This.Mod.Namespace.lower() + ".debug"  # type: str
 
@@ -31,6 +38,8 @@ def _Setup () -> None:
 	ShowSetCycleProgressDialogCommand = Command.ConsoleCommand(_ShowSetCycleProgressDialog, commandPrefix + ".show_set_cycle_progress_dialog", showHelp = False)
 	MakePregnantCommand = Command.ConsoleCommand(_MakePregnant, commandPrefix + ".make_pregnant", showHelp = False)
 	EndPregnancyCommand = Command.ConsoleCommand(_EndPregnancy, commandPrefix + ".end_pregnancy", showHelp = False)
+	ShowSetPregnancyProgressDialogCommand = Command.ConsoleCommand(_ShowSetPregnancyProgressDialog, commandPrefix + ".show_set_pregnancy_progress_dialog", showHelp = False)
+	FixDotCycleCommand = Command.ConsoleCommand(_FixDotCycle, commandPrefix + ".fix_dot_cycle", showHelp = False)
 
 def _OnStart (cause: LoadingShared.LoadingCauses) -> None:
 	if cause:
@@ -40,8 +49,8 @@ def _OnStart (cause: LoadingShared.LoadingCauses) -> None:
 	ShowSetCycleProgressDialogCommand.RegisterCommand()
 	MakePregnantCommand.RegisterCommand()
 	EndPregnancyCommand.RegisterCommand()
-
-
+	ShowSetPregnancyProgressDialogCommand.RegisterCommand()
+	FixDotCycleCommand.RegisterCommand()
 
 def _OnStop (cause: LoadingShared.UnloadingCauses) -> None:
 	if cause:
@@ -51,6 +60,8 @@ def _OnStop (cause: LoadingShared.UnloadingCauses) -> None:
 	ShowSetCycleProgressDialogCommand.UnregisterCommand()
 	MakePregnantCommand.UnregisterCommand()
 	EndPregnancyCommand.UnregisterCommand()
+	ShowSetPregnancyProgressDialogCommand.UnregisterCommand()
+	FixDotCycleCommand.UnregisterCommand()
 
 def _ShowReproductiveInfo (targetSimHandler: argument_helpers.RequiredTargetParam, _connection = None) -> None:
 	try:
@@ -168,6 +179,100 @@ def _EndPregnancy (targetSimHandler: argument_helpers.RequiredTargetParam, _conn
 		targetSimInfo.pregnancy_tracker.clear_pregnancy()
 	except Exception as e:
 		Debug.Log("Failed to end a sim's pregnancy.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+		raise e
+
+def _ShowSetPregnancyProgressDialog (targetSimHandler: argument_helpers.RequiredTargetParam, _connection = None) -> None:
+	try:
+		if game_services.service_manager is None:
+			return
+
+		targetSimInfo = targetSimHandler.get_target(services.sim_info_manager())
+
+		if not isinstance(targetSimInfo, sim_info.SimInfo):
+			raise ValueError("Failed to get the target sim, %s is not a valid sim id." % targetSimHandler.target_id)
+
+		targetSimSystem = Reproduction.GetSimSystem(targetSimInfo)  # type: typing.Optional[ReproductionShared.ReproductiveSystem]
+
+		if targetSimSystem is None:
+			return
+
+		targetSimPregnancyTracker = targetSimSystem.GetTracker(FemalesShared.PregnancyTrackerIdentifier)  # type: typing.Optional[PregnancyTracker.PregnancyTracker]
+
+		currentProgress = round(targetSimPregnancyTracker.GetPregnancyProgress(), 3)  # type: float
+
+		def dialogCallback (dialogReference: ui_dialog_generic.UiDialogTextInputOkCancel):
+			if dialogReference.response == ui_dialog.ButtonType.DIALOG_RESPONSE_OK:
+				nextProgressString = dialogReference.text_input_responses["Input"]  # type: str
+
+				try:
+					nextProgress = float(nextProgressString)  # type: float
+				except:
+					return
+
+				if currentProgress != nextProgress:
+					targetSimPregnancyTracker.SetPregnancyProgress(nextProgress)
+
+		textInputKey = "Input"  # type: str
+
+		textInputLockedArguments = {
+			"sort_order": 0,
+		}
+
+		textInput = ui_text_input.UiTextInput.TunableFactory(locked_args = textInputLockedArguments).default  # type: ui_text_input.UiTextInput
+		textInputInitialValue = Language.MakeLocalizationStringCallable(Language.CreateLocalizationString(str(currentProgress)))
+
+		textInput.initial_value = textInputInitialValue
+
+		textInputs = collections.make_immutable_slots_class([textInputKey])
+		textInputs = textInputs({
+			textInputKey: textInput
+		})
+
+		dialogArguments = {
+			"title": SetPregnancyProgressDialogTitle.GetCallableLocalizationString(),
+			"text": SetPregnancyProgressDialogText.GetCallableLocalizationString(),
+			"text_ok": SetPregnancyProgressDialogOkButton.GetCallableLocalizationString(),
+			"text_cancel": SetPregnancyProgressDialogCancelButton.GetCallableLocalizationString(),
+			"text_inputs": textInputs
+		}
+
+		Dialogs.ShowOkCancelInputDialog(callback = dialogCallback, queue = False, **dialogArguments)
+	except Exception as e:
+		Debug.Log("Failed to show the set pregnancy progress dialog for a sim.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+		raise e
+
+def _FixDotCycle (targetSimHandler: argument_helpers.RequiredTargetParam, _connection = None) -> None:
+	try:
+		if game_services.service_manager is None:
+			return
+
+		targetSimInfo = targetSimHandler.get_target(services.sim_info_manager())
+
+		if not isinstance(targetSimInfo, sim_info.SimInfo):
+			raise ValueError("Failed to get the target sim, %s is not a valid sim id." % targetSimHandler.target_id)
+
+		targetDotInformation = Dot.GetDotInformation(targetSimInfo)  # type: typing.Optional[Dot.DotInformation]
+
+		if targetDotInformation is None:
+			return
+
+		targetSystem = Reproduction.GetSimSystem(targetSimInfo)  # type: typing.Optional[ReproductionShared.ReproductiveSystem]
+
+		if targetSystem is None:
+			return
+
+		targetCycleTracker = targetSystem.GetTracker(FemalesShared.CycleTrackerIdentifier)  # type: typing.Optional[CycleTracker.CycleTracker]
+
+		if targetCycleTracker is None:
+			return
+
+		if targetCycleTracker.CurrentCycle is not None:
+			targetDotInformation.TimeSinceCycleStart = targetCycleTracker.CurrentCycle.Age
+		else:
+			if targetCycleTracker.TimeSinceLastCycle is not None:
+				targetDotInformation.TimeSinceCycleStart = targetCycleTracker.TimeSinceLastCycle
+	except Exception as e:
+		Debug.Log("Failed to fix a sim's dot cycle.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
 		raise e
 
 _Setup()

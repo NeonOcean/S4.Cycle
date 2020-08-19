@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Settings_Sim_Settings" s="17485169644507046354" i="interaction" m="NeonOcean.S4.Cycle.Interactions.SimSettings" c="SimSettingsInteraction">
+	<T n="display_name">17766914</T>
+	<T n="category">5431105310299271089<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Cycle--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<L n="arguments">
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">TargetSim</E>
+						</U>
+					</V>
+				</L>
+				<T n="command">neonocean.s4.cycle.sim_settings.show_list</T>
+			</U>
+		</V>
+	</L>
+	<V n="pie_menu_icon" t="enabled">
+		<V n="enabled" t="resource_key">
+			<U n="resource_key">
+				<T n="key">00B2D882:00000000:E05CA0DB74A21DAD</T>
+			</U>
+		</V>
+	</V>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>

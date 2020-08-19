@@ -1,15 +1,20 @@
 from __future__ import annotations
 
+import enum_lib
 import typing
 
 from NeonOcean.S4.Cycle import This
-from NeonOcean.S4.Main.Tools import Exceptions, Savable
+from NeonOcean.S4.Main.Tools import Exceptions, Savable, Tunable as ToolsTunable
 from sims4.tuning import tunable
+
+class ConnectionType(enum_lib.IntEnum):
+	Linear = 0  # type: ConnectionType
+	BezierCurve = 1  # type: ConnectionType
 
 class CurvePoint(Savable.SavableExtension):
 	HostNamespace = This.Mod.Namespace
 
-	def __init__ (self, x: typing.Union[float, int] = 0, y: typing.Union[float, int] = 0):
+	def __init__ (self, x: typing.Union[float, int] = 0, y: typing.Union[float, int] = 0, connectionType: ConnectionType = ConnectionType.Linear):
 		super().__init__()
 
 		if not isinstance(x, (float, int)):
@@ -20,6 +25,7 @@ class CurvePoint(Savable.SavableExtension):
 
 		self._x = x  # type: typing.Union[float, int]
 		self._y = y  # type: typing.Union[float, int]
+		self._connectionType = connectionType  # type: ConnectionType
 
 		def verifyX (value: typing.Union[float, int]) -> None:
 			if not isinstance(value, (float, int)):
@@ -39,6 +45,10 @@ class CurvePoint(Savable.SavableExtension):
 	@property
 	def Y (self) -> typing.Union[float, int]:
 		return self._y
+
+	@property
+	def ConnectionType (self) -> ConnectionType:
+		return self._connectionType
 
 	def __copy__ (self):
 		return self.__class__(x = self.X, y = self.Y)
@@ -229,7 +239,11 @@ class Curve(Savable.SavableExtension):
 		elif lowPoint.X == x:
 			return lowPoint.Y
 
-		y = self._CurveFunction(x, lowPoint.X, lowPoint.Y, highPoint.X, highPoint.Y)  # type: float
+		if lowPoint.ConnectionType == ConnectionType.Linear:
+			y = self._LinearFunction(x, lowPoint.X, lowPoint.Y, highPoint.X, highPoint.Y)  # type: float
+		else:
+			y = self._BezierCurveFunction(x, lowPoint.X, lowPoint.Y, highPoint.X, highPoint.Y)  # type: float
+
 		return y
 
 	def EvaluateSingleInverse (self, y: float, lowerBound: typing.Union[float, None] = None, upperBound: typing.Union[float, None] = None) -> typing.Optional[float]:
@@ -284,15 +298,17 @@ class Curve(Savable.SavableExtension):
 		point = self._points[0]  # type: CurvePoint
 		nextPoint = self._points[1]  # type: CurvePoint
 
-		def secantMethod (secantLowX: float, secantLowY: float,
-						  secantHighX: float, secantHighY: float,
-						  secantLowerXBound: typing.Union[float, None], secantUpperXBound: typing.Union[float, None]) -> typing.Union[float, None]:
+		def secantMethod (
+				evaluationFunction: typing.Callable,
+				secantLowX: float, secantLowY: float,
+				secantHighX: float, secantHighY: float,
+				secantLowerXBound: typing.Union[float, None], secantUpperXBound: typing.Union[float, None]) -> typing.Union[float, None]:
 
 			secantX0 = secantLowerXBound  # type: float
 			secantX1 = secantUpperXBound  # type: float
 
-			secantY0 = self._CurveFunction(secantX0, secantLowX, secantLowY, secantHighX, secantHighY) - y  # type: float
-			secantY1 = self._CurveFunction(secantX1, secantLowX, secantLowY, secantHighX, secantHighY) - y  # type: float
+			secantY0 = evaluationFunction(secantX0, secantLowX, secantLowY, secantHighX, secantHighY) - y  # type: float
+			secantY1 = evaluationFunction(secantX1, secantLowX, secantLowY, secantHighX, secantHighY) - y  # type: float
 
 			if secantY0 > y or secantY1 < y:
 				return None
@@ -305,7 +321,7 @@ class Curve(Savable.SavableExtension):
 					secantY0 = secantY1
 
 					secantX1 = result
-					secantY1 = self._CurveFunction(result, secantLowX, secantLowY, secantHighX, secantHighY) - y
+					secantY1 = evaluationFunction(result, secantLowX, secantLowY, secantHighX, secantHighY) - y
 
 				if secantY1 == 0 or secantY0 == secantY1:
 					result = secantX1
@@ -351,19 +367,53 @@ class Curve(Savable.SavableExtension):
 				xValues.append(point.X)
 				continue
 
-			secantResult = secantMethod(point.X, point.Y, nextPoint.X, nextPoint.Y, lowerBound, upperBound)  # type: float
-
-			if secantResult is None:
+			if point.ConnectionType == ConnectionType.Linear:
+				xValues.append(self._LinearFunctionInverse(y, point.X, point.Y, nextPoint.X, nextPoint.Y))
 				continue
+			else:
+				secantResult = secantMethod(self._BezierCurveFunction, point.X, point.Y, nextPoint.X, nextPoint.Y, lowerBound, upperBound)  # type: float
 
-			xValues.append(secantResult)
+				if secantResult is None:
+					continue
+
+				xValues.append(secantResult)
+				continue
 
 		return xValues
 
 	@staticmethod
-	def _CurveFunction (x: float,
-						lowX: float, lowY: float,
-						highX: float, highY: float) -> float:
+	def _LinearFunction (
+			x: float,
+			lowX: float, lowY: float,
+			highX: float, highY: float) -> float:
+
+		if highX == lowX or highY == lowY:
+			lineSlope = 0.0
+		else:
+			lineSlope = ((highY - lowY) / (highX - lowX))  # type: float
+
+		return lowY + (x - lowX) * lineSlope
+
+	@staticmethod
+	def _LinearFunctionInverse (
+			y: float,
+			lowX: float, lowY: float,
+			highX: float, highY: float) -> float:
+
+		if highX == lowX or highY == lowY:
+			lineSlope = 0.0
+		else:
+			lineSlope = ((highY - lowY) / (highX - lowX))  # type: float
+
+		if lineSlope == 0:
+			return lowX
+
+		return (y - lowY) / lineSlope + lowX
+
+	@staticmethod
+	def _BezierCurveFunction (x: float,
+							  lowX: float, lowY: float,
+							  highX: float, highY: float) -> float:
 
 		xDistance = highX - lowX  # type: float
 		yDistance = highY - lowY  # type: float
@@ -379,17 +429,18 @@ class Curve(Savable.SavableExtension):
 class TunableCurvePoint(tunable.TunableSingletonFactory):
 	FACTORY_TYPE = CurvePoint
 
-	def __init__ (self, description = "A single point on a curved line.", **kwargs):  # TODO add the spacings the ea's tunables use to descriptions?
+	def __init__ (self, description = "A single point on a curved line.", **kwargs):
 		super().__init__(
 			description = description,
 			x = tunable.Tunable(description = "The x value for this point.", tunable_type = float, default = 0),
 			y = tunable.Tunable(description = "The y value for this point.", tunable_type = float, default = 0),
+			connectionType = ToolsTunable.TunablePythonEnumEntry(description = "The type of connection this point has to the next point in the chain.", enumType = ConnectionType, default = ConnectionType.Linear),
 			**kwargs)
 
 class TunableCurve(tunable.TunableSingletonFactory):
 	FACTORY_TYPE = Curve
 
-	def __init__ (self, description = "A curved line graph.", **kwargs):  # TODO add the spacings the ea's tunables use to descriptions?
+	def __init__ (self, description = "A curved line graph.", **kwargs):
 		super().__init__(
 			description = description,
 			points = tunable.TunableList(description = "The points that make up this curved line.", tunable = TunableCurvePoint()),

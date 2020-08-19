@@ -10,6 +10,10 @@
 			<T n="value">3580680833</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Cycle.Interactions.Settings.Sim_Settings.Display_Name</T>
+			<T n="value">17766914</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Cycle.Interactions.Standard.About_Mod.Display_Name</T>
 			<T n="value">2363395158</T>
 		</U>
@@ -30,12 +34,36 @@
 			<T n="value">2064056544</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Description</T>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Interactions.Description</T>
 			<T n="value">1429461409</T>
 		</U>
 		<U>
-			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Contraceptives.Title</T>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Interactions.Title</T>
 			<T n="value">2463021129</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items.Description</T>
+			<T n="value">3543797257</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items.Title</T>
+			<T n="value">924930888</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items_PregnancyTest.Description</T>
+			<T n="value">522912475</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Items_PregnancyTest.Title</T>
+			<T n="value">4063563538</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Menstruation.Description</T>
+			<T n="value">893913967</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Menstruation.Title</T>
+			<T n="value">710763909</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Paths.Root_Reproduction.Description</T>
@@ -64,6 +92,14 @@
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.List.Title</T>
 			<T n="value">406503699</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.All_Sims_Experience_PMS.Description</T>
+			<T n="value">598662684</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.All_Sims_Experience_PMS.Name</T>
+			<T n="value">2003593750</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Debug_Mode.Description</T>
@@ -126,6 +162,14 @@
 			<T n="value">1716452744</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Test_Requires_Item.Description</T>
+			<T n="value">3147884250</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Test_Requires_Item.Name</T>
+			<T n="value">338165547</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Quick_Mode.Description</T>
 			<T n="value">1679354719</T>
 		</U>
@@ -156,6 +200,10 @@
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Mod_Settings.Values.Woohoo_Is_Always_Safe.Name</T>
 			<T n="value">1865223985</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Mods.Cycle.Disabled_Because_Installed_Tooltip</T>
+			<T n="value">1647186056</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Mods.WickedWhims.Disabled_Because_Installed_Tooltip</T>
@@ -224,6 +272,42 @@
 		<U>
 			<T n="key">NeonOcean.S4.Cycle.Settings.Types.Reproductive_Speed.Value</T>
 			<T n="value">861739185</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root.Description</T>
+			<T n="value">1573311563</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root_Menstruation.Description</T>
+			<T n="value">3578702961</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root_Menstruation.Title</T>
+			<T n="value">2045888242</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.List.Title</T>
+			<T n="value">2048466286</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.Values.Autonomously_Use_Woohoo_Safety_Methods.Description</T>
+			<T n="value">400348034</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.Values.Autonomously_Use_Woohoo_Safety_Methods.Name</T>
+			<T n="value">2828217405</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.Values.Experiences_PMS.All_Sims_Experience_PMS_Override_Reason</T>
+			<T n="value">3080925824</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.Values.Experiences_PMS.Description</T>
+			<T n="value">747196487</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Cycle.Sim_Settings.Values.Experiences_PMS.Name</T>
+			<T n="value">3146680024</T>
 		</U>
 	</L>
 </I>

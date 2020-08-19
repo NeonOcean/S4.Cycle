@@ -49,6 +49,9 @@ class EffectBase(abc.ABC, Savable.SavableExtension):
 
 		return True
 
+	def GetDebugNotificationString (self) -> str:
+		return ""
+
 	def Simulate (self, simulation: ReproductionShared.Simulation, ticks: int, reproductiveTimeMultiplier: float) -> None:
 		"""
 		Simulate this many ticks in this object, invoking any events that occurred.

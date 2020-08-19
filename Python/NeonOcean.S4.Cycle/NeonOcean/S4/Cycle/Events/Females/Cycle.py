@@ -8,7 +8,7 @@ import uuid
 
 from NeonOcean.S4.Cycle import Guides as CycleGuides, This
 from NeonOcean.S4.Cycle.Events import Base as EventsBase
-from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
+from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared, OvumRelease as CycleOvumRelease
 from NeonOcean.S4.Cycle.Tools import Distribution, Tweakable, Probability
 from NeonOcean.S4.Main.Tools import Exceptions, Python
 from NeonOcean.S4.Main import Debug
@@ -252,7 +252,7 @@ class CycleGeneratingArguments(EventsBase.GenerationArguments):
 	@property
 	def OvumReleaseAmountProbability (self) -> Probability.Probability:
 		"""
-		"The probabilities for the amount of egg cells to be released during the cycle."
+		The probabilities for the amount of egg cells to be released during the cycle.
 		"""
 
 		return self._ovumReleaseAmountProbability
@@ -477,27 +477,55 @@ class CycleCompletedArguments(EventsBase.ReproductiveArguments):
 
 		return self._completionReason
 
-class CycleReleasedOvaArguments(EventsBase.ReproductiveArguments):
-	def __init__ (self, ovumCount: int, *args, **kwargs):
+class CycleReleaseOvumTestingArguments(EventsBase.TargetedArguments):
+	def __init__ (self, targetObject: CycleOvumRelease.OvumRelease, *args, **kwargs):
 		"""
-		The event arguments for when a cycle releases ova
+		The event arguments for when a cycle is about to release an ovum to determine if we actually should.
 		"""
 
-		super().__init__(*args, **kwargs)
+		if not isinstance(targetObject, CycleOvumRelease.OvumRelease):
+			raise Exceptions.IncorrectTypeException(targetObject, "targetObject", (CycleOvumRelease.OvumRelease, ))
 
-		self.OvumCount = ovumCount  # type: int
+		super().__init__(targetObject, *args, **kwargs)
+
+		self._releaseTweakable = Tweakable.TweakableBoolean(True)
 
 	@property
-	def OvumCount (self) -> int:
+	def TargetedObject(self) -> CycleOvumRelease.OvumRelease:
 		"""
-		The number of egg cells released.
+		The ovum release object that has indicated that the cycle should release an object.
 		"""
 
-		return self._ovumCount
+		return self._targetedObject
 
-	@OvumCount.setter
-	def OvumCount (self, value: int) -> None:
-		if not isinstance(value, int):
-			raise Exceptions.IncorrectTypeException(value, "OvumCount", (int,))
+	@property
+	def Release (self) -> bool:
+		"""
+		Whether or not this ovum should be released right now. This should be true if the release date was moved or if the ovum shouldn't be released at all.
+		This just sets or gets the release tweakable value.
+		"""
 
-		self._ovumCount = value
+		return self.ReleaseTweakable.Value
+
+	@Release.setter
+	def Release (self, value: bool) -> None:
+		if not isinstance(value, bool):
+			raise Exceptions.IncorrectTypeException(value, "Release", (bool, ))
+
+		self.ReleaseTweakable.Value = value
+
+	@property
+	def ReleaseTweakable (self) -> Tweakable.TweakableBoolean:
+		"""
+		Whether or not this ovum should be released right now. This should be true if the release date was moved or if the ovum shouldn't be released at all.
+		"""
+
+		return self._releaseTweakable
+
+	@ReleaseTweakable.setter
+	def ReleaseTweakable (self, value: bool) -> None:
+		if not isinstance(value, bool):
+			raise Exceptions.IncorrectTypeException(value, "ReleaseTweakable", (bool, ))
+
+		self._releaseTweakable = value
+

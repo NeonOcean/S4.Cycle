@@ -4,7 +4,7 @@
 	<V n="display_tooltip" t="enabled">
 		<T n="enabled">3732136531</T>
 	</V>
-	<T n="pie_menu_priority">7</T>
+	<T n="pie_menu_priority">9</T>
 	<T n="category">5578830624020538538<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Phone_Dot_App--></T>
 	<V n="_saveable" t="disabled" />
 	<L n="test_globals">
@@ -35,8 +35,8 @@
 			</U>
 		</V>
 	</L>
-	<V n="RequiredDotAppState" t="enabled">
-		<E t="enabled">Disabled</E>
+	<V n="RequiredDotEnabledState" t="enabled">
+		<T t="enabled">False</T>
 	</V>
 	<L n="ObjectRegistrationInformation">
 		<V t="byType">

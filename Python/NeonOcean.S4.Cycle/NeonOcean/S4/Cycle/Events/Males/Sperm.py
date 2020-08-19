@@ -164,8 +164,8 @@ class SpermGeneratingArguments(EventsBase.GenerationArguments):
 		uuidBytes = random.getrandbits(128)
 		return uuid.UUID(int = uuidBytes, version = 4)
 
-	def GetUniqueSeed (self) -> typing.Hashable:
-		return self.Seed, self.UniqueSeedSeed
+	def GetUniqueSeed (self) -> int:
+		return self.Seed + self.UniqueSeedSeed
 
 	def GetLifetimeDistribution (self) -> Distribution.NormalDistribution:
 		mean = self.LifetimeDistributionMean.GenerateValue(seed = self.Seed + self.LifetimeDistributionMeanSeed, minimum = 0)

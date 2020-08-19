@@ -5,6 +5,7 @@ import typing
 import snippets
 from NeonOcean.S4.Cycle import This
 from NeonOcean.S4.Cycle.Guides import Base as GuidesBase
+from NeonOcean.S4.Cycle.Tools import Curve
 from NeonOcean.S4.Main.Tools import Exceptions
 from sims4.tuning import tunable
 
@@ -15,11 +16,15 @@ PregnancyGuideIdentifier = "Pregnancy"  # type: str
 class PregnancyGuide(tunable.HasTunableSingletonFactory, tunable.AutoFactoryInit, GuidesBase.GuideBase):
 	FACTORY_TUNABLES = {
 		"PregnancyTime": tunable.TunableRange(description = "The amount of time in reproductive minutes that a pregnancy should last for.", tunable_type = float, default = 388800, minimum = 1440),
-		"LatestDiscoveryTime": tunable.TunableRange(description = "The latest time a pregnancy can be discovered in reproductive minutes.", tunable_type = float, default = 129600, minimum = 10)
+		"LatestDiscoveryTime": tunable.TunableRange(description = "The latest time a pregnancy can be discovered in reproductive minutes.", tunable_type = float, default = 129600, minimum = 10),
+		"PregnancyTestProgressProbability": Curve.TunableCurve(description = "A curve indicating the probability (from 0 to 1) that a pregnancy test will show up positive on the y axis and the percentage of the way a pregnancy is to completion (from 0 to 1) on the x axis."),
+		"PregnancyTestFalsePositiveProbability": tunable.TunableRange(description = "The probability that a pregnancy test will falsely come up positive when the sim is not pregnant (from 0 to 1).", tunable_type = float, default = 0.1, minimum = 0, maximum = 1)
 	}
 
 	PregnancyTime: float
 	LatestDiscoveryTime: float
+	PregnancyTestProgressProbability: Curve.Curve
+	PregnancyTestFalsePositiveProbability: float
 
 	@classmethod
 	def GetIdentifier (cls):

@@ -4,7 +4,6 @@
 	<V n="display_tooltip" t="enabled">
 		<T n="enabled">4112737461</T>
 	</V>
-	<V n="_saveable" t="disabled" />
 	<V n="pie_menu_icon" t="enabled">
 		<V n="enabled" t="resource_key">
 			<U n="resource_key">
@@ -12,6 +11,7 @@
 			</U>
 		</V>
 	</V>
+	<V n="_saveable" t="disabled" />
 	<T n="allow_from_sim_inventory">True</T>
 	<T n="WoohooSafetyMethod">14044826903803863935</T>
 </I>

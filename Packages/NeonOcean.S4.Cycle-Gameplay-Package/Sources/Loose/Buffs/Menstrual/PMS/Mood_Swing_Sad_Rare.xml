@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Sad_Rare" s="16723991887190861467" i="buff" m="NeonOcean.S4.Cycle.Buffs.Menstrual" c="PMSMenstrualBuff">
+	<T n="buff_name">0xAD057E67</T>
+	<T n="buff_description">0x7ACC50EF</T>
+	<T n="icon" p="InGame\UI\Icons\Buffs\Buffs_Gloomy_neg.png">2F7D0004:00000000:A331C118C46E0C9E</T>
+	<V n="_temporary_commodity_info" t="enabled">
+		<U n="enabled">
+			<L n="categories">
+				<E>Sad_Buffs</E>
+				<E>Object_Bed_Buffs</E>
+			</L>
+			<T n="max_duration">180</T>
+		</U>
+	</V>
+	<T n="mood_type">14643<!--Mood: Mood_Sad--></T>
+	<T n="mood_weight">3</T>
+	<T n="audio_sting_on_add" p="InGame\Audio\Stings\sting_buff_gain.propx">39B2AA4A:00000000:8AF8B916CF64C646</T>
+	<T n="audio_sting_on_remove" p="InGame\Audio\Stings\sting_buff_loss.propx">39B2AA4A:00000000:3BF33216A25546EA</T>
+	<V n="_add_test_set" t="tests_set">
+		<L n="tests_set">
+			<L>
+				<V t="buff">
+					<U n="buff">
+						<L n="blacklist">
+							<T>16693828591356055058<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Angry_Rare--></T>
+							<T>13705755352367298131<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Angry_Very_Rare--></T>
+							<T>16723991887190861467<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Sad_Rare--></T>
+							<T>2138574686335215014<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Sad_Very_Rare--></T>
+							<T>5250205359586256192<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Happy_Rare--></T>
+							<T>15606514312717087442<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Mood_Swing_Happy_Very_Rare--></T>
+						</L>
+					</U>
+				</V>
+			</L>
+		</L>
+	</V>
+	<V n="Rarity" t="enabled">
+		<E n="enabled">Rare</E>
+	</V>
+	<U n="CyclePhaseTest">
+		<L n="PhaseStates">
+			<U>
+				<E n="Phase">Luteal</E>
+				<V n="StartCompletion" t="enabled">
+					<T n="enabled">0.25</T>
+				</V>
+				<V n="EndCompletion" t="enabled">
+					<T n="enabled">0.65</T>
+				</V>
+			</U>
+		</L>
+	</U>
+</I>

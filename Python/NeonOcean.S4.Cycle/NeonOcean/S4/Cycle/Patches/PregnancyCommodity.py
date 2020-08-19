@@ -39,7 +39,7 @@ class _PatchingAnnouncer(Director.Announcer):
 
 class _Announcer(Director.Announcer):
 	Host = This.Mod
-	
+
 	_priority = -100
 
 	@classmethod

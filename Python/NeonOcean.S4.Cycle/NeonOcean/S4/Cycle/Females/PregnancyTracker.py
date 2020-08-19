@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import typing
+import random
 
 import services
-from NeonOcean.S4.Cycle import Events as CycleEvents, References, ReproductionShared, This
+from NeonOcean.S4.Cycle import Events as CycleEvents, References, ReproductionShared, This, Guides
 from NeonOcean.S4.Cycle.Females import Shared as FemalesShared
 from NeonOcean.S4.Cycle.Females.Cycle import Shared as CycleShared
 from NeonOcean.S4.Main import Debug
@@ -22,6 +23,9 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		self.FetusGeneratingEvent = Events.EventHandler()
 
 		self.MonitoringPregnancy = False
+
+		self._cachedPregnancyTestResult = None  # type: typing.Optional[bool]
+		self._cachedPregnancyTestGameMinutesRemaining = None  # type: typing.Optional[float]
 
 		self._nonPregnantBellyModifier = 0 # type: float
 		self._pregnancyVisualsActive = False  # type: bool
@@ -226,6 +230,29 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 
 		return pregnancyProgress
 
+	def SetPregnancyProgress (self, pregnancyProgress: float) -> None:
+		"""
+		Set the amount the active pregnancy has progressed toward completion. The input progress should be a number from 0 to 1. Nothing will happen
+		if this system's sim is not pregnant.
+		"""
+
+		if not isinstance(pregnancyProgress, (float, int)):
+			raise Exceptions.IncorrectTypeException(pregnancyProgress, "pregnancyProgress", (float, int))
+
+		if pregnancyProgress < 0 or pregnancyProgress > 1:
+			raise ValueError("The parameter 'pregnancyProgress' must be between or equal to 0 and 1.")
+
+		if not self.IsPregnant:
+			return
+
+		gamePregnancyTracker = self.TrackingSystem.SimInfo.pregnancy_tracker
+
+		pregnancyCommodityType = gamePregnancyTracker.PREGNANCY_COMMODITY_MAP.get(self.TrackingSystem.SimInfo.species)  # type: typing.Type[commodity.Commodity]
+		pregnancyCommodityTracker = self.TrackingSystem.SimInfo.get_tracker(pregnancyCommodityType)  # type: commodity_tracker.CommodityTracker
+		pregnancyCommodity = pregnancyCommodityTracker.get_statistic(pregnancyCommodityType, add = True)  # type: commodity.Commodity
+
+		pregnancyCommodity.set_value(pregnancyCommodity.max_value * pregnancyProgress)
+
 	def GetPregnancyTrimester (self) -> typing.Optional[FemalesShared.PregnancyTrimester]:
 		"""
 		Get the trimester that the active pregnancy is on. This will be none if no pregnancy is active.
@@ -244,6 +271,38 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 			return FemalesShared.PregnancyTrimester.Second
 		else:
 			return FemalesShared.PregnancyTrimester.Third
+
+	def GeneratePregnancyTestResults (self, ignoreCachedResults: bool = False) -> bool:
+		"""
+		Get whether or a pregnancy test, if taken at this moment, should come up positive or negative.
+		"""
+
+		if not ignoreCachedResults and self._cachedPregnancyTestResult is not None:
+			# The pregnancy test results are cached so that players can't just test multiple times in quick succession to rule out false positives or negatives.
+			return self._cachedPregnancyTestResult
+
+		pregnancyGuide = Guides.PregnancyGuide.GetGuide(self.TrackingSystem.GuideGroup)  # type: Guides.PregnancyGuide
+
+		if not self.IsPregnant:
+			falsePositiveRoll = random.random()  # type: float
+
+			if falsePositiveRoll <= pregnancyGuide.PregnancyTestFalsePositiveProbability:
+				testResult = True
+			else:
+				testResult = False
+		else:
+			pregnancyProgress = self.GetPregnancyProgress()  # type: float
+
+			positiveRoll = random.random()  # type: float
+
+			if positiveRoll <= pregnancyGuide.PregnancyTestProgressProbability.Evaluate(pregnancyProgress):
+				testResult = True
+			else:
+				testResult = False
+
+		self._CachePregnancyTestResults(testResult)
+
+		return testResult
 
 	def GetPregnancyBellyModifierValue (self) -> float:
 		"""
@@ -304,6 +363,14 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 			self.NotifyPregnancyStarted()
 		elif not self.IsPregnant and self.MonitoringPregnancy:
 			self.NotifyPregnancyEnded()
+
+	def _CachePregnancyTestResults (self, result: bool) -> None:
+		self._cachedPregnancyTestResult = result
+		self._cachedPregnancyTestGameMinutesRemaining = 120
+
+	def _ResetCachedPregnancyTestResults (self) -> None:
+		self._cachedPregnancyTestResult = None
+		self._cachedPregnancyTestGameMinutesRemaining = None
 
 	def _GetCurrentBellyModifierValue (self) -> float:
 		hasFeminineFrameTrait = self._HasFeminineFrameTrait()  # type: bool
@@ -461,14 +528,35 @@ class PregnancyTracker(ReproductionShared.TrackerBase):
 		self.ResetPregnancyVisualsIfAppropriate()
 
 	# noinspection PyUnusedLocal
+	def _PregnancyCachedTestSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:
+		simulatingGameMinutes = ReproductionShared.TicksToGameMinutes(ticks)  # type: float
+
+		if self._cachedPregnancyTestGameMinutesRemaining is not None:
+			self._cachedPregnancyTestGameMinutesRemaining -= simulatingGameMinutes
+
+			if self._cachedPregnancyTestGameMinutesRemaining <= 0:
+				self._ResetCachedPregnancyTestResults()
+
+	# noinspection PyUnusedLocal
 	def _PregnancyVisualsSimulationPhase (self, simulation: ReproductionShared.Simulation, ticks: int) -> None:
 		if self.IsPregnant:
 			self.SetPregnancyVisualsIfAppropriate()
 		else:
 			self.ResetPregnancyVisualsIfAppropriate()
 
+	def _PlanSimulation (self, simulation: ReproductionShared.Simulation) -> None:
+		if self._cachedPregnancyTestGameMinutesRemaining is not None:
+			ticksUntilPregnancyTestCacheReset = ReproductionShared.GameMinutesToTicks(self._cachedPregnancyTestGameMinutesRemaining)
+
+			if simulation.RemainingTicks >= ticksUntilPregnancyTestCacheReset:
+				simulation.Schedule.AddPoint(ticksUntilPregnancyTestCacheReset)
+
 	def _PrepareForSimulation (self, simulation: ReproductionShared.Simulation) -> None:
 		super()._PrepareForSimulation(simulation)
+
+		simulation.RegisterPhase(
+			ReproductionShared.SimulationPhase(30, self._PregnancyCachedTestSimulationPhase)
+		)
 
 		simulation.RegisterPhase(
 			ReproductionShared.SimulationPhase(-30, self._PregnancyVisualsSimulationPhase)

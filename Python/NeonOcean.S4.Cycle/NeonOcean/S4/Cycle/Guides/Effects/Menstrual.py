@@ -19,37 +19,19 @@ class MenstrualEffectGuide(tunable.HasTunableSingletonFactory, tunable.AutoFacto
 		"BuffRarity": Probability.TunableProbability(
 			description = "A set of weights used to determine the rarity of the next buff. Adding an option with the identifier 'Abstain' will allow for a chance to not add a buff."
 		),
-		"BuffRarityOffsets": tunable.TunableMapping(
-			description = "A set of option weight offsets to be temporarily applied when a buff is added to the sim. This may be used to reduce the probability that multiple very strenuous buffs are added in a row.",
-			key_type = ToolsTunable.TunablePythonEnumEntry(description = "How rare the last buff was.", enumType = BuffsShared.BuffRarity, default = BuffsShared.BuffRarity.NotApplicable),
-			value_type = tunable.TunableMapping(
-				key_type = tunable.Tunable(description = "The identifier of the rarity option that needs to be adjusted.", tunable_type = str, default = "Abstain"),
-				value_type = Probability.TunableOptionWeightAdjuster()
-			)
-		),
-		"AbstainedBuffRarityOffset": tunable.TunableMapping(
-			key_type = tunable.Tunable(description = "The identifier of the rarity option that needs to be adjusted.", tunable_type = str, default = "Abstain"),
-			value_type = Probability.TunableOptionWeightAdjuster()
-		),
-		"BuffRarityResetRates": tunable.TunableMapping(
-			description = "The rates at which, for each sim minute, rarity weight offsets move back to 0.",
-			key_type = tunable.Tunable(description = "A rarity option identifier.", tunable_type = str, default = BuffsShared.BuffRarity.NotApplicable.name),
-			value_type = tunable.TunableRange(description = "The amount the option weight offset moves toward 0 within a sim minute.", tunable_type = float, default = 0.3, minimum = 0)
-		),
 		"BuffCoolDown": tunable.TunableMapping(
 			description = "A set of cool down distributions to randomly select the time between two buffs being added based on how rare first buff was.",
-			key_type = ToolsTunable.TunablePythonEnumEntry(description = "How rare the first buff was.", enumType = BuffsShared.BuffRarity, default = BuffsShared.BuffRarity.NotApplicable),
+			key_type = ToolsTunable.TunablePythonEnumEntry(description = "How rare the first buff was.", enumType = BuffsShared.BuffRarity, default = BuffsShared.BuffRarity.Common),
 			value_type = Distribution.TunableNormalDistribution(description = "A distribution to select the minimum amount of time in sim minutes between buffs. More strenuous buffs should impose longer cool downs than less strenuous ones.", meanDefault = 240, standardDeviationDefault = 60)
 		),
 		"AbstainedBuffCoolDown": Distribution.TunableNormalDistribution("A distribution to select, if we didn't choose a buff when the opportunity arose, the minimum amount of time in sim minutes until we can try to pick a buff again.", meanDefault = 120, standardDeviationDefault = 15),
+		"ExperiencesPMSProbability": tunable.Tunable(description = "The probability that a sim should experience PMS symptoms. This should be a number from 0 to 1.", tunable_type = float, default = 0.4)
 	}
 
 	BuffRarity: Probability.Probability
-	BuffRarityOffsets: typing.Dict[BuffsShared.BuffRarity, typing.Dict[str, Probability.OptionWeightAdjuster]]
-	AbstainedBuffRarityOffset: typing.Dict[str, Probability.OptionWeightAdjuster]
-	BuffRarityResetRates: typing.Dict[str, float]
 	AbstainedBuffCoolDown: Distribution.NormalDistribution
 	BuffCoolDown: typing.Dict[BuffsShared.BuffRarity, Distribution.NormalDistribution]
+	ExperiencesPMSProbability: float
 
 	@classmethod
 	def GetIdentifier (cls):

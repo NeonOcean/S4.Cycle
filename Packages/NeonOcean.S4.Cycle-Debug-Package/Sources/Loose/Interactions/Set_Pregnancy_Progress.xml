@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Interactions_Debug_Set_Pregnancy_Progress" s="11117919146936702700" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Debug" c="SetPregnancyProgressInteraction">
+	<T n="display_name">3809504251</T>
+	<T n="category">5721909071116079353<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Debug--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<L n="arguments">
+					<V t="participant">
+						<U n="participant">
+							<E n="argument">TargetSim</E>
+						</U>
+					</V>
+				</L>
+				<T n="command">neonocean.s4.cycle.debug.show_set_pregnancy_progress_dialog</T>
+			</U>
+		</V>
+	</L>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+	<L n="test_globals">
+		<V t="pregnancy">
+			<U n="pregnancy">
+				<E n="participant">TargetSim</E>
+			</U>
+		</V>
+	</L>
+</I>

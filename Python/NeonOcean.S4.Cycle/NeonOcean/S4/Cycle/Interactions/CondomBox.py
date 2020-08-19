@@ -31,7 +31,7 @@ class _ChangeUseStateInteraction(Dependent.DependentExtension, Events.EventsExte
 				return results.TestResult(False)
 
 			if len(actors) == 0:
-				Debug.Log("Method use test recived an empty actors parameter.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
+				Debug.Log("Method use test recieved an empty actors parameter.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 				return results.TestResult(False)
 
 			if not isinstance(affordance.WoohooSafetyMethod.value, WoohooSafety.WoohooSafetyMethod):

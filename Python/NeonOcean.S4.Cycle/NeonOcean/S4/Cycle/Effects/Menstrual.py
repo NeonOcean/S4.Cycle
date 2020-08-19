@@ -1,21 +1,19 @@
 from __future__ import annotations
 
-import random
-import typing
 import copy
+import typing
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, This
 from NeonOcean.S4.Cycle.Buffs import Menstrual as BuffsMenstrual, Shared as BuffsShared
 from NeonOcean.S4.Cycle.Effects import Base as EffectsBase, Shared as EffectsShared, Types as EffectsTypes
 from NeonOcean.S4.Cycle.Females import CycleTracker, Shared as FemalesShared
 from NeonOcean.S4.Cycle.Females.Cycle import Menstrual as CycleMenstrual, Shared as CycleShared
-from NeonOcean.S4.Main import Debug, LoadingShared
-from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Types
 from NeonOcean.S4.Cycle.Tools import Probability
+from NeonOcean.S4.Main import Debug
+from NeonOcean.S4.Main.Tools import Classes, Events, Exceptions, Python, Savable, Types
 
 if typing.TYPE_CHECKING:
 	from NeonOcean.S4.Cycle.Tools import Distribution
-	from buffs import buff
 
 class MenstrualEffect(EffectsBase.EffectBase):
 	def __init__ (self, effectingSystem: ReproductionShared.ReproductiveSystem):
@@ -23,19 +21,13 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 		self.BuffAddedEvent = Events.EventHandler()
 		self.BuffRemovedEvent = Events.EventHandler()
+		self.BuffSelectionTestingEvent = Events.EventHandler()
 
-		self._buffRarity = None  # type: typing.Optional[Probability.Probability]
 		self._buffCoolDown = None  # type: typing.Optional[float]
 
-		self.RegisterSavableAttribute(Savable.DynamicSavableAttributeHandler(
-			"BuffRarity",
-			"_buffRarity",
-			lambda: Probability.Probability(list()),
-			lambda: None,
-			nullable = True
-		))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("BuffCoolDown", "BuffCoolDown", self.BuffCoolDown))
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("BuffCoolDown", "_buffCoolDown", None))
+		self.BuffSelectionTestingEvent += self._BuffSelectionTestingCallback
 
 	# noinspection PyMethodParameters
 	@Classes.ClassProperty
@@ -91,28 +83,28 @@ class MenstrualEffect(EffectsBase.EffectBase):
 		self._buffRemovedEvent = value
 
 	@property
+	def BuffSelectionTestingEvent (self) -> Events.EventHandler:
+		"""
+		Event arguments to determine what menstrual effect buff should be added, or choose to abstain from adding one.
+		The event arguments parameter should be a 'MenstrualEffectBuffSelectionTestingArguments' object.
+		"""
+
+		return self._buffSelectionTestingEvent
+
+	@BuffSelectionTestingEvent.setter
+	def BuffSelectionTestingEvent (self, value: Events.EventHandler) -> None:
+		if not isinstance(value, Events.EventHandler):
+			raise Exceptions.IncorrectTypeException(value, "BuffSelectionTestingEvent", (Events.EventHandler,))
+
+		self._buffSelectionTestingEvent = value
+
+	@property
 	def MenstruationEffectGuide (self) -> CycleGuides.MenstrualEffectGuide:
 		"""
 		Get the menstruation effect guide for this affecting sim.
 		"""
 
 		return CycleGuides.MenstrualEffectGuide.GetGuide(self.AffectingSystem.GuideGroup)
-
-	@property
-	def MenstrualBuffs (self) -> typing.List[typing.Type[BuffsMenstrual.MenstrualBuff]]:
-		"""
-		Get a list of every menstrual buff type.
-		"""
-
-		return BuffsMenstrual.GetAllMenstrualBuffs()
-
-	@property
-	def BuffRarity (self) -> typing.Optional[Probability.Probability]:
-		"""
-		A probability object to randomly select the rarity of the next buff
-		"""
-
-		return self._buffRarity
 
 	@property
 	def BuffCoolDown (self) -> typing.Optional[float]:
@@ -129,24 +121,20 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 		self._buffCoolDown = value
 
-	def NotifyBuffAdded (self, addedBuff: BuffsMenstrual.MenstrualBuff, fromLoad: bool = False) -> None:
+	def NotifyBuffAdded (self, addedBuff: BuffsMenstrual.MenstrualBuffBase, fromLoad: bool = False) -> None:
 		"""
 		Notify the effect that a new menstrual buff was just added.
 		"""
 
-		if not isinstance(addedBuff, BuffsMenstrual.MenstrualBuff):
-			raise Exceptions.IncorrectTypeException(addedBuff, "addedBuff", (BuffsMenstrual.MenstrualBuff,))
+		if not isinstance(addedBuff, BuffsMenstrual.MenstrualBuffBase):
+			raise Exceptions.IncorrectTypeException(addedBuff, "addedBuff", (BuffsMenstrual.MenstrualBuffBase,))
 
 		if not isinstance(fromLoad, bool):
 			raise Exceptions.IncorrectTypeException(fromLoad, "fromLoad", (bool,))
 
 		eventArguments = CycleEvents.MenstrualEffectBuffAddedArguments(addedBuff)  # type: CycleEvents.MenstrualEffectBuffAddedArguments
 
-		if addedBuff.ApplyCoolDown:
-			self._ApplyBuffCoolDown(addedBuff.Rarity)
-
-		if addedBuff.ApplyRarityOffset:
-			self._ApplyRarityOffset(addedBuff.Rarity)
+		self.ApplyBuffEffects(addedBuff)
 
 		for buffAddedCallback in self.BuffAddedEvent:
 			try:
@@ -155,13 +143,13 @@ class MenstrualEffect(EffectsBase.EffectBase):
 				Debug.Log("Failed to call buff added callback '" + Types.GetFullName(buffAddedCallback) + "'.\n" + self.AffectingSystem.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = buffAddedCallback)
 
-	def NotifyBuffRemoved (self, removedBuff: BuffsMenstrual.MenstrualBuff) -> None:
+	def NotifyBuffRemoved (self, removedBuff: BuffsMenstrual.MenstrualBuffBase) -> None:
 		"""
 		Notify the effect that a new buff was just added.
 		"""
 
-		if not isinstance(removedBuff, BuffsMenstrual.MenstrualBuff):
-			raise Exceptions.IncorrectTypeException(removedBuff, "removedBuff", (BuffsMenstrual.MenstrualBuff,))
+		if not isinstance(removedBuff, BuffsMenstrual.MenstrualBuffBase):
+			raise Exceptions.IncorrectTypeException(removedBuff, "removedBuff", (BuffsMenstrual.MenstrualBuffBase,))
 
 		eventArguments = CycleEvents.MenstrualEffectBuffRemovedArguments(removedBuff)  # type: CycleEvents.MenstrualEffectBuffRemovedArguments
 
@@ -172,45 +160,41 @@ class MenstrualEffect(EffectsBase.EffectBase):
 				Debug.Log("Failed to call buff removed callback '" + Types.GetFullName(buffRemovedCallback) + "'.\n" + self.AffectingSystem.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = buffRemovedCallback)
 
-	def GetMenstrualBuffsWithRarity (self, rarity: BuffsShared.BuffRarity) -> typing.List[typing.Type[BuffsMenstrual.MenstrualBuff]]:
+	def DoBuffSelectionTesting (self) -> CycleEvents.MenstrualEffectBuffSelectionTestingArguments:
+		eventArguments = CycleEvents.MenstrualEffectBuffSelectionTestingArguments(self.AffectingSystem.CurrentSeed, self.AffectingSystem.SimInfo)  # type: CycleEvents.MenstrualEffectBuffSelectionTestingArguments
+
+		for buffSelectionTestingCallback in self.BuffSelectionTestingEvent:
+			try:
+				buffSelectionTestingCallback(self, eventArguments)
+			except:
+				Debug.Log("Failed to call buff selection testing callback '" + Types.GetFullName(buffSelectionTestingCallback) + "'.\n" + self.AffectingSystem.DebugInformation,
+						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = buffSelectionTestingCallback)
+
+		return eventArguments
+
+	def GetBaseBuffRarity (self) -> Probability.Probability:
 		"""
-		Get all menstrual buffs with a rarity flag that matches the input rarity flag.
-		"""
-
-		return BuffsMenstrual.GetMenstrualBuffsWithRarity(rarity)
-
-	def SimHasBuffWithRarity (self, rarity: BuffsShared.BuffRarity) -> bool:
-		"""
-		Get whether or not the affecting sim has a buff with a rarity flag that matches the input rarity flag.
-		"""
-
-		affectingSimInfo = self.AffectingSystem.SimInfo
-
-		for menstrualBuff in self.GetMenstrualBuffsWithRarity(rarity):  # type: typing.Type[buff.Buff]
-			if affectingSimInfo.has_buff(menstrualBuff):
-				return True
-
-		return False
-
-	def SimBuffWithRarityCount (self, rarity: BuffsShared.BuffRarity) -> int:
-		"""
-		Get number of the affecting sim's buffs that have a rarity flag that matches the input rarity flag.
+		Get a copy of the affecting sim's base buff rarity probability object.
 		"""
 
-		matchingMenstrualBuffs = 0  # type: int
+		return copy.copy(self.MenstruationEffectGuide.BuffRarity)
 
-		affectingSimInfo = self.AffectingSystem.SimInfo
+	def ApplyBuffAbstainedEffects (self) -> None:
+		"""
+		Apply the appropriate effects for when the opportunity to select a buff arose, but no buff was chosen.
+		"""
 
-		for menstrualBuff in self.GetMenstrualBuffsWithRarity(rarity):  # type: typing.Type[buff.Buff]
-			if affectingSimInfo.has_buff(menstrualBuff):
-				matchingMenstrualBuffs += 1
+		self.ApplyBuffAbstainedCoolDown()
 
-		return matchingMenstrualBuffs
+	def ApplyBuffEffects (self, addedBuff: BuffsMenstrual.MenstrualBuffBase) -> None:
+		"""
+		Apply the appropriate effects for when a buff of this rarity is added to the affecting sim.
+		"""
 
-	def _SetupBuffRarity (self) -> None:
-		self._buffRarity = copy.copy(self.MenstruationEffectGuide.BuffRarity)
+		if addedBuff.ApplyCoolDown:
+			self.ApplyBuffRarityCoolDown(addedBuff.Rarity)
 
-	def _ApplyBuffCoolDown (self, buffRarity: BuffsShared.BuffRarity) -> None:
+	def ApplyBuffRarityCoolDown (self, buffRarity: BuffsShared.BuffRarity) -> None:
 		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
 
 		coolDownDistribution = effectGuide.BuffCoolDown.get(buffRarity)  # type: typing.Optional[Distribution.NormalDistribution]
@@ -222,71 +206,13 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 		self._buffCoolDown = coolDown
 
-	def _ApplyAbstainedCoolDown (self) -> None:
+	def ApplyBuffAbstainedCoolDown (self) -> None:
 		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
 
 		coolDownDistribution = effectGuide.AbstainedBuffCoolDown
 		coolDown = coolDownDistribution.GenerateValue(seed = self.AffectingSystem.CreateUniqueSeed() + 453777896, minimum = 0)
 
 		self._buffCoolDown = coolDown
-
-	def _ApplyRarityOffset (self, buffRarity: BuffsShared.BuffRarity) -> None:
-		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
-
-		optionAdjusters = effectGuide.BuffRarityOffsets.get(buffRarity)  # type: typing.Optional[typing.Dict[str, Probability.OptionWeightAdjuster]]
-
-		if optionAdjusters is None:
-			return
-
-		if self.BuffRarity is None:
-			self._SetupBuffRarity()
-
-		for optionIdentifier, optionAdjuster in optionAdjusters.items():  # type: str, Probability.OptionWeightAdjuster
-			rarityOption = self.BuffRarity.GetOption(optionIdentifier)  # type: typing.Optional[Probability.Option]
-
-			if rarityOption is None:
-				continue
-
-			optionAdjuster.AdjustOption(rarityOption)
-
-	def _ApplyAbstainedRarityOffset (self) -> None:
-		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
-
-		if self.BuffRarity is None:
-			self._SetupBuffRarity()
-
-		for optionIdentifier, optionAdjuster in effectGuide.AbstainedBuffRarityOffset.items():  # type: str, Probability.OptionWeightAdjuster
-			rarityOption = self.BuffRarity.GetOption(optionIdentifier)  # type: typing.Optional[Probability.Option]
-
-			if rarityOption is None:
-				continue
-
-			optionAdjuster.AdjustOption(rarityOption)
-
-	def _GetValidBuffTypes (self, currentCycle: CycleMenstrual.MenstrualCycle) -> typing.List[typing.Type[BuffsMenstrual.MenstrualBuff]]:
-		validBuffs = self.MenstrualBuffs  # type:  typing.List[typing.Type[BuffsMenstrual.MenstrualBuff]]
-
-		affectingSimInfo = self.AffectingSystem.SimInfo
-
-		buffIndex = 0  # type: int
-		while buffIndex < len(validBuffs):
-			buffType = validBuffs[buffIndex]  # type: typing.Type[BuffsMenstrual.MenstrualBuff]
-
-			if not buffType.can_add(affectingSimInfo):
-				validBuffs.pop(buffIndex)
-				continue
-
-			if affectingSimInfo.Buffs.has_buff(buffType):
-				validBuffs.pop(buffIndex)
-				continue
-
-			if not buffType.CyclePhaseTest.InValidPhase(currentCycle):
-				validBuffs.pop(buffIndex)
-				continue
-
-			buffIndex += 1
-
-		return validBuffs
 
 	def _OnAdded (self) -> None:
 		self.AffectingSystem.PlanUpdateEvent += self._PlanUpdateCallback
@@ -297,38 +223,17 @@ class MenstrualEffect(EffectsBase.EffectBase):
 	def _SimulateInternal (self, simulation: ReproductionShared.Simulation, ticks: int, reproductiveTimeMultiplier: float) -> None:
 		simulatingGameMinutes = ReproductionShared.TicksToGameMinutes(ticks)  # type: float
 
-		effectGuide = self.MenstruationEffectGuide  # type: CycleGuides.MenstrualEffectGuide
-
 		if self.BuffCoolDown is not None:
 			self.BuffCoolDown -= simulatingGameMinutes
 
 			if self.BuffCoolDown <= 0:
 				self.BuffCoolDown = None
 
-		if self.BuffRarity is None:
-			self._SetupBuffRarity()
-
-		for buffRarityOption in self.BuffRarity.Options:  # type: Probability.Option
-			if buffRarityOption.WeightOffset == 0:
-				continue
-
-			rarityResetRate = effectGuide.BuffRarityResetRates.get(buffRarityOption.Identifier, None)
-
-			if rarityResetRate is None:
-				Debug.Log("Missing rarity reset rate for an option that has been offset.\nOption Identifier: %s" % buffRarityOption.Identifier, This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 1)
-				continue
-
-			if buffRarityOption.WeightOffset < 0:
-				buffRarityOption.WeightOffset += rarityResetRate * simulatingGameMinutes
-			else:
-				buffRarityOption.WeightOffset += -rarityResetRate * simulatingGameMinutes
+		if self.BuffCoolDown is not None and self.BuffCoolDown > 0:
+			return
 
 		if not self.AffectingSystem.SimInfo.is_instanced():
 			return  # The game doesn't appear to allow us to add the buffs to non-instanced sims.
-
-		if not self.BuffRarity.HasOptions:
-			Debug.Log("Buff rarity probability object has no options to pick from.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 1)
-			return
 
 		if not simulation.LastTickStep:
 			return
@@ -346,46 +251,17 @@ class MenstrualEffect(EffectsBase.EffectBase):
 		if currentCycle.TypeIdentifier != CycleShared.MenstrualCycleTypeIdentifier:
 			return
 
-		affectingSimInfo = self.AffectingSystem.SimInfo
+		buffSelectionTesting = self.DoBuffSelectionTesting()  # type: CycleEvents.MenstrualEffectBuffSelectionTestingArguments
+		selectedBuffType, hadValidSelections = buffSelectionTesting.SelectAppropriateBuff(currentCycle)  # type: typing.Optional[typing.Type[BuffsMenstrual.MenstrualBuffBase]], bool
 
-		if self.BuffCoolDown is not None and self.BuffCoolDown > 0:
+		if not hadValidSelections:
 			return
 
-		validBuffs = self._GetValidBuffTypes(currentCycle)  # type: typing.List[typing.Type[BuffsMenstrual.MenstrualBuff]]
-
-		if len(validBuffs) == 0:
+		if selectedBuffType is None:
+			self.ApplyBuffAbstainedEffects()
 			return
 
-		rarityChoiceSeed = self.AffectingSystem.CurrentSeed + 470760185  # type: int
-		rarityChoiceString = self.BuffRarity.ChooseOption(rarityChoiceSeed).Identifier  # type: str
-
-		try:
-			if rarityChoiceString == "Abstain":
-				self._ApplyAbstainedCoolDown()
-				self._ApplyAbstainedRarityOffset()
-				return
-			else:
-				rarityChoice = BuffsShared.BuffRarity[rarityChoiceString]
-		except:
-			Debug.Log("Failed to parse rarity option identifier '%s'" % rarityChoiceString, This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
-			self._ApplyAbstainedCoolDown()
-			self._ApplyAbstainedRarityOffset()
-			return
-
-		matchingValidBuffs = list()  # type: typing.List[typing.Type[BuffsMenstrual.MenstrualBuff]]
-
-		for validBuff in validBuffs:  # type: typing.Type[BuffsMenstrual.MenstrualBuff]
-			if validBuff.Rarity == rarityChoice:
-				matchingValidBuffs.append(validBuff)
-
-		if len(matchingValidBuffs) == 0:
-			self._ApplyAbstainedCoolDown()
-			self._ApplyAbstainedRarityOffset()
-			return
-
-		random.seed(self.AffectingSystem.CurrentSeed + -579905054)
-		selectedBuffType = random.choice(matchingValidBuffs)  # type: typing.Type[BuffsMenstrual.MenstrualBuff]
-		affectingSimInfo.Buffs.add_buff_from_op(selectedBuffType)
+		self.AffectingSystem.SimInfo.Buffs.add_buff_from_op(selectedBuffType, BuffsShared.ReproductiveSystemBuffReason.GetLocalizationString())
 
 	# noinspection PyUnusedLocal
 	def _PlanUpdateCallback (self, owner, eventArguments: CycleEvents.PlanUpdateArguments) -> None:
@@ -411,7 +287,7 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 		soonestBuffValidTick = None  # type: typing.Optional[int]
 
-		for menstrualBuff in self.MenstrualBuffs:  # type: BuffsMenstrual.MenstrualBuff
+		for menstrualBuff in BuffsMenstrual.GetAllMenstrualBuffs():  # type: BuffsMenstrual.MenstrualBuffBase
 			ticksUntilBuffValid = menstrualBuff.CyclePhaseTest.TicksUntilValidPhase(currentCycle, cycleTracker.ReproductiveTimeMultiplier)  # type: int
 
 			if ticksUntilBuffValid is None:
@@ -425,7 +301,11 @@ class MenstrualEffect(EffectsBase.EffectBase):
 
 		eventArguments.RequestTick(soonestBuffValidTick)
 
-def _OnStart (cause: LoadingShared.LoadingCauses) -> None:
+	# noinspection PyUnusedLocal
+	def _BuffSelectionTestingCallback (self, owner: MenstrualEffect, eventArguments: CycleEvents.MenstrualEffectBuffSelectionTestingArguments) -> None:
+		eventArguments.BuffRarityBase = self.GetBaseBuffRarity()
+
+def _OnStart (cause) -> None:
 	if cause:
 		pass
 

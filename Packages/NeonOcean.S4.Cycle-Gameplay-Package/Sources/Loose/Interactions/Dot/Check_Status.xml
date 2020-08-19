@@ -2,7 +2,7 @@
 <I n="NeonOcean_S4_Cycle_Interactions_Dot_Check_Status" s="9660219706507875363" i="interaction" m="NeonOcean.S4.Cycle.Interactions.Dot" c="CheckStatusInteraction">
 	<T n="display_name">285493694</T>
 	<T n="category">5578830624020538538<!--PieMenuCategory: NeonOcean_S4_Cycle_Interaction_Categories_Phone_Dot_App--></T>
-	<T n="pie_menu_priority">5</T>
+	<T n="pie_menu_priority">8</T>
 	<V n="_saveable" t="disabled" />
 	<L n="test_globals">
 		<V t="sim_info">
@@ -32,8 +32,8 @@
 			</U>
 		</V>
 	</L>
-	<V n="RequiredDotAppState" t="enabled">
-		<E t="enabled">Enabled</E>
+	<V n="RequiredDotEnabledState" t="enabled">
+		<T t="enabled">True</T>
 	</V>
 	<V n="RequiredDotTrackingMode" t="enabled">
 		<E t="enabled">Cycle</E>

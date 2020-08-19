@@ -7,15 +7,16 @@ import uuid
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, This
 from NeonOcean.S4.Cycle.Tools import Distribution, SimPointer
 from NeonOcean.S4.Main import Debug
-from NeonOcean.S4.Main.Tools import Events, Exceptions, Python, Sims as ToolsSims, Savable
+from NeonOcean.S4.Main.Tools import Events, Exceptions, Python, Sims as ToolsSims, Savable, Version
 from sims import sim_info
 
 class Sperm(Savable.SavableExtension):
-	HostNamespace = This.Mod.Namespace
-
 	# TODO Track the location of sperm / the sperm would decay quicker or slower based on location.
 
 	LifeSpanDeviationLimit = 3  # type: int  # All sperm cells will be instantly killed if they live this many standard deviations above the average lifespan.
+
+	_uniqueIdentifierSavingKey = "UniqueIdentifier"  # type: str
+	_uniqueSeedSavingKey = "UniqueSeed"  # type: str
 
 	def __init__ (self):
 		"""
@@ -43,8 +44,21 @@ class Sperm(Savable.SavableExtension):
 		encodeUUID = lambda value: str(value) if value is not None else None
 		decodeUUID = lambda valueString: uuid.UUID(valueString) if valueString is not None else None
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("UniqueIdentifier", "_uniqueIdentifier", None, requiredAttribute = True, encoder = encodeUUID, decoder = decodeUUID))
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("UniqueSeed", "_uniqueSeed", None, requiredAttribute = True))
+		# noinspection PyUnusedLocal
+		def uniqueSeedUpdater (data: dict, lastVersion: typing.Optional[Version.Version]) -> None:
+			if isinstance(data.get(self._uniqueSeedSavingKey, None), list):
+				data.pop(self._uniqueSeedSavingKey)
+
+		def uniqueIdentifierVerifier (value: typing.Optional[uuid.UUID]) -> None:
+			if not isinstance(value, uuid.UUID) and value is not None:
+				raise Exceptions.IncorrectTypeException(value, self._uniqueIdentifierSavingKey, (uuid.UUID, None))
+
+		def uniqueSeedVerifier (value: typing.Optional[int]) -> None:
+			if not isinstance(value, int) and value is not None:
+				raise Exceptions.IncorrectTypeException(value, self._uniqueSeedSavingKey, (int, None))
+
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler(self._uniqueIdentifierSavingKey, "_uniqueIdentifier", None, encoder = encodeUUID, decoder = decodeUUID, typeVerifier = uniqueIdentifierVerifier))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler(self._uniqueSeedSavingKey, "_uniqueSeed", None, updater = uniqueSeedUpdater, typeVerifier = uniqueSeedVerifier))
 
 		self.RegisterSavableAttribute(Savable.StaticSavableAttributeHandler("SourcePointer", "SourcePointer"))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("SpermCount", "SpermCount", self.SpermCount, requiredAttribute = True))

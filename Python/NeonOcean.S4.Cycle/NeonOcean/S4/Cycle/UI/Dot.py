@@ -36,6 +36,12 @@ StatusNotificationTextMenstruationEnding = Language.String(This.Mod.Namespace + 
 ErrorNotificationTitle = Language.String(This.Mod.Namespace + ".Dot.Error_Notification.Title")  # type: Language.String
 ErrorNotificationText = Language.String(This.Mod.Namespace + ".Dot.Error_Notification.Text")  # type: Language.String
 
+FertilityNotificationsEnabledNotificationTitle = Language.String(This.Mod.Namespace + ".Dot.Fertility_Notifications_Enabled_Notification.Title")  # type: Language.String
+FertilityNotificationsEnabledNotificationText = Language.String(This.Mod.Namespace + ".Dot.Fertility_Notifications_Enabled_Notification.Text")  # type: Language.String
+
+FertilityNotificationTitle = Language.String(This.Mod.Namespace + ".Dot.Fertility_Notification.Title")  # type: Language.String
+FertilityNotificationText = Language.String(This.Mod.Namespace + ".Dot.Fertility_Notification.Text")  # type: Language.String
+
 def ShowStatusNotification (targetSimInfo: sim_info.SimInfo) -> None:  # TODO create quick glance notification, only show the times?
 	if not isinstance(targetSimInfo, sim_info.SimInfo):
 		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
@@ -76,6 +82,34 @@ def ShowErrorNotification (targetSimInfo: sim_info.SimInfo) -> None:
 		"owner": targetSimInfo,
 		"title": ErrorNotificationTitle.GetCallableLocalizationString(),
 		"text": ErrorNotificationText.GetCallableLocalizationString(),
+		"icon": lambda *args, **kwargs: shared_messages.IconInfoData(icon_resource = resources.ResourceKeyWrapper(CycleUIResources.DotAppIconKey)),
+		"secondary_icon": lambda *args, **kwargs: shared_messages.IconInfoData(obj_instance = targetSimInfo),
+	}
+
+	Notifications.ShowNotification(queue = False, **notificationArguments)
+
+def ShowFertilityNotificationsEnabledNotification (targetSimInfo: sim_info.SimInfo) -> None:
+	if not isinstance(targetSimInfo, sim_info.SimInfo):
+		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
+
+	notificationArguments = {
+		"owner": targetSimInfo,
+		"title": FertilityNotificationsEnabledNotificationTitle.GetCallableLocalizationString(),
+		"text": FertilityNotificationsEnabledNotificationText.GetCallableLocalizationString(),
+		"icon": lambda *args, **kwargs: shared_messages.IconInfoData(icon_resource = resources.ResourceKeyWrapper(CycleUIResources.DotAppIconKey)),
+		"secondary_icon": lambda *args, **kwargs: shared_messages.IconInfoData(obj_instance = targetSimInfo),
+	}
+
+	Notifications.ShowNotification(queue = False, **notificationArguments)
+
+def ShowFertilityNotification (targetSimInfo: sim_info.SimInfo) -> None:
+	if not isinstance(targetSimInfo, sim_info.SimInfo):
+		raise Exceptions.IncorrectTypeException(targetSimInfo, "targetSimInfo", (sim_info.SimInfo,))
+
+	notificationArguments = {
+		"owner": targetSimInfo,
+		"title": FertilityNotificationTitle.GetCallableLocalizationString(),
+		"text": FertilityNotificationText.GetCallableLocalizationString(),
 		"icon": lambda *args, **kwargs: shared_messages.IconInfoData(icon_resource = resources.ResourceKeyWrapper(CycleUIResources.DotAppIconKey)),
 		"secondary_icon": lambda *args, **kwargs: shared_messages.IconInfoData(obj_instance = targetSimInfo),
 	}

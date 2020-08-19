@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Bloating_Rare" s="18176311345046146997" i="buff" m="NeonOcean.S4.Cycle.Buffs.Menstrual" c="PMSMenstrualBuff">
+	<T n="buff_name">0x51B0B997</T>
+	<T n="buff_description">0x0991DD5E</T>
+	<T n="icon" p="InGame\UI\Icons\Buffs\buffs_TummyRumbleSad_neg.png">2F7D0004:00000000:EE112DF74D02C5EA</T>
+	<V n="_temporary_commodity_info" t="enabled">
+		<U n="enabled">
+			<L n="categories">
+				<E>Uncomfortable_Buffs</E>
+			</L>
+			<T n="max_duration">180</T>
+		</U>
+	</V>
+	<T n="mood_type">14646<!--Mood: Mood_Uncomfortable--></T>
+	<T n="mood_weight">1</T>
+	<T n="audio_sting_on_add" p="InGame\Audio\Stings\sting_buff_gain.propx">39B2AA4A:00000000:8AF8B916CF64C646</T>
+	<T n="audio_sting_on_remove" p="InGame\Audio\Stings\sting_buff_loss.propx">39B2AA4A:00000000:3BF33216A25546EA</T>
+	<V n="_add_test_set" t="tests_set">
+		<L n="tests_set">
+			<L>
+				<V t="buff">
+					<U n="buff">
+						<L n="blacklist">
+							<T>18176311345046146997<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Bloating_Rare--></T>
+							<T>2951337242074650731<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Bloating_Very_Rare--></T>
+						</L>
+					</U>
+				</V>
+			</L>
+		</L>
+	</V>
+	<V n="Rarity" t="enabled">
+		<E n="enabled">Rare</E>
+	</V>
+	<U n="CyclePhaseTest">
+		<L n="PhaseStates">
+			<U>
+				<E n="Phase">Luteal</E>
+				<V n="StartCompletion" t="enabled">
+					<T n="enabled">0.25</T>
+				</V>
+				<V n="EndCompletion" t="enabled">
+					<T n="enabled">0.65</T>
+				</V>
+			</U>
+		</L>
+	</U>
+</I>

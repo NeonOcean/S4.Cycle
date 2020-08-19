@@ -41,3 +41,4 @@ def _MergePackage () -> None:
 
 def _BuildManifest () -> None:
 	Merging.BuildManifest(os.path.join(Mod.GetCurrentMod().Namespace, Mod.GetCurrentMod().Namespace + "-Uninstall-Files.txt"), Paths.BuildPath)
+

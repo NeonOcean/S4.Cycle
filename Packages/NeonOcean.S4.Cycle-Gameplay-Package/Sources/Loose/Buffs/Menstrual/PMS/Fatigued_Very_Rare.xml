@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Fatigued_Very_Rare" s="219442977253959087" i="buff" m="NeonOcean.S4.Cycle.Buffs.Menstrual" c="PMSMenstrualBuff">
+	<T n="buff_name">0x4E5B2683</T>
+	<T n="buff_description">0xF1A1917B</T>
+	<T n="icon" p="InGame\UI\Icons\Buffs\buffs_energy_neg.png" >2F7D0004:00000000:B03CC232F9384E5B</T>
+	<V n="_temporary_commodity_info" t="enabled">
+		<U n="enabled">
+			<L n="categories">
+				<E>Uncomfortable_Buffs</E>
+			</L>
+			<T n="max_duration">240</T>
+		</U>
+	</V>
+	<T n="mood_type">14646<!--Mood: Mood_Uncomfortable--></T>
+	<T n="mood_weight">1</T>
+	<T n="audio_sting_on_add" p="InGame\Audio\Stings\sting_buff_gain.propx">39B2AA4A:00000000:8AF8B916CF64C646</T>
+	<T n="audio_sting_on_remove" p="InGame\Audio\Stings\sting_buff_loss.propx">39B2AA4A:00000000:3BF33216A25546EA</T>
+	<V n="_add_test_set" t="tests_set">
+		<L n="tests_set">
+			<L>
+				<V t="buff">
+					<U n="buff">
+						<L n="blacklist">
+							<T>5370457481636276271<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Fatigued_Rare--></T>
+							<T>219442977253959087<!--Buff: NeonOcean_S4_Cycle_Buffs_Menstrual_PMS_Fatigued_Very_Rare--></T>
+						</L>
+					</U>
+				</V>
+			</L>
+		</L>
+	</V>
+	<U n="game_effect_modifier">
+		<L n="_game_effect_modifiers">
+			<V t="autonomy_modifier">
+				<U n="autonomy_modifier">
+					<L n="decay_modifiers">
+						<U>
+							<T n="key">16654<!--Commodity: motive_Energy--></T>
+							<T n="value">1.2</T>
+						</U>
+					</L>
+					<L n="stat_use_multiplier">
+						<U>
+							<T n="key">16654<!--Commodity: motive_Energy--></T>
+							<U n="value">
+								<E n="apply_direction">DECREASE</E>
+							</U>
+						</U>
+					</L>
+					<V n="subject" t="apply_to_owner" />
+				</U>
+			</V>
+		</L>
+	</U>
+	<V n="walkstyle" t="enabled">
+		<U n="enabled">
+			<E n="priority">MOTIVE_LOW</E>
+			<T p="InGame\Locomotion\WalkSleepy.walkstyle" n="walkstyle">27c01d95:00000000:000000002fe73564</T>
+		</U>
+	</V>
+	<V n="walkstyle_behavior_override" t="enabled">
+		<U n="enabled">
+			<L n="removed_run_flags">
+				<E />
+				<E>RUN_ALLOWED_OUTDOORS</E>
+			</L>
+		</U>
+	</V>
+	<V n="Rarity" t="enabled">
+		<E n="enabled">VeryRare</E>
+	</V>
+	<U n="CyclePhaseTest">
+		<L n="PhaseStates">
+			<U>
+				<E n="Phase">Luteal</E>
+				<V n="StartCompletion" t="enabled">
+					<T n="enabled">0.25</T>
+				</V>
+				<V n="EndCompletion" t="enabled">
+					<T n="enabled">0.65</T>
+				</V>
+			</U>
+		</L>
+	</U>
+</I>

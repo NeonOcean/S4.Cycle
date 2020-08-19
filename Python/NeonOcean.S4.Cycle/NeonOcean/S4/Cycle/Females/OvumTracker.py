@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import textwrap
 import typing
 
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, This
@@ -194,7 +195,7 @@ class OvumTracker(ReproductionShared.TrackerBase):
 			try:
 				ovumFertilizationTestingCallback(self, eventArguments)
 			except:
-				Debug.Log("Failed to call ovum fertilization testing callback '" + Types.GetFullName(ovumFertilizationTestingCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
+				Debug.Log("Failed to call an ovum fertilization testing callback '" + Types.GetFullName(ovumFertilizationTestingCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = ovumFertilizationTestingCallback)
 
 		return eventArguments
@@ -218,7 +219,7 @@ class OvumTracker(ReproductionShared.TrackerBase):
 			try:
 				ovumImplantationTestingCallback(self, eventArguments)
 			except:
-				Debug.Log("Failed to call ovum implantation testing callback '" + Types.GetFullName(ovumImplantationTestingCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
+				Debug.Log("Failed to call an ovum implantation testing callback '" + Types.GetFullName(ovumImplantationTestingCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
 						  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = ovumImplantationTestingCallback)
 
 		return eventArguments
@@ -239,6 +240,15 @@ class OvumTracker(ReproductionShared.TrackerBase):
 
 			if self.TrackingSystem.Simulating:
 				self.TrackingSystem.Simulation.NeedToPlan = True
+
+			releaseEventArguments = CycleEvents.OvumReleasedArguments(releasingOvum)
+
+			for ovumReleasedCallback in self.OvumReleasedEvent:
+				try:
+					ovumReleasedCallback(self, releaseEventArguments)
+				except:
+					Debug.Log("Failed to call an ovum released callback '" + Types.GetFullName(ovumReleasedCallback) + "'.\n" + self.TrackingSystem.DebugInformation,
+							  This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = ovumReleasedCallback)
 
 	def GenerateOvum (self) -> Ovum.Ovum:
 		"""
@@ -384,7 +394,7 @@ class OvumTracker(ReproductionShared.TrackerBase):
 		for activeOvumIndex in range(len(self._activeOva)):  # type: int
 			activeOvum = self._activeOva[activeOvumIndex]  # type: Ovum.Ovum
 
-			debugString += ("\n  [%s] " % activeOvumIndex) + activeOvum.GetDebugNotificationString().replace("\n", "\n  ")
+			debugString += ("\n  [%s] " % activeOvumIndex) + textwrap.indent(activeOvum.GetDebugNotificationString(), " ")
 
 		return debugString
 
@@ -426,8 +436,6 @@ class OvumTracker(ReproductionShared.TrackerBase):
 					Debug.Log("Expected the ovum fertilization testing' for an ovum with the identifier '" + str(activeOvum.UniqueIdentifier) + "' to be in the simulation memory, but it wasn't there.\n" + self.DebugInformation,
 							  This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockReference = self.TrackingSystem)
 
-					# TODO An minor bug occurred around here and could not be reproduced. Set the cycle progress for Cassandra to 0.46, had her and Shawn try for a baby twice, upon ovum release(?) an error occurred because there was no fertilization testing for the ovum in the memory. Fertilization got through in the next simulation, the ovum became non viable. Reproductive speed was 0.15.
-					# TODO Update - This just keeps happening randomly. Occasionally, I load up the cassandra save and Holly Alto and Jade Rosa may randomly cause the above error message to appear. It doesn't even happen every time..
 					ovumFertilizationTesting = self.DoOvumFertilizationTesting(activeOvum)  # type: CycleEvents.OvumFertilizationTestingArguments
 					simulationMemory.OvumFertilizationTesting[str(activeOvum.UniqueIdentifier)] = ovumFertilizationTesting
 

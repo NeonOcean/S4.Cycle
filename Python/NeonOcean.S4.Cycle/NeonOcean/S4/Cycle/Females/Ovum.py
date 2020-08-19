@@ -7,11 +7,14 @@ import uuid
 from NeonOcean.S4.Cycle import Events as CycleEvents, Guides as CycleGuides, ReproductionShared, Settings, This
 from NeonOcean.S4.Cycle.Tools import SimPointer
 from NeonOcean.S4.Main import Debug
-from NeonOcean.S4.Main.Tools import Events, Exceptions, Python, Sims as ToolsSims, Savable
+from NeonOcean.S4.Main.Tools import Events, Exceptions, Python, Sims as ToolsSims, Savable, Version
 from sims import sim_info
 
 class Ovum(Savable.SavableExtension):
 	HostNamespace = This.Mod.Namespace
+
+	_uniqueIdentifierSavingKey = "UniqueIdentifier"  # type: str
+	_uniqueSeedSavingKey = "UniqueSeed"  # type: str
 
 	def __init__ (self):
 		super().__init__()
@@ -34,10 +37,37 @@ class Ovum(Savable.SavableExtension):
 		self.Fertilized = False
 		self.FertilizerPointer = SimPointer.SimPointer()
 
+		self._blockedSperm = list()  # type: typing.List[str]
+
 		encodeUUID = lambda value: str(value) if value is not None else None
 		decodeUUID = lambda valueString: uuid.UUID(valueString) if valueString is not None else None
 
-		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Identifier", "_identifier", None, requiredAttribute = True, encoder = encodeUUID, decoder = decodeUUID))
+		# noinspection PyUnusedLocal
+		def uniqueSeedUpdater (data: dict, lastVersion: typing.Optional[Version.Version]) -> None:
+			if isinstance(data.get(self._uniqueSeedSavingKey, None), list):
+				data[self._uniqueSeedSavingKey] = None
+
+		def uniqueIdentifierVerifier (value: typing.Optional[uuid.UUID]) -> None:
+			if not isinstance(value, uuid.UUID) and value is not None:
+				raise Exceptions.IncorrectTypeException(value, self._uniqueIdentifierSavingKey, (uuid.UUID, None))
+
+		def uniqueSeedVerifier (value: typing.Optional[int]) -> None:
+			if not isinstance(value, int) and value is not None:
+				raise Exceptions.IncorrectTypeException(value, self._uniqueSeedSavingKey, (int, None))
+
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler(self._uniqueIdentifierSavingKey, "_uniqueIdentifier", None, encoder = encodeUUID, decoder = decodeUUID, typeVerifier = uniqueIdentifierVerifier))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler(self._uniqueSeedSavingKey, "_uniqueSeed", None, updater = uniqueSeedUpdater, typeVerifier = uniqueSeedVerifier))
+
+		def blockedSpermTypeVerifier (value: typing.List[str]) -> None:
+			if not isinstance(value, list):
+				raise Exceptions.IncorrectTypeException(value, "BlockedSperm", (list, ))
+
+			for blockedSpermIndex in range(len(value)):  # type: int
+				blockedSperm = value[blockedSpermIndex]  # type: str
+
+				if not isinstance(blockedSperm, str):
+					raise Exceptions.IncorrectTypeException(value, "BlockedSperm[%s]" % blockedSpermIndex, (str, ))
+
 		self.RegisterSavableAttribute(Savable.StaticSavableAttributeHandler("SourcePointer", "SourcePointer", requiredSuccess = False))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("NormalLifetime", "NormalLifetime", self.NormalLifetime))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("ImplantationTime", "ImplantationTime", self.ImplantationTime))
@@ -46,6 +76,8 @@ class Ovum(Savable.SavableExtension):
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("FertilizationSeed", "FertilizationSeed", self.FertilizationSeed))
 		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Fertilized", "Fertilized", self.Fertilized))
 		self.RegisterSavableAttribute(Savable.StaticSavableAttributeHandler("FertilizerPointer", "FertilizerPointer", requiredSuccess = False))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("Fertilized", "Fertilized", self.Fertilized))
+		self.RegisterSavableAttribute(Savable.StandardAttributeHandler("BlockedSperm", "_blockedSperm", list(), typeVerifier = blockedSpermTypeVerifier))
 
 	@property
 	def UniqueIdentifier (self) -> uuid.UUID:
@@ -321,6 +353,14 @@ class Ovum(Savable.SavableExtension):
 
 		self._fertilizerPointer = value
 
+	@property
+	def BlockedSperm (self) -> typing.List[str]:
+		"""
+		The identifiers of the sperm objects that can never fertilize the ovum created for this ovum release time.
+		"""
+
+		return list(self._blockedSperm)
+
 	@classmethod
 	def GetOvumGuide (cls, target: ReproductionShared.ReproductiveSystem) -> CycleGuides.OvumGuide:
 		"""
@@ -404,6 +444,45 @@ class Ovum(Savable.SavableExtension):
 		generationArguments.PreGenerationEvent.Invoke(generationArguments, Events.EventArguments())
 		self._GenerateInternal(generationArguments)
 		generationArguments.PostGenerationEvent.Invoke(generationArguments, Events.EventArguments())
+
+	def BlockSperm (self, *spermIdentifiers) -> None:
+		"""
+		Block sperm with these identifiers from fertilizing this ovum.
+		:param spermIdentifiers: The identifiers of the sperm object that should not be able to fertilize this ovum.
+		"""
+
+		blockedSpermSet = set(self._blockedSperm)  # type: typing.Set[str]
+
+		for spermIdentifierIndex in range(len(spermIdentifiers)):  # type: int
+			spermIdentifier = spermIdentifiers[spermIdentifierIndex]  # type: str
+
+			if not isinstance(spermIdentifier, str):
+				raise Exceptions.IncorrectTypeException(spermIdentifier, "spermIdentifiers[%s]" % spermIdentifierIndex, (str, ))
+
+			blockedSpermSet.add(spermIdentifier)
+
+		self._blockedSperm = list(blockedSpermSet)
+
+	def UnblockSperm (self, *spermIdentifiers) -> None:
+		"""
+		Unblock sperm with these identifiers so that they may fertilize this ovum.
+		:param spermIdentifiers: The identifiers of the sperm object that should be able to fertilize this ovum.
+		"""
+
+		blockedSpermSet = set(self._blockedSperm)  # type: typing.Set[str]
+
+		for spermIdentifierIndex in range(len(spermIdentifiers)):  # type: int
+			spermIdentifier = spermIdentifiers[spermIdentifierIndex]  # type: str
+
+			if not isinstance(spermIdentifier, str):
+				raise Exceptions.IncorrectTypeException(spermIdentifier, "spermIdentifiers[%s]" % spermIdentifierIndex, (str, ))
+
+			try:
+				blockedSpermSet.remove(spermIdentifier)
+			except KeyError:
+				pass
+
+		self._blockedSperm = list(blockedSpermSet)
 
 	def Simulate (self, simulation: ReproductionShared.Simulation, ticks: int, reproductiveTimeMultiplier: float) -> None:
 		"""

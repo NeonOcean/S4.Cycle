@@ -25,3 +25,11 @@ from NeonOcean.S4.Cycle.Guides.Effects.Menstrual import (
 	MenstrualEffectGuide,
 	HumanMenstrualEffectGuide
 )
+from NeonOcean.S4.Cycle.Guides.Effects.BirthControlPills import (
+	BirthControlPillsEffectGuide,
+	HumanBirthControlPillsEffectGuide
+)
+from NeonOcean.S4.Cycle.Guides.Effects.EmergencyContraceptivePill import (
+	EmergencyContraceptivePillEffectGuide,
+	HumanEmergencyContraceptivePillEffectGuide
+)

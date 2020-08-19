@@ -133,7 +133,7 @@ class DotHandler(HandlersBase.HandlerBase):
 				if currentSimulation is None:
 					dotInformation.SetCycleStart(cycleTracker.CurrentCycle.Age)
 				else:
-					dotInformation.SetCycleStart(cycleTracker.CurrentCycle.Age + currentSimulation.RemainingMinutes - currentSimulation.NonUpdateTicks) # Subtracting the non update ticks because they will be manually simulated for the dot app at the end of the system's simulation
+					dotInformation.SetCycleStart(cycleTracker.CurrentCycle.Age + currentSimulation.RemainingMinutes - currentSimulation.NonUpdateTicks)  # Subtracting the non update ticks because they will be manually simulated for the dot app at the end of the system's simulation
 
 	# noinspection PyUnusedLocal
 	def _CycleTrackerCycleCompletedCallback (self, owner: CycleTracker.CycleTracker, eventArguments: CycleEvents.CycleCompletedArguments) -> None:

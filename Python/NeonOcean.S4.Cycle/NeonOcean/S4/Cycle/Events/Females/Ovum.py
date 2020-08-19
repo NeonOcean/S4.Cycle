@@ -5,6 +5,7 @@ import typing
 import uuid
 
 from NeonOcean.S4.Cycle import Guides as CycleGuides, Settings
+from NeonOcean.S4.Cycle.Females import Ovum
 from NeonOcean.S4.Cycle.Events import Base as EventsBase
 from NeonOcean.S4.Cycle.Tools import Distribution, Tweakable
 from NeonOcean.S4.Main.Tools import Exceptions
@@ -18,7 +19,7 @@ class OvumGeneratingArguments(EventsBase.GenerationArguments):
 	ImplantationTimeSeed = 265207036  # type: int
 	ViabilitySeed = 377991025  # type: int
 
-	def __init__ (self, seed: int, targetedObject: typing.Any, ovumGuide: CycleGuides.OvumGuide, *args, **kwargs):
+	def __init__ (self, seed: int, targetedObject: Ovum.Ovum, ovumGuide: CycleGuides.OvumGuide, *args, **kwargs):
 		"""
 		Event arguments for times when a new ovum object needs to fill its attributes.
 
@@ -26,10 +27,13 @@ class OvumGeneratingArguments(EventsBase.GenerationArguments):
 		randomization operation, otherwise everything would generate the same numbers.
 		:type seed: int
 		:param targetedObject: The ovum being worked on.
-		:type targetedObject: typing.Any
+		:type targetedObject: Ovum.Ovum
 		:param ovumGuide: A guide to help in the creation of the ovum.
 		:type ovumGuide: GuidesOva.OvumGuide
 		"""
+
+		if not isinstance(targetedObject, Ovum.Ovum):
+			raise Exceptions.IncorrectTypeException(targetedObject, "targetedObject", (Ovum.Ovum,))
 
 		if not isinstance(ovumGuide, CycleGuides.OvumGuide):
 			raise Exceptions.IncorrectTypeException(ovumGuide, "ovumGuide", (CycleGuides.OvumGuide,))
@@ -43,6 +47,14 @@ class OvumGeneratingArguments(EventsBase.GenerationArguments):
 
 		self.Source = None
 		self.FertilizationSeed = 0  # type: int
+
+	@property
+	def TargetedObject (self) -> Ovum.Ovum:
+		"""
+		The ovum being worked on.
+		"""
+
+		return self._targetedObject
 
 	@property
 	def OvumGuide (self) -> CycleGuides.OvumGuide:
@@ -142,11 +154,30 @@ class OvumGeneratingArguments(EventsBase.GenerationArguments):
 			viabilityRoll = random.random()
 			return viabilityRoll <= viabilityChance
 
-class OvumReleasedArguments(EventsBase.ReproductiveArguments):
-	pass
+class OvumReleasedArguments(EventsBase.TargetedArguments):
+	def __init__ (self, targetedObject: Ovum.Ovum, *args, **kwargs):
+		"""
+		Event arguments to be used when an egg cell has been released from the ovaries.
+
+		:param targetedObject: The ovum that is being released.
+		:type targetedObject: Ovum.Ovum
+		"""
+
+		if not isinstance(targetedObject, Ovum.Ovum):
+			raise Exceptions.IncorrectTypeException(targetedObject, "targetedObject", (Ovum.Ovum,))
+
+		super().__init__(targetedObject, *args, **kwargs)
+
+	@property
+	def TargetedObject (self) -> Ovum.Ovum:
+		"""
+		The ovum that is being released.
+		"""
+
+		return self._targetedObject
 
 class OvumFertilizationTestingArguments(EventsBase.SeededAndTargetedArguments):
-	def __init__ (self, seed: int, targetedObject: typing.Any, *args, **kwargs):
+	def __init__ (self, seed: int, targetedObject: Ovum.Ovum, *args, **kwargs):
 		"""
 		Event arguments to determine if an ovum should be fertilized.
 
@@ -154,14 +185,25 @@ class OvumFertilizationTestingArguments(EventsBase.SeededAndTargetedArguments):
 		randomization operation, otherwise everything would generate the same numbers.
 		:type seed: int
 		:param targetedObject: The ovum this test is being run for.
-		:type targetedObject: typing.Any
+		:type targetedObject: Ovum.Ovum
 		"""
+
+		if not isinstance(targetedObject, Ovum.Ovum):
+			raise Exceptions.IncorrectTypeException(targetedObject, "targetedObject", (Ovum.Ovum, ))
 
 		super().__init__(seed, targetedObject, *args, **kwargs)
 
 		self._timeSinceTest = 0  # type: float
 
 		self._shouldFertilizeTweakable = Tweakable.TweakableBoolean(False)  # type: Tweakable.TweakableBoolean
+
+	@property
+	def TargetedObject (self) -> Ovum.Ovum:
+		"""
+		The ovum this test is being run for.
+		"""
+
+		return self._targetedObject
 
 	@property
 	def TimeSinceTest (self) -> float:
@@ -208,7 +250,7 @@ class OvumFertilizationTestingArguments(EventsBase.SeededAndTargetedArguments):
 		pass
 
 class OvumFertilizingArguments(EventsBase.SeededAndTargetedArguments):
-	def __init__ (self, seed: int, targetedObject: typing.Any, *args, **kwargs):
+	def __init__ (self, seed: int, targetedObject: Ovum.Ovum, *args, **kwargs):
 		"""
 		Event arguments to determine fertilization values, such as the source and viability.
 
@@ -216,8 +258,11 @@ class OvumFertilizingArguments(EventsBase.SeededAndTargetedArguments):
 		randomization operation, otherwise everything would generate the same numbers.
 		:type seed: int
 		:param targetedObject: The ovum this test is being run for.
-		:type targetedObject: typing.Any
+		:type targetedObject: Ovum.Ovum
 		"""
+
+		if not isinstance(targetedObject, Ovum.Ovum):
+			raise Exceptions.IncorrectTypeException(targetedObject, "targetedObject", (Ovum.Ovum, ))
 
 		super().__init__(seed, targetedObject, *args, **kwargs)
 
@@ -226,6 +271,14 @@ class OvumFertilizingArguments(EventsBase.SeededAndTargetedArguments):
 		self.FertilizingObject = None
 
 		self._fertilizationViability = Tweakable.TweakableBoolean(True)
+
+	@property
+	def TargetedObject (self) -> Ovum.Ovum:
+		"""
+		The ovum this test is being run for.
+		"""
+
+		return self._targetedObject
 
 	@property
 	def OvumSourceSpecies (self) -> sim_info_types.Species:
@@ -323,7 +376,7 @@ class OvumFertilizedArguments(EventsBase.ReproductiveArguments):
 		return self._fertilizingArguments
 
 class OvumImplantationTestingArguments(EventsBase.SeededAndTargetedArguments):
-	def __init__ (self, seed: int, targetedObject: typing.Any, *args, **kwargs):
+	def __init__ (self, seed: int, targetedObject: Ovum.Ovum, *args, **kwargs):
 		"""
 		Event arguments to determine if an ovum can implant and begin a pregnancy.
 
@@ -331,13 +384,23 @@ class OvumImplantationTestingArguments(EventsBase.SeededAndTargetedArguments):
 		randomization operation, otherwise everything would generate the same numbers.
 		:type seed: int
 		:param targetedObject: The ovum this test is being run for.
-		:type targetedObject: typing.Any
-
+		:type targetedObject: Ovum.Ovum
 		"""
+
+		if not isinstance(targetedObject, Ovum.Ovum):
+			raise Exceptions.IncorrectTypeException(targetedObject, "targetedObject", (Ovum.Ovum, ))
 
 		super().__init__(seed, targetedObject, *args, **kwargs)
 
 		self._implantationPossible = Tweakable.TweakableBoolean(True)
+
+	@property
+	def TargetedObject (self) -> Ovum.Ovum:
+		"""
+		The ovum this test is being run for.
+		"""
+
+		return self._targetedObject
 
 	@property
 	def ImplantationPossible (self) -> Tweakable.TweakableBoolean:
