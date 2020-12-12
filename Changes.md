@@ -1,3 +1,13 @@
+## v1.3.0 (December 12, 2020)
+
+- Cycle and pregnancy lengths are now set by the number of days it takes. The previous way seemed to confuse some people.
+- Added support for Main's new bug reporting feature.
+
+## Fixed Bugs
+- Fixed issue where changing the amount of time a pregnancy takes causes all sims to falsely appear like their going through a pregnancy.
+- Fixed incorrect sperm arrival percentages for withdraw failure.
+
+______________________________
 
 ## v1.2.0 (August 19, 2020)
 
@@ -21,7 +31,7 @@ ______________________________
 - It is now not possible to select any other pregnancy mode in the mod 'Wicked Whims' than 'simple'.
 - WickedWhim's 'Check Cycles Info' interaction is now disabled by Cycle.
 
-## Fixed bugs
+## Fixed Bugs
 - The take pregnancy test interaction now works correctly on toilet stalls.
 - The game's take pregnancy test interaction no longer appears after trying for a baby.
 - Pregnancy tests and birth control pills no longer show up in the build / buy menu.

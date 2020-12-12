@@ -147,7 +147,7 @@
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Easy_Fertilization.Description</Identifier>
 			<Key>225104768</Key>
-			<English>Enabling this setting will prevent egg cells and sperm from being randomly non-viable. This will cause trying for babies to be about as easy as in the unmodded game, except you have to time your woohoos with a sim's ovulation. This setting is best used when trying to play with sims who don't live long. This won't affect egg cells and sperm that already exist.</English>
+			<English>Enabling this setting will prevent egg cells and sperm from being randomly non-viable. This will cause trying for babies to be about as easy as in the unmodded game. The big difference would be that you must time your woohoos with a sim's ovulation. This setting is best used when playing with short sim lifespans. This won't affect egg cells and sperm that already exist.</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Easy_Fertilization.Name</Identifier>
@@ -203,9 +203,9 @@
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Speed.Description</Identifier>
 			<Key>3820664465</Key>
-			<English>Controls the amount of game time it takes for a pregnancy to complete. The setting's value will be multiplied by how long pregnancy takes in real life to get how long it should take in game. For example, a real pregnancy cycle may take 270 days, at half speed (0.5) it would take 135 in-game days to complete (270 x 0.5 = 135).
+			<English>Set the average number of days a human sim's pregnancy should last for.
 
-Minimum: 0.0035, Maximum: 2</English>
+Minimum: 1 day, Maximum: 540 days</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Pregnancy_Speed.Name</Identifier>
@@ -235,11 +235,11 @@ Minimum: 0.0035, Maximum: 2</English>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Reproductive_Speed.Description</Identifier>
 			<Key>2700529802</Key>
-			<English>Controls the amount of game time it takes for a cycle to complete, sperm to decay, etc. The setting's value will be multiplied by how long something takes in real life to get how long it should take in game.  For example, a real menstrual cycle may take 28 days, at half speed (0.5) it would take 14 in-game days to complete (28 x 0.5 = 14).
+			<English>Set the average number of days a human sim's menstrual cycle should last for.
 
 This mod works best with long menstrual cycles, I don't recommend playing with any less than 3 days.
 
-Minimum: 0.035, Maximum: 2</English>
+Minimum: 1 day, Maximum: 56 days</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Mod_Settings.Values.Reproductive_Speed.Name</Identifier>
@@ -349,12 +349,12 @@ Minimum: 0.035, Maximum: 2</English>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Pregnancy_Speed.Value</Identifier>
 			<Key>362512151</Key>
-			<English>{0.Number}{0.String} ({1:Number}{1.String} day pregnancy.)</English>
+			<English>{0:Number}{0.String} day pregnancy</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Settings.Types.Reproductive_Speed.Value</Identifier>
 			<Key>861739185</Key>
-			<English>{0.Number}{0.String} ({1:Number}{1.String} day cycle)</English>
+			<English>{0:Number}{0.String} day cycle</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Cycle.Sim_Settings.List.Paths.Root.Description</Identifier>

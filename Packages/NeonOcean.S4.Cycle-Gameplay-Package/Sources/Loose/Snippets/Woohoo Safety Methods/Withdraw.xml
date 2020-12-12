@@ -15,7 +15,7 @@
 				<U n="value">
 					<V n="ArrivingPercentage" t="normalDistribution">
 						<U n="normalDistribution">
-							<T n="mean">0.75</T>
+							<T n="mean">0.25</T>
 							<T n="standardDeviation">0.1</T>
 						</U>
 					</V>
@@ -26,7 +26,7 @@
 				<U n="value">
 					<V n="ArrivingPercentage" t="normalDistribution">
 						<U n="normalDistribution">
-							<T n="mean">0.25</T>
+							<T n="mean">0.75</T>
 							<T n="standardDeviation">0.1</T>
 						</U>
 					</V>

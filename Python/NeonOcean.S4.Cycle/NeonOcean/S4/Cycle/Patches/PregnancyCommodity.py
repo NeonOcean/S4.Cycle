@@ -6,7 +6,7 @@ import weakref
 import zone
 from NeonOcean.S4.Cycle import Guides as CycleGuides, ReproductionShared, Settings, This
 from NeonOcean.S4.Cycle.Settings import Base as SettingsBase
-from NeonOcean.S4.Main import Debug, Director
+from NeonOcean.S4.Main import Debug, Director, LoadingShared
 from NeonOcean.S4.Main.Tools import Patcher, Python
 from objects import script_object
 from sims import sim_info, sim_info_types
@@ -15,8 +15,8 @@ from sims4 import resources
 from sims4.tuning import instance_manager
 from statistics import base_statistic, base_statistic_tracker, commodity
 
-_pregnancyStatistics = list()  # type: typing.List[weakref.ReferenceType]
-_handlingPregnancyStatistics = list()  # type: typing.List[weakref.ReferenceType]
+_pregnancyStatistics = set()  # type: typing.Set[weakref.ReferenceType]
+_handlingPregnancyStatistics = set()  # type: typing.Set[weakref.ReferenceType]
 
 class _AnnouncerPreemptive(Director.Announcer):
 	Host = This.Mod
@@ -44,11 +44,17 @@ class _Announcer(Director.Announcer):
 
 	@classmethod
 	def ZoneLoad (cls, zoneReference: zone.Zone) -> None:
+		_ClearDeadPregnancyStatisticReferences()
 		_ApplySettingsToAllPregnancyStatistics()
 
 	@classmethod
 	def ZoneSave (cls, zoneReference: zone.Zone, saveSlotData: typing.Optional[typing.Any] = None) -> None:
 		_ApplySettingsToAllPregnancyStatistics()
+
+	@classmethod
+	def OnLoadingScreenAnimationFinished(cls, zoneReference: zone.Zone) -> None:
+		_FixOldCyclePregnancyStatisticBug()
+
 
 def _GetPregnancyRate () -> float:
 	reproductiveTimeMultiplier = Settings.PregnancySpeed.Get()  # type: float
@@ -68,24 +74,45 @@ def _GetPregnancyRate () -> float:
 
 	return pregnancyRate
 
+def _GetPregnancyStatisticOwner (pregnancyStatistic: base_statistic.BaseStatistic) -> typing.Optional[sim_info.SimInfo]:
+	pregnancyStatisticTracker = pregnancyStatistic.tracker  # type: typing.Optional[base_statistic_tracker.BaseStatisticTracker]
+
+	if pregnancyStatisticTracker is None:
+		Debug.Log("Found a pregnancy statistic with no tracker.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
+		return None
+
+	pregnancyStatisticOwner = pregnancyStatisticTracker.owner  # type: typing.Optional[script_object.ScriptObject]
+
+	if pregnancyStatisticOwner is None:
+		Debug.Log("Found a pregnancy statistic with a tracker but no owner.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
+		return
+
+	if not isinstance(pregnancyStatisticOwner, sim_info.SimInfo):
+		Debug.Log("Found a pregnancy statistic that has an object other than a sim as its owner.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
+		return
+
+	return pregnancyStatisticOwner
+
 def _ApplySettingsPregnancyStatistic (pregnancyStatistic: base_statistic.BaseStatistic) -> None:
-	if Settings.HandlePregnancySpeed.Get():
-		pregnancyRate = _GetPregnancyRate()  # type: float
-		_ApplyPregnancyStatisticRate(pregnancyStatistic, pregnancyRate)
-		_handlingPregnancyStatistics.append(weakref.ref(pregnancyStatistic))
-	else:
-		handlingReferenceIndex = 0
-		while handlingReferenceIndex < len(_handlingPregnancyStatistics):
-			handlingStatisticReference = _handlingPregnancyStatistics[handlingReferenceIndex]  # type: weakref.ref
+	if not Settings.HandlePregnancySpeed.Get():
+		_StopHandlingPregnancyStatistic(pregnancyStatistic)
+		return
 
-			handlingStatistic = handlingStatisticReference()  # type: typing.Optional[base_statistic.BaseStatistic]
+	pregnancyStatisticOwner = _GetPregnancyStatisticOwner(pregnancyStatistic)  # type: typing.Optional[sim_info.SimInfo]
 
-			if handlingStatistic == pregnancyStatistic:
-				_ResetPregnancyStatistic(pregnancyStatistic)
-				_handlingPregnancyStatistics.pop(handlingReferenceIndex)
-				continue
+	if pregnancyStatisticOwner is None:
+		return
 
-			handlingReferenceIndex += 1
+	ownerPregnancyTracker = pregnancyStatisticOwner.pregnancy_tracker  # type: GamePregnancyTracker.PregnancyTracker
+
+	if not ownerPregnancyTracker.is_pregnant:
+		_StopHandlingPregnancyStatistic(pregnancyStatistic)
+		return
+
+	pregnancyRate = _GetPregnancyRate()  # type: float
+	_ApplyPregnancyStatisticRate(pregnancyStatistic, pregnancyRate)
+	_handlingPregnancyStatistics.add(weakref.ref(pregnancyStatistic))  # Using a set prevents one stat from being added more than once, even though they are saved as weak refs.
+	return
 
 def _ApplySettingsToAllPregnancyStatistics () -> None:
 	for statisticReference in _pregnancyStatistics:  # type: weakref.ref
@@ -94,43 +121,53 @@ def _ApplySettingsToAllPregnancyStatistics () -> None:
 		if statistic is not None:
 			_ApplySettingsPregnancyStatistic(statistic)
 
+def _StopHandlingPregnancyStatistic (pregnancyStatistic: base_statistic.BaseStatistic) -> None:
+	for handlingStatisticReference in _handlingPregnancyStatistics:  # type: weakref.ref
+		handlingStatistic = handlingStatisticReference()  # type: typing.Optional[base_statistic.BaseStatistic]
+
+		if handlingStatistic == pregnancyStatistic:
+			_handlingPregnancyStatistics.remove(handlingStatisticReference)
+			break
+
+	_ResetPregnancyStatistic(pregnancyStatistic)
+
 def _ResetPregnancyStatistic (pregnancyStatistic: base_statistic.BaseStatistic) -> None:
-	pregnancyStatisticTracker = pregnancyStatistic.tracker  # type: typing.Optional[base_statistic_tracker.BaseStatisticTracker]
-
-	if pregnancyStatisticTracker is None:
-		Debug.Log("Went to reset a pregnancy statistic, but it has no tracker. We can't get to the original pregnancy rate.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
-		_ApplyPregnancyStatisticRate(pregnancyStatistic, None)
-		return
-
-	pregnancyStatisticOwner = pregnancyStatisticTracker.owner  # type: typing.Optional[script_object.ScriptObject]
+	pregnancyStatisticOwner = _GetPregnancyStatisticOwner(pregnancyStatistic)  # type: typing.Optional[sim_info.SimInfo]
 
 	if pregnancyStatisticOwner is None:
-		Debug.Log("Went to reset a pregnancy statistic, but its tracker has no owner. We can't get to the original pregnancy rate.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
-		_ApplyPregnancyStatisticRate(pregnancyStatistic, None)
-		return
-
-	if not isinstance(pregnancyStatisticOwner, sim_info.SimInfo):
-		Debug.Log("Went to reset a pregnancy statistic, but its owner is not a sim. We can't get to the original pregnancy rate.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 5)
-		_ApplyPregnancyStatisticRate(pregnancyStatistic, None)
 		return
 
 	ownerPregnancyTracker = pregnancyStatisticOwner.pregnancy_tracker  # type: GamePregnancyTracker.PregnancyTracker
 
-	pregnancyRate = ownerPregnancyTracker.PREGNANCY_RATE
-
-	_ApplyPregnancyStatisticRate(pregnancyStatistic, pregnancyRate)
+	if ownerPregnancyTracker.is_pregnant:
+		pregnancyRate = ownerPregnancyTracker.PREGNANCY_RATE
+		_ApplyPregnancyStatisticRate(pregnancyStatistic, pregnancyRate)
+	else:
+		_ApplyPregnancyStatisticRate(pregnancyStatistic, None)
 
 def _ResetHandlingPregnancyStatistics () -> None:
 	global _handlingPregnancyStatistics
 
-	if len(_handlingPregnancyStatistics) != 0:
-		for handlingStatisticReference in _handlingPregnancyStatistics:  # type: weakref.ref
-			handlingStatistic = handlingStatisticReference()  # type: typing.Optional[base_statistic.BaseStatistic]
+	for handlingStatisticReference in _handlingPregnancyStatistics:  # type: weakref.ref
+		handlingStatistic = handlingStatisticReference()  # type: typing.Optional[base_statistic.BaseStatistic]
 
-			if handlingStatistic is not None:
-				_ResetPregnancyStatistic(handlingStatistic)
+		if handlingStatistic is not None:
+			_ResetPregnancyStatistic(handlingStatistic)
 
-		_handlingPregnancyStatistics = list()
+	_handlingPregnancyStatistics = set()
+
+def _ClearDeadPregnancyStatisticReferences () -> None:
+	global _pregnancyStatistics
+
+	alivePregnancyStatistics = set()
+
+	for pregnancyStatisticReference in _pregnancyStatistics:  # type: weakref.ref
+		pregnancyStatistic = pregnancyStatisticReference()  # type: typing.Optional[base_statistic.BaseStatistic]
+
+		if pregnancyStatistic is not None:
+			alivePregnancyStatistics.add(pregnancyStatisticReference)
+
+	_pregnancyStatistics = alivePregnancyStatistics
 
 # noinspection PyProtectedMember
 def _ApplyPregnancyStatisticRate (pregnancyStatistic: base_statistic.BaseStatistic, pregnancyRate: typing.Optional[float]) -> None:
@@ -145,6 +182,23 @@ def _ApplyPregnancyStatisticRate (pregnancyStatistic: base_statistic.BaseStatist
 
 		# noinspection PyProtectedMember
 		pregnancyStatistic._on_statistic_modifier_changed(notify_watcher = False)
+
+def _FixOldCyclePregnancyStatisticBug () -> None:
+	"""
+	This makes sure a bug from an older version of this mod isn't still affecting someone's game.
+	"""
+
+	for pregnancyStatisticReference in _pregnancyStatistics:  # type: weakref.ref
+		pregnancyStatistic = pregnancyStatisticReference()  # type: typing.Optional[base_statistic.BaseStatistic]
+
+		if pregnancyStatistic is not None:
+			pregnancyStatisticOwner = _GetPregnancyStatisticOwner(pregnancyStatistic)  # type: typing.Optional[sim_info.SimInfo]
+
+			if pregnancyStatisticOwner is None:
+				continue
+
+			if not pregnancyStatisticOwner.is_pregnant:
+				pregnancyStatistic.set_value(0)
 
 def _PatchStatistics () -> None:
 	_PatchPregnancyCommodity()
@@ -163,7 +217,7 @@ def _PregnancyCommodityInit (self: commodity.Commodity, *args, **kwargs) -> None
 	if self.tracker is not None:
 		self.tracker.add_watcher(_CreatePregnancyCommodityWatcherWrapper(self.tracker))
 
-	_pregnancyStatistics.append(weakref.ref(self))
+	_pregnancyStatistics.add(weakref.ref(self))
 
 def _CreatePregnancyCommodityWatcherWrapper (commodityTracker: base_statistic_tracker.BaseStatisticTracker) -> typing.Callable:
 	# Without this, we only get the statistic type, old value, and new value. We would have no way of figuring out which instance of the statistic actually changed or for what object in changed for. I'm not sure why it isn't this way by default.
@@ -176,6 +230,9 @@ def _CreatePregnancyCommodityWatcherWrapper (commodityTracker: base_statistic_tr
 # noinspection PyUnusedLocal
 def _OnStart (cause) -> None:
 	Settings.RegisterOnUpdateCallback(_SettingsOnUpdatedCallback)
+
+	if cause != LoadingShared.LoadingCauses.Reloading:
+		Patcher.Patch(GamePregnancyTracker.PregnancyTracker, "clear_pregnancy", _GamePregnancyTrackerClearPregnancyPatch)
 
 # noinspection PyUnusedLocal
 def _OnStop (cause) -> None:
@@ -206,3 +263,9 @@ def _SettingsOnUpdatedCallback (settingsModule, eventArguments: SettingsBase.Upd
 	global _handlingPregnancyStatistics
 
 	_ApplySettingsToAllPregnancyStatistics()
+
+def _GamePregnancyTrackerClearPregnancyPatch (self: GamePregnancyTracker.PregnancyTracker) -> None:
+	simPregnancyStatisticType = self.PREGNANCY_COMMODITY_MAP.get(sim_info_types.Species.HUMAN, None)  # type: typing.Type[base_statistic.BaseStatistic]
+	simPregnancyStatistic = self._sim_info.get_statistic(simPregnancyStatisticType)  # type: base_statistic.BaseStatistic
+
+	_StopHandlingPregnancyStatistic(simPregnancyStatistic)

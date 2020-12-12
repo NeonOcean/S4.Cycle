@@ -4,7 +4,7 @@ import math
 import numbers
 import typing
 
-from NeonOcean.S4.Cycle import This
+from NeonOcean.S4.Cycle import Guides, This
 from NeonOcean.S4.Cycle.Settings import Base as SettingsBase, Dialogs as SettingsDialogs
 from NeonOcean.S4.Main import Language
 from NeonOcean.S4.Main.Tools import Exceptions, Numbers as ToolsNumbers, Version
@@ -46,7 +46,7 @@ class BooleanEnabledDisabledSetting(BooleanSetting):
 class BooleanEnabledDisabledDialogSetting(BooleanEnabledDisabledSetting):
 	Dialog = SettingsDialogs.BooleanEnabledDisabledDialog
 
-class BooleanYesNoSetting (BooleanSetting):
+class BooleanYesNoSetting(BooleanSetting):
 	@classmethod
 	def GetValueText (cls, value: typing.Any) -> localization.LocalizedString:
 		if not isinstance(value, bool):
@@ -105,17 +105,17 @@ class ReproductiveSpeedSetting(SettingsBase.Setting):
 		return value
 
 	@classmethod
-	def GetValueText(cls, value: typing.Any) -> localization.LocalizedString:
-		humanCycleDays = str(round(cls._GetHumanCycleRealDays() * value, 1))  # type: str
-		valueString = str(value)  # type: str
-		return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".Settings.Types.Reproductive_Speed.Value", valueString, humanCycleDays, fallbackText = str(value))
+	def GetValueText (cls, value: typing.Any) -> localization.LocalizedString:
+		humanCycleDays = str(round(value * cls._GetHumanCycleRealDays(), 1))  # type: str
+		return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".Settings.Types.Reproductive_Speed.Value", humanCycleDays, fallbackText = humanCycleDays)
 
 	@classmethod
 	def _GetHumanCycleRealDays (cls) -> float:
-		return 28
+		humanCycleGuide = Guides.HumanCycleMenstrualGuide.Guide
+		return (humanCycleGuide.FollicularLength.Mean + humanCycleGuide.LutealLength.Mean) / 1440
 
 class ReproductiveSpeedDialogSetting(ReproductiveSpeedSetting):
-	Dialog = SettingsDialogs.RealNumberDialog
+	Dialog = SettingsDialogs.ReproductiveSpeedDialog
 
 class PregnancySpeedSetting(SettingsBase.Setting):
 	Type = numbers.Real
@@ -134,14 +134,13 @@ class PregnancySpeedSetting(SettingsBase.Setting):
 		return value
 
 	@classmethod
-	def GetValueText(cls, value: typing.Any) -> localization.LocalizedString:
-		humanPregnancyDays = str(round(cls._GetHumanPregnancyRealDays() * value, 1))  # type: str
-		valueString = str(value)  # type: str
-		return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".Settings.Types.Pregnancy_Speed.Value", valueString, humanPregnancyDays, fallbackText = str(value))
+	def GetValueText (cls, value: typing.Any) -> localization.LocalizedString:
+		humanPregnancyDays = str(round(value * cls._GetHumanPregnancyRealDays(), 1))  # type: str
+		return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".Settings.Types.Pregnancy_Speed.Value", humanPregnancyDays, fallbackText = humanPregnancyDays)
 
 	@classmethod
 	def _GetHumanPregnancyRealDays (cls) -> float:
-		return 270
+		return Guides.HumanPregnancyGuide.Guide.PregnancyTime / 1440
 
 class PregnancySpeedDialogSetting(PregnancySpeedSetting):
-	Dialog = SettingsDialogs.RealNumberDialog
+	Dialog = SettingsDialogs.PregnancySpeedDialog

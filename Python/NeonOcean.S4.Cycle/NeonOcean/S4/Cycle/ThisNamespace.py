@@ -1,0 +1,1 @@
+Namespace = "NeonOcean.S4.Cycle"  # type: str

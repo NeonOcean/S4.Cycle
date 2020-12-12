@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from NeonOcean.S4.Cycle import This
+from NeonOcean.S4.Cycle import This, Guides
 from NeonOcean.S4.Main import Language, Websites
 from NeonOcean.S4.Main.Tools import Exceptions, Numbers, Parse
 from NeonOcean.S4.Main.UI import Settings as UISettings, SettingsShared as UISettingsShared
@@ -94,3 +94,63 @@ class RealNumberDialog(UISettings.InputDialog):
 			raise Exception("'value' is not a real number.")
 
 		return str(value)
+
+class ReproductiveSpeedDialog(RealNumberDialog):
+	# TODO this dialog will not work if cycles are tracked for more than just humans.
+
+	def _ParseValueString (self, valueString: str) -> typing.Union[float, int]:
+		if not isinstance(valueString, str):
+			raise Exceptions.IncorrectTypeException(valueString, "valueString", (str,))
+
+		requestedHumanCycleDays = Parse.ParseNumber(valueString)  # type: typing.Union[float, int]
+
+		if not Numbers.IsRealNumber(requestedHumanCycleDays):
+			raise Exception("Input string cannot be parsed to a real number.")
+
+		humanCycleGuide = Guides.HumanCycleMenstrualGuide.Guide
+		humanRealLifeCycleDays = (humanCycleGuide.FollicularLength.Mean + humanCycleGuide.LutealLength.Mean) / 1440  # type: float
+		value = requestedHumanCycleDays / humanRealLifeCycleDays
+
+		return value
+
+	def _ValueToString (self, value: typing.Union[float, int]) -> str:
+		if not isinstance(value, float) and not isinstance(value, int):
+			raise Exceptions.IncorrectTypeException(value, "value", (float, int))
+
+		if not Numbers.IsRealNumber(value):
+			raise Exception("'value' is not a real number.")
+
+		humanCycleGuide = Guides.HumanCycleMenstrualGuide.Guide
+		humanRealLifeCycleDays = (humanCycleGuide.FollicularLength.Mean + humanCycleGuide.LutealLength.Mean) / 1440  # type: float
+		valueString = str(value * humanRealLifeCycleDays)  # type: str
+
+		return valueString
+
+class PregnancySpeedDialog (RealNumberDialog):
+	# TODO this dialog will not work if cycles are tracked for more than just humans.
+
+	def _ParseValueString (self, valueString: str) -> typing.Union[float, int]:
+		if not isinstance(valueString, str):
+			raise Exceptions.IncorrectTypeException(valueString, "valueString", (str,))
+
+		requestedHumanPregnancyDays = Parse.ParseNumber(valueString)  # type: typing.Union[float, int]
+
+		if not Numbers.IsRealNumber(requestedHumanPregnancyDays):
+			raise Exception("Input string cannot be parsed to a real number.")
+
+		humanRealLifePregnancyDays = Guides.HumanPregnancyGuide.Guide.PregnancyTime / 1440  # type: float
+		value = requestedHumanPregnancyDays / humanRealLifePregnancyDays  # type: float
+
+		return value
+
+	def _ValueToString (self, value: typing.Union[float, int]) -> str:
+		if not isinstance(value, float) and not isinstance(value, int):
+			raise Exceptions.IncorrectTypeException(value, "value", (float, int))
+
+		if not Numbers.IsRealNumber(value):
+			raise Exception("'value' is not a real number.")
+
+		humanRealLifePregnancyDays = Guides.HumanPregnancyGuide.Guide.PregnancyTime / 1440  # type: float
+		valueString = str(value * humanRealLifePregnancyDays)  # type: str
+
+		return valueString
