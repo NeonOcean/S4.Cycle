@@ -169,7 +169,7 @@ class BirthControlPillsEffect(EffectsBase.EffectBase):
 
 		debugStringTemplate = "Need: {Need}\n" \
 							  "Entrenchment: {Entrenchment}\n" \
-							  "Ovum Chance: {OvumChance}%"  # type: str
+							  "Ovum Block Chance: {OvumChance}%"  # type: str
 
 		debugStringFormatting = {
 			"Need": str(round(need, 4)),

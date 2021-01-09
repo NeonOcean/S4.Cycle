@@ -1,3 +1,9 @@
+## v1.3.1 (January 9, 2020)
+
+- Fixed support for WickedWhims, it should now be compatible with the latest version.
+
+______________________________
+
 ## v1.3.0 (December 12, 2020)
 
 - Cycle and pregnancy lengths are now set by the number of days it takes. The previous way seemed to confuse some people.

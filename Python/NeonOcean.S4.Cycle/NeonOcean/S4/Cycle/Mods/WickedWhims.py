@@ -205,8 +205,11 @@ def _DoWickedWhimsMenstruationPatch () -> None:
 def _DoWickedWhimsTakeBirthControlPillPatch () -> None:
 	try:
 		# noinspection PyUnresolvedReferences
-		from wickedwhims.sex.pregnancy.birth_control import pills
+		from wickedwhims.sex.pregnancy.birth_control import pills, interactions, birth_control_handler
 		Patcher.Patch(pills, "take_birth_control_pill", _WickedWhimsTakeBirthControlPillPatch, patchType = Patcher.PatchTypes.Custom)
+
+		interactions.take_birth_control_pill = pills.take_birth_control_pill  # Please do not directly import functions, it makes it harder to patch them. Calling "pills.take_birth_control_pill" instead of "take_birth_control_pill" is not really a big deal.
+		birth_control_handler.take_birth_control_pill = pills.take_birth_control_pill
 	except:
 		Debug.Log("Could not complete WickedWhims take birth control pill patch.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 
@@ -302,8 +305,11 @@ def _CycleRemovePillFromObjectPatch (originalCallable: typing.Callable, pillsObj
 
 def _WickedWhimsTryImpregnateSimPatch (originalCallable: typing.Callable, self, sim_actor_id, turbo_sim, *args, **kwargs) -> bool:
 	try:
+		Debug.Log("Here Impreg", This.Mod.Namespace, Debug.LogLevels.Warning)  # TODO REMOVE
 		# noinspection PyUnresolvedReferences
 		from turbolib2.wrappers.sim import sim as TurboSimWrapper
+		# noinspection PyUnresolvedReferences
+		from wickedwhims.sex.pregnancy.birth_control import birth_control_handler
 
 		inseminatedSimInfo = turbo_sim.get_sim_info()  # type: typing.Optional[sim_info.SimInfo]
 
@@ -321,7 +327,7 @@ def _WickedWhimsTryImpregnateSimPatch (originalCallable: typing.Callable, self, 
 
 			sourceSimWickedWhimsWrapper = TurboSimWrapper.TurboSim(sourceSimInfo)
 
-			if self._is_sim_on_birth_control(sourceSimWickedWhimsWrapper):
+			if birth_control_handler.is_sim_on_birth_control(sourceSimWickedWhimsWrapper): # This should only really be testing if they are using condoms since we effectively disabled birth control pills
 				continue
 
 			Insemination.AutoInseminate(inseminatedSimInfo, sourceSimInfo)
@@ -338,6 +344,10 @@ def _WickedWhimsUpdateSexSettingsToGeneralSaveDataPatch (originalCallable: typin
 			# noinspection PyProtectedMember
 			WickedWhimsSexSettings._sex_settings_data[WickedWhimsSexSettings.SexSetting.PREGNANCY_MODE] = WickedWhimsSexSettings.PregnancyModeSetting.SIMPLE
 
+		if WickedWhimsSexSettings.get_sex_setting(WickedWhimsSexSettings.SexSetting.BIRTH_CONTROL_PILLS_AUTO_USE) != 0:
+			# noinspection PyProtectedMember
+			WickedWhimsSexSettings._sex_settings_data[WickedWhimsSexSettings.SexSetting.BIRTH_CONTROL_PILLS_AUTO_USE] = 0
+
 		return originalCallable(*args, **kwargs)
 	except:
 		Debug.Log("Failed to handle WickedWhim's update sex settings to general save data function.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()))
@@ -345,6 +355,7 @@ def _WickedWhimsUpdateSexSettingsToGeneralSaveDataPatch (originalCallable: typin
 
 def _WickedWhimsTakeBirthControlPillPatch (originalCallable: typing.Callable, turbo_sim: typing.Any, no_inventory: bool = False, *args, **kwargs) -> bool:
 	try:
+		Debug.Log("Here Pill", This.Mod.Namespace, Debug.LogLevels.Warning) # TODO REMOVE
 		targetSimInfo = turbo_sim.get_sim_info()  # type: typing.Optional[sim_info.SimInfo]
 
 		if targetSimInfo is None:
